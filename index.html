@@ -4,129 +4,173 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Udees</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://unpkg.com/html5-qrcode"></script>
     <style>
         :root {
-            --bg: #000;
-            --accent: #007AFF;
-            --card: rgba(28, 28, 30, 0.7);
-            --border: rgba(255, 255, 255, 0.1);
+            --primary: #007AFF;
+            --bg: #F2F2F7;
+            --card-bg: #FFFFFF;
+            --text-main: #1C1C1E;
+            --text-sub: #8E8E93;
+            --success: #34C759;
+            --danger: #FF3B30;
         }
 
         body { 
-            background: var(--bg); color: #fff; 
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
-            background-image: radial-gradient(circle at 0% 0%, #1c1c1e 0%, #000 100%);
-            min-height: 100vh; -webkit-font-smoothing: antialiased;
+            background-color: var(--bg); color: var(--text-main); 
+            font-family: 'Inter', -apple-system, sans-serif;
+            margin: 0; padding: 0; -webkit-font-smoothing: antialiased;
+            letter-spacing: -0.02em;
         }
 
-        /* Udees Loader (Apple Style) */
-        #loader { position: fixed; inset: 0; background: #000; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 10000; transition: 0.5s ease; }
-        .udees-loader { display: flex; flex-direction: column; align-items: center; }
-        .icon-box { width: 72px; height: 72px; border-radius: 20px; background: #fff; position: relative; overflow: hidden; }
-        .rise-line { position: absolute; bottom: 12px; left: 50%; width: 3px; height: 28px; background: #000; transform: translateX(-50%); border-radius: 2px; animation: rise 1.6s infinite ease-in-out; }
-        @keyframes rise { 0% { transform: translate(-50%, 14px); opacity: 0; } 40% { opacity: 1; } 100% { transform: translate(-50%, -14px); opacity: 0; } }
+        /* Udees Premium Loader */
+        #loader { 
+            position: fixed; inset: 0; background: #fff; display: flex; 
+            flex-direction: column; align-items: center; justify-content: center; z-index: 10000; 
+        }
+        .udees-loader { width: 60px; height: 60px; border-radius: 18px; background: #000; position: relative; }
+        .udees-line { position: absolute; bottom: 12px; left: 50%; width: 2.5px; height: 22px; background: #fff; transform: translateX(-50%); border-radius: 2px; animation: rise 1.6s infinite ease-in-out; }
+        @keyframes rise { 0% { transform: translate(-50%, 10px); opacity: 0; } 40% { opacity: 1; } 100% { transform: translate(-50%, -12px); opacity: 0; } }
 
-        /* Dashboard UI */
-        .glass-card { background: var(--card); backdrop-filter: blur(25px); border: 1px solid var(--border); border-radius: 28px; padding: 20px; margin-bottom: 16px; }
+        /* Header */
+        .header { padding: 30px 24px 10px; display: flex; justify-content: space-between; align-items: center; }
+        .welcome-text { font-size: 14px; font-weight: 500; color: var(--text-sub); }
+        .user-name { font-weight: 800; font-size: 22px; margin-top: -2px; }
+
+        /* Wallet Card */
+        .wallet-card {
+            background: var(--card-bg); border-radius: 32px; padding: 32px 28px;
+            margin: 10px 20px 25px; box-shadow: 0 12px 40px rgba(0,0,0,0.04);
+            border: 1px solid rgba(255,255,255,0.8);
+        }
+        .wallet-label { color: var(--text-sub); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+        .wallet-val { font-size: 42px; font-weight: 800; margin: 8px 0; letter-spacing: -0.04em; }
+        .wallet-status { font-size: 13px; color: var(--success); font-weight: 600; display: flex; align-items: center; gap: 6px; }
+
+        /* Primary Scan Button - High Focus */
+        .scan-action-row { padding: 0 24px 30px; }
+        .btn-scan-primary { 
+            background: #fff; color: #000; border: 1px solid rgba(0,0,0,0.03); 
+            width: 100%; padding: 18px; border-radius: 22px; font-weight: 700; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05); display: flex; align-items: center; justify-content: center; gap: 12px;
+            transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .btn-scan-primary:active { transform: scale(0.96); background: #f9f9f9; }
+
+        /* Form Area */
+        .log-section { background: #fff; border-radius: 40px 40px 0 0; padding: 35px 28px 120px; box-shadow: 0 -15px 40px rgba(0,0,0,0.03); }
+        .section-header { font-weight: 800; font-size: 20px; margin-bottom: 24px; letter-spacing: -0.03em; }
         
-        .header-title { font-size: 34px; font-weight: 800; letter-spacing: -1px; margin-bottom: 25px; padding-left: 10px; }
+        .input-block { margin-bottom: 22px; }
+        .input-block label { font-size: 11px; font-weight: 700; color: var(--text-sub); text-transform: uppercase; margin-bottom: 10px; display: block; letter-spacing: 0.03em; }
+        
+        .form-control, .form-select { 
+            background: #F4F4F7; border: none; border-radius: 18px; 
+            padding: 16px; font-size: 16px; font-weight: 600; color: var(--text-main);
+        }
+        .form-control:focus { background: #EBEBEF; border: none; box-shadow: none; }
+        
+        /* Premium Segmented Controls */
+        .segment { display: flex; background: #F4F4F7; padding: 4px; border-radius: 18px; margin-bottom: 22px; }
+        .segment input { display: none; }
+        .segment label { flex: 1; text-align: center; padding: 12px; border-radius: 14px; font-size: 14px; font-weight: 700; cursor: pointer; color: var(--text-sub); transition: 0.25s; }
+        #type-debit:checked + label { background: #fff; color: var(--danger); box-shadow: 0 4px 12px rgba(255,59,48,0.1); }
+        #type-credit:checked + label { background: #fff; color: var(--success); box-shadow: 0 4px 12px rgba(52,199,89,0.1); }
+        #mode-upi:checked + label { background: var(--primary); color: #fff; box-shadow: 0 4px 12px rgba(0,122,255,0.2); }
+        #mode-cash:checked + label { background: #1C1C1E; color: #fff; }
 
-        .stat-grid { display: flex; gap: 12px; margin-bottom: 16px; }
-        .stat-item { flex: 1; background: var(--card); border: 1px solid var(--border); border-radius: 24px; padding: 18px; text-align: left; }
-        .stat-label { font-size: 11px; font-weight: 700; color: #8E8E93; text-transform: uppercase; letter-spacing: 0.5px; }
-        .stat-val { font-size: 24px; font-weight: 800; margin-top: 2px; }
+        /* Confirm Button */
+        .btn-confirm { 
+            background: var(--primary); border: none; border-radius: 24px; color: #fff;
+            width: 100%; padding: 22px; font-weight: 700; font-size: 18px; 
+            box-shadow: 0 20px 40px rgba(0, 122, 255, 0.2); margin-top: 10px;
+        }
+        .btn-confirm:active { transform: scale(0.97); }
 
-        /* Custom Date Picker Card */
-        .date-picker-card { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; }
-        .date-picker-card input { background: transparent; border: none; color: var(--accent); font-weight: 600; font-size: 17px; outline: none; text-align: right; }
-
-        /* Form Styling */
-        .form-select, .form-control { background: rgba(255,255,255,0.05); border: 1px solid var(--border); color: #fff; border-radius: 16px; padding: 14px; font-size: 16px; margin-bottom: 12px; }
-        .form-control:focus { background: rgba(255,255,255,0.08); border-color: var(--accent); color: #fff; box-shadow: none; }
-
-        /* Segmented Toggles */
-        .segmented-control { display: flex; background: #1c1c1e; padding: 3px; border-radius: 14px; gap: 4px; margin-bottom: 16px; }
-        .segmented-control input { display: none; }
-        .segmented-control label { flex: 1; text-align: center; padding: 10px; border-radius: 11px; font-size: 14px; font-weight: 600; cursor: pointer; color: #8E8E93; transition: 0.2s; }
-        #debit:checked + label { background: #FF3B30; color: #fff; }
-        #credit:checked + label { background: #34C759; color: #fff; }
-        #upi:checked + label { background: var(--accent); color: #fff; }
-        #cash:checked + label { background: #FF9F0A; color: #fff; }
-
-        /* Action Buttons */
-        .btn-scan { background: #fff; color: #000; border: none; width: 100%; padding: 18px; border-radius: 20px; font-weight: 700; font-size: 17px; margin-bottom: 20px; display: flex; align-items: center; justify-content: center; gap: 10px; }
-        .btn-log { background: var(--accent); color: #fff; border: none; width: 100%; padding: 18px; border-radius: 20px; font-weight: 700; font-size: 17px; margin-top: 10px; box-shadow: 0 10px 30px rgba(0, 122, 255, 0.3); transition: 0.2s; }
-        .btn-log:active { transform: scale(0.96); }
-
-        /* Scanner Overlay */
-        #scanner-view { display: none; position: fixed; inset: 0; background: #000; z-index: 11000; padding: 20px; }
-        #reader { border-radius: 30px; overflow: hidden; }
-        .close-scanner { background: #2c2c2e; border: none; color: #fff; width: 100%; padding: 16px; border-radius: 20px; margin-top: 20px; font-weight: 600; }
+        /* Scanner Modal */
+        #scanner-view { display: none; position: fixed; inset: 0; background: #000; z-index: 11000; padding: 25px; }
+        #reader { border-radius: 30px; overflow: hidden; margin-top: 40px; }
+        .btn-close-scan { background: #2C2C2E; color: #fff; border: none; width: 100%; padding: 18px; border-radius: 20px; margin-top: 30px; font-weight: 700; }
     </style>
 </head>
 <body>
 
 <div id="loader">
-    <div class="udees-loader">
-        <div class="icon-box"><div class="rise-line"></div></div>
-        <div class="mt-3 text-secondary" style="letter-spacing: 3px; font-weight: 700; font-size: 12px;">UDEES</div>
-    </div>
+    <div class="udees-loader"><div class="udees-line"></div></div>
+    <div class="mt-4" style="letter-spacing: 3px; font-weight: 800; font-size: 12px; color: #8E8E93;">UDEES</div>
 </div>
 
 <div id="scanner-view">
-    <h3 class="text-center mb-4">Scan QR</h3>
     <div id="reader"></div>
-    <button class="close-scanner" onclick="stopScanner()">Close Scanner</button>
+    <button class="btn-close-scan" onclick="stopScanner()">Exit Scanner</button>
 </div>
 
-<div class="container py-4" id="app" style="display:none;">
-    <div class="header-title">Udees</div>
-
-    <div class="stat-grid">
-        <div class="stat-item">
-            <span class="stat-label">Monthly Credit</span>
-            <div id="credit-val" class="stat-val" style="color: #34C759;">₹0</div>
+<div id="app" style="display:none;">
+    <div class="header">
+        <div>
+            <div class="welcome-text">Welcome back,</div>
+            <div class="user-name">Ajith SK</div>
         </div>
-        <div class="stat-item">
-            <span class="stat-label">Monthly Debit</span>
-            <div id="debit-val" class="stat-val" style="color: #FF3B30;">₹0</div>
+        <div style="font-size: 24px; opacity: 0.1;">●</div>
+    </div>
+
+    <div class="wallet-card">
+        <div class="wallet-label">Total Expense (This Month)</div>
+        <div class="wallet-val" id="total-spent">₹0</div>
+        <div class="wallet-status">
+            <span style="font-size: 8px;">●</span> ACTIVE SESSION
         </div>
     </div>
 
-    <div class="glass-card date-picker-card">
-        <span style="font-weight: 600; color: #8E8E93;">Transaction Date</span>
-        <input type="date" id="date">
+    <div class="scan-action-row">
+        <button class="btn-scan-primary" onclick="startScanner()">
+            <span style="font-size: 22px;">📸</span> 
+            <span>SCAN QR & PAY</span>
+        </button>
     </div>
 
-    <button class="btn-scan" onclick="startScanner()">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7 2H5C3.34315 2 2 3.34315 2 5V7M17 2H19C20.6569 2 22 3.34315 22 5V7M2 17V19C2 20.6569 3.34315 22 5 22H7M22 17V19C22 20.6569 20.6569 22 19 22H17" stroke="black" stroke-width="2.5" stroke-linecap="round"/><path d="M7 12H17" stroke="black" stroke-width="2" stroke-linecap="round"/></svg>
-        Scan & Pay
-    </button>
+    <div class="log-section">
+        <div class="section-header">Log Transaction</div>
 
-    <div class="glass-card">
-        <select id="account" class="form-select"></select>
-        <select id="particulars" class="form-select"></select>
-
-        <div class="segmented-control">
-            <input type="radio" name="type" id="debit" value="Debit" checked>
-            <label for="debit">Debit</label>
-            <input type="radio" name="type" id="credit" value="Credit">
-            <label for="credit">Credit</label>
+        <div class="input-block">
+            <label>Date & Entity</label>
+            <input type="date" id="date" class="form-control mb-3">
+            <select id="account" class="form-select" onchange="updateParticulars()"></select>
         </div>
 
-        <div class="segmented-control">
-            <input type="radio" name="mode" id="upi" value="UPI" checked>
-            <label for="upi">UPI</label>
-            <input type="radio" name="mode" id="cash" value="Cash">
-            <label for="cash">Cash</label>
+        <div class="input-block">
+            <label>Particulars</label>
+            <select id="particulars" class="form-select"></select>
         </div>
 
-        <input id="amount" type="number" class="form-control" placeholder="Amount (₹)" inputmode="decimal">
-        <textarea id="note" class="form-control" rows="2" placeholder="Add a note..."></textarea>
+        <label class="input-block"><label>Flow Type</label></label>
+        <div class="segment">
+            <input type="radio" name="type" id="type-debit" value="Debit" checked>
+            <label for="type-debit">Debit</label>
+            <input type="radio" name="type" id="type-credit" value="Credit">
+            <label for="type-credit">Credit</label>
+        </div>
 
-        <button id="btn-log" class="btn-log" onclick="submit()">LOG TRANSACTION</button>
+        <div class="segment">
+            <input type="radio" name="mode" id="mode-upi" value="UPI" checked>
+            <label for="mode-upi">UPI</label>
+            <input type="radio" name="mode" id="mode-cash" value="Cash">
+            <label for="mode-cash">Cash</label>
+        </div>
+
+        <div class="input-block">
+            <label>Amount (₹)</label>
+            <input type="number" id="amount" class="form-control" placeholder="0.00" inputmode="decimal">
+        </div>
+
+        <div class="input-block">
+            <label>Note</label>
+            <input type="text" id="note" class="form-control" placeholder="Add details...">
+        </div>
+
+        <button class="btn-confirm" onclick="submit()" id="subBtn">Confirm Transaction</button>
     </div>
 </div>
 
@@ -140,22 +184,16 @@
             let res = await fetch(`${SCRIPT_URL}?action=getData`);
             let data = await res.json();
             categories = data.categories;
-            document.getElementById('credit-val').innerText = "₹" + data.totals.credit;
-            document.getElementById('debit-val').innerText = "₹" + data.totals.debit;
+            document.getElementById('total-spent').innerText = "₹" + data.totals.debit;
             
             const accSelect = document.getElementById('account');
             Object.keys(categories).forEach(a => accSelect.add(new Option(a, a)));
             updateParticulars();
             
-            document.getElementById('loader').style.opacity = '0';
-            setTimeout(() => {
-                document.getElementById('loader').style.display = 'none';
-                document.getElementById('app').style.display = 'block';
-            }, 500);
-        } catch(e) { alert("Check Connection"); }
+            document.getElementById('loader').style.display = 'none';
+            document.getElementById('app').style.display = 'block';
+        } catch(e) { console.error(e); }
     };
-
-    document.getElementById('account').onchange = updateParticulars;
 
     function updateParticulars() {
         const pSelect = document.getElementById('particulars');
@@ -166,7 +204,7 @@
     function startScanner() {
         document.getElementById('scanner-view').style.display = 'block';
         html5QrCode = new Html5Qrcode("reader");
-        html5QrCode.start({ facingMode: "environment" }, { fps: 10, qrbox: 250 }, (text) => {
+        html5QrCode.start({ facingMode: "environment" }, { fps: 15, qrbox: 250 }, (text) => {
             if(text.includes("upi://pay")) {
                 let amt = document.getElementById('amount').value;
                 let url = amt ? `${text}&am=${amt}` : text;
@@ -185,12 +223,12 @@
     }
 
     async function submit() {
-        const btn = document.getElementById('btn-log');
+        const btn = document.getElementById('subBtn');
         const amt = document.getElementById('amount').value;
-        if(!amt) return alert("Enter Amount");
+        if(!amt) return alert("Please enter an amount.");
 
         btn.disabled = true;
-        btn.innerText = "SYCHRONIZING...";
+        btn.innerText = "Synchronizing...";
 
         const entry = {
             date: document.getElementById('date').value,
@@ -204,11 +242,9 @@
 
         try {
             await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify(entry) });
-            alert("Entry Recorded");
+            alert("Entry Saved!");
             location.reload();
-        } catch(e) {
-            location.reload();
-        }
+        } catch(e) { location.reload(); }
     }
 </script>
 </body>
