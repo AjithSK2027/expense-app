@@ -3,183 +3,167 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Udees Pro</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://unpkg.com/html5-qrcode"></script>
+    <title>SK Journal Pro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #007AFF; --bg: #F2F2F7; --card: #fff; --text: #1C1C1E; --sub: #8E8E93; --success: #34C759; --danger: #FF3B30; }
-        body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; letter-spacing: -0.02em; -webkit-font-smoothing: antialiased; }
-        
-        #loader { position: fixed; inset: 0; background: #fff; display: flex; align-items: center; justify-content: center; z-index: 10000; }
-        .header { padding: 30px 24px 10px; }
-        .wallet-card { background: var(--card); border-radius: 32px; padding: 30px; margin: 10px 20px 25px; box-shadow: 0 10px 40px rgba(0,0,0,0.04); border: 1px solid #fff; }
-        .wallet-val { font-size: 42px; font-weight: 800; margin: 5px 0; letter-spacing: -0.05em; }
-
-        .btn-scan { background: #000; color: #fff; width: calc(100% - 40px); margin: 0 20px 25px; padding: 18px; border-radius: 22px; font-weight: 700; border: none; display: flex; align-items: center; justify-content: center; gap: 10px; }
-        
-        .log-section { background: #fff; border-radius: 40px 40px 0 0; padding: 35px 24px 100px; box-shadow: 0 -15px 40px rgba(0,0,0,0.03); }
-        .form-control, .form-select { background: #F4F4F7; border: none; border-radius: 18px; padding: 16px; font-size: 16px; font-weight: 600; margin-bottom: 15px; }
-        
-        .segment { display: flex; background: #F4F4F7; padding: 4px; border-radius: 18px; margin-bottom: 20px; }
-        .segment input { display: none; }
-        .segment label { flex: 1; text-align: center; padding: 12px; border-radius: 14px; font-size: 14px; font-weight: 700; color: var(--sub); transition: 0.2s; }
-        #type-debit:checked + label { background: #fff; color: var(--danger); box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-        #type-credit:checked + label { background: #fff; color: var(--success); box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-        #mode-upi:checked + label { background: var(--primary); color: #fff; }
-        #mode-cash:checked + label { background: #000; color: #fff; }
-
-        .btn-confirm { background: var(--primary); color: #fff; border: none; border-radius: 24px; width: 100%; padding: 20px; font-weight: 700; font-size: 18px; box-shadow: 0 15px 30px rgba(0,122,255,0.2); }
-
-        /* Payment Drawer */
-        #payment-drawer { display: none; position: fixed; bottom: 0; left: 0; width: 100%; background: #fff; border-radius: 30px 30px 0 0; padding: 30px 24px; z-index: 12000; box-shadow: 0 -10px 50px rgba(0,0,0,0.2); }
-        .pay-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 20px; }
-        .pay-btn { border: 1px solid #F2F2F7; padding: 15px; border-radius: 20px; font-weight: 700; font-size: 14px; display: flex; align-items: center; justify-content: center; gap: 8px; background: #fff; }
-        
-        #scanner-view { display: none; position: fixed; inset: 0; background: #000; z-index: 11000; padding: 25px; }
-        #reader { border-radius: 30px; overflow: hidden; margin-top: 40px; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #020617; color: #f8fafc; }
+        .glass-card { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .input-style { background: #0f172a; border: 1px solid #334155; color: white; width: 100%; border-radius: 12px; padding: 12px; outline: none; }
+        .stat-card { background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255,255,255,0.05); padding: 12px; border-radius: 16px; text-align: center; }
+        .btn-pay { background: #10b981; font-weight: 700; padding: 12px; border-radius: 12px; width: 100%; margin-bottom: 8px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .btn-save { background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%); font-weight: 700; width: 100%; padding: 16px; border-radius: 12px; }
+        input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(1); }
     </style>
 </head>
-<body>
+<body class="min-h-screen flex items-center justify-center p-4">
 
-<div id="loader"><b>UDEES PRO</b></div>
+    <div class="w-full max-w-md space-y-6">
+        <header class="text-center">
+            <h1 class="text-3xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-cyan-400">SK Journal Pro</h1>
+<body class="min-h-screen p-4">
 
-<div id="scanner-view">
-    <div id="reader"></div>
-    <button class="btn w-100 py-3 text-white mt-4" onclick="stopScanner()">Cancel</button>
-</div>
-
-<div id="payment-drawer">
-    <h6 class="text-center fw-bold">Select Payment App</h6>
-    <div class="pay-grid">
-        <button class="pay-btn" onclick="payWith('phonepe')">🟣 PhonePe</button>
-        <button class="pay-btn" onclick="payWith('googlepay')">🔵 GPay</button>
-        <button class="pay-btn" onclick="payWith('paytm')">🔵 Paytm</button>
-        <button class="pay-btn" onclick="payWith('bhim')">🟠 BHIM</button>
-    </div>
-    <button class="btn w-100 mt-4 text-secondary" onclick="closeDrawer()">Cancel</button>
-</div>
-
-<div id="app" style="display:none;">
-    <div class="header">
-        <div class="user-name">Welcome, SK</div>
-    </div>
-
-    <div class="wallet-card">
-        <div style="font-size:12px; font-weight:700; color:var(--sub)">TOTAL EXPENSE</div>
-        <div class="wallet-val" id="total-spent">₹0</div>
-    </div>
-
-    <button class="btn-scan" onclick="startScanner()">📸 SCAN & PAY</button>
-
-    <div class="log-section">
-        <input type="date" id="date" class="form-control">
-        <select id="account" class="form-select" onchange="updateParticulars()"></select>
-        <select id="particulars" class="form-select"></select>
-
-        <div class="segment">
-            <input type="radio" name="type" id="type-debit" value="Debit" checked>
-            <label for="type-debit">Debit</label>
-            <input type="radio" name="type" id="type-credit" value="Credit">
-            <label for="type-credit">Credit</label>
+    <div class="max-w-md mx-auto space-y-6">
+        <div class="grid grid-cols-3 gap-3">
+            <div class="stat-card">
+                <p class="text-[10px] uppercase font-bold text-slate-500">Income</p>
+                <p id="sum-income" class="text-sm font-bold text-emerald-400">₹0</p>
+            </div>
+            <div class="stat-card">
+                <p class="text-[10px] uppercase font-bold text-slate-500">Expense</p>
+                <p id="sum-expense" class="text-sm font-bold text-rose-400">₹0</p>
+            </div>
+            <div class="stat-card bg-indigo-500/10 border-indigo-500/20">
+                <p class="text-[10px] uppercase font-bold text-indigo-400">Balance</p>
+                <p id="sum-balance" class="text-sm font-bold text-white">₹0</p>
+            </div>
         </div>
 
-        <div class="segment">
-            <input type="radio" name="mode" id="mode-upi" value="UPI" checked>
-            <label for="mode-upi">UPI</label>
-            <input type="radio" name="mode" id="mode-cash" value="Cash">
-            <label for="mode-cash">Cash</label>
+        <div class="glass-card rounded-3xl p-6 shadow-2xl">
+            <form id="journalForm" class="space-y-4">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="text-[10px] font-bold text-slate-400 uppercase ml-1">Date</label>
+                        <input type="date" id="date" name="date" required class="input-style text-xs">
+                    </div>
+                    <div>
+                        <label class="text-[10px] font-bold text-slate-400 uppercase ml-1">Mode</label>
+                        <select name="mode" class="input-style text-xs">
+                            <option value="UPI" selected>UPI</option>
+                            <option value="CASH">CASH</option>
+                            <option value="BANK">BANK</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <select id="account" name="account" required onchange="updateParticulars()" class="input-style appearance-none">
+                        <option value="">Syncing Data...</option>
+                    </select>
+                    <select id="particulars" name="particulars" required class="input-style appearance-none">
+                        <option value="">Select Account</option>
+                    </select>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="text-[10px] font-bold text-emerald-400 uppercase ml-1">Credit (+)</label>
+                        <input type="number" id="credit" name="credit" placeholder="0" step="any" class="input-style">
+                    </div>
+                    <div>
+                        <label class="text-[10px] font-bold text-rose-400 uppercase ml-1">Debit (-)</label>
+                        <input type="number" id="debit" name="debit" placeholder="0" step="any" class="input-style">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="text-[10px] font-bold text-slate-400 uppercase ml-1">Note</label>
+                    <textarea id="note" name="note" rows="2" placeholder="Details..." class="input-style resize-none"></textarea>
+                </div>
+
+                <div class="pt-2">
+                    <button type="button" onclick="initiateUPI()" class="btn-pay">⚡ Pay via UPI</button>
+                    <button type="submit" id="submitBtn" class="btn-save">Log Entry</button>
+                </div>
+            </form>
         </div>
-
-        <input id="amount" type="number" class="form-control" placeholder="Amount (₹)" inputmode="decimal">
-        <input id="note" type="text" class="form-control" placeholder="Notes">
-
-        <button class="btn-confirm" onclick="submit()" id="subBtn">LOG TRANSACTION</button>
+        <div id="statusBox" class="text-center text-xs font-bold opacity-0 transition-opacity">Status</div>
     </div>
-</div>
 
-<script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwQCYD_snGEqUDc47IDwvP2pJ4p2qcfgH8JrAWTHf-M7C0u9XbzP-1VxNc8dj5NjSwl/exec";
-    let categories = {}, html5QrCode, currentUPI = "";
+    <script>
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwhwaQLP9DNv3eK6Gt01uMCAUqrs5SbQAEQTgdD38mTqrVf7zKza1yvaH4bkaWxYX8/exec";
+        const MY_UPI_ID = "ajith@upi"; 
+        let masterConfig = {};
 
-    window.onload = async () => {
-        document.getElementById('date').value = new Date().toISOString().split('T')[0];
-        let res = await fetch(`${SCRIPT_URL}?action=getData`);
-        let data = await res.json();
-        categories = data.categories;
-        document.getElementById('total-spent').innerText = "₹" + data.totals.debit;
-        Object.keys(categories).forEach(a => document.getElementById('account').add(new Option(a, a)));
-        updateParticulars();
-        document.getElementById('loader').style.display = 'none';
-        document.getElementById('app').style.display = 'block';
-    };
+        const formatINR = (num) => new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(num);
 
-    function updateParticulars() {
-        const p = document.getElementById('particulars'); p.innerHTML = "";
-        (categories[document.getElementById('account').value] || []).forEach(item => p.add(new Option(item, item)));
-    }
+        window.onload = loadData;
 
-    function startScanner() {
-        document.getElementById('scanner-view').style.display = 'block';
-        html5QrCode = new Html5Qrcode("reader");
-        html5QrCode.start({ facingMode: "environment" }, { fps: 15, qrbox: 250 }, (text) => {
-            if(text.includes("upi://pay")) {
-                currentUPI = text;
-                stopScanner();
-                document.getElementById('payment-drawer').style.display = 'block';
+        function loadData() {
+            document.getElementById('date').valueAsDate = new Date();
+            fetch(`${SCRIPT_URL}?action=getSettings`)
+                .then(res => res.json())
+                .then(data => {
+                    masterConfig = data.config;
+                    // Update Summary
+                    document.getElementById('sum-income').textContent = formatINR(data.summary.income);
+                    document.getElementById('sum-expense').textContent = formatINR(data.summary.expense);
+                    document.getElementById('sum-balance').textContent = formatINR(data.summary.balance);
+                    
+                    const accSelect = document.getElementById('account');
+                    accSelect.innerHTML = '<option value="" disabled selected>Choose Account</option>';
+                    Object.keys(masterConfig).forEach(acc => { accSelect.innerHTML += `<option value="${acc}">${acc}</option>`; });
+                });
+        }
+
+        function initiateUPI() {
+            const amount = document.getElementById('debit').value || document.getElementById('credit').value;
+            const note = document.getElementById('note').value || "SK Journal";
+            if(!amount || amount <= 0) return alert("Enter amount");
+            window.location.href = `upi://pay?pa=${MY_UPI_ID}&pn=SK%20Designs&am=${amount}&tn=${encodeURIComponent(note)}&cu=INR`;
+        }
+
+        function updateParticulars() {
+            const acc = document.getElementById('account').value;
+            const partSelect = document.getElementById('particulars');
+            partSelect.innerHTML = '<option value="" disabled selected>Choose Particular</option>';
+            if (masterConfig[acc]) {
+                masterConfig[acc].forEach(p => { partSelect.innerHTML += `<option value="${p}">${p}</option>`; });
             }
-        });
-    }
+        }
 
-    function stopScanner() {
-        if(html5QrCode) html5QrCode.stop().then(() => { document.getElementById('scanner-view').style.display = 'none'; });
-    }
+        document.getElementById('journalForm').onsubmit = function(e) {
+            e.preventDefault();
+            const btn = document.getElementById('submitBtn');
+            btn.disabled = true; btn.innerText = "Saving...";
 
-    function payWith(app) {
-        let amt = document.getElementById('amount').value;
-        let base = currentUPI;
-        if(amt) base += `&am=${amt}`;
-        
-        let url = base;
-        if(app === 'phonepe') url = base.replace('upi://', 'phonepe://');
-        if(app === 'googlepay') url = base.replace('upi://', 'tez://ujp/pay'); // Specific GPay intent
-        if(app === 'paytm') url = base.replace('upi://', 'paytmmp://');
-        
-        window.location.href = url;
-        closeDrawer();
-    }
-
-    function closeDrawer() { document.getElementById('payment-drawer').style.display = 'none'; }
-
-    async function submit() {
-        const btn = document.getElementById('subBtn');
-        const amt = document.getElementById('amount').value;
-        if(!amt) return;
-
-        btn.disabled = true; btn.innerText = "SAVING...";
-
-        const entry = {
-            date: document.getElementById('date').value,
-            account: document.getElementById('account').value,
-            particulars: document.getElementById('particulars').value,
-            type: document.querySelector('input[name="type"]:checked').value,
-            mode: document.querySelector('input[name="mode"]:checked').value,
-            amount: amt,
-            note: document.getElementById('note').value
+            fetch(SCRIPT_URL, {
+                method: "POST",
+                mode: "no-cors",
+                headers: { "Content-Type": "text/plain" },
+                body: JSON.stringify({
+                    date: this.date.value,
+                    mode: this.mode.value,
+                    account: this.account.value,
+                    particulars: this.particulars.value,
+                    credit: this.credit.value || 0,
+                    debit: this.debit.value || 0,
+                    note: this.note.value
+                })
+            })
+            .then(() => {
+                btn.disabled = false; btn.innerText = "Log Entry";
+                showFeedback("✓ Synced", "text-emerald-400");
+                this.reset();
+                loadData(); // Refresh totals after saving
+            });
         };
 
-        // UI Optimistic Update
-        let currentTotal = parseInt(document.getElementById('total-spent').innerText.replace('₹',''));
-        if(entry.type === 'Debit') document.getElementById('total-spent').innerText = "₹" + (currentTotal + parseInt(amt));
-
-        fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify(entry) });
-        
-        // Reset form without reload
-        document.getElementById('amount').value = "";
-        document.getElementById('note').value = "";
-        btn.disabled = false; btn.innerText = "LOG TRANSACTION";
-        alert("Logged Successfully");
-    }
-</script>
+        function showFeedback(msg, cls) {
+            const sb = document.getElementById('statusBox');
+            sb.textContent = msg; sb.className = `text-center text-xs font-bold opacity-100 ${cls}`;
+            setTimeout(() => sb.classList.replace('opacity-100', 'opacity-0'), 3000);
+        }
+    </script>
 </body>
 </html>
