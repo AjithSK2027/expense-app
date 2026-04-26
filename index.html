@@ -3,14 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <title>Udees Pro — Premium Finance</title>
+    <title>Udees Pro — Smart Finance with QR & UPI</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
     <style>
-        * {
-            font-family: 'Manrope', system-ui, -apple-system, sans-serif;
-            -webkit-tap-highlight-color: transparent;
-        }
+        * { font-family: 'Manrope', system-ui, -apple-system, sans-serif; -webkit-tap-highlight-color: transparent; }
         :root {
             --color-primary-dark: #1A2A80;
             --color-primary: #3B38A0;
@@ -32,7 +30,7 @@
         }
         @media (prefers-color-scheme: dark) {
             body { background: var(--color-bg-dark); color: var(--color-text-dark); }
-            .glass-premium, .glass-card, .input-mobile, .btn-pay, .account-card {
+            .glass-premium, .glass-card, .input-mobile, .account-card, .upi-icon-btn {
                 background: rgba(10, 20, 40, 0.65);
                 backdrop-filter: blur(18px);
                 border-color: rgba(255,255,255,0.08);
@@ -41,7 +39,6 @@
             .toast { background: #1e293b; color: #e2e8f0; border-color: #475569; }
             .tab-active { background: rgba(100, 100, 200, 0.25); color: #c7d2fe; }
         }
-        /* glassmorphism enhanced */
         .glass-premium {
             background: rgba(251, 251, 251, 0.85);
             backdrop-filter: blur(20px);
@@ -82,19 +79,30 @@
             color: white;
         }
         .btn-primary:active { transform: scale(0.96); box-shadow: 0 6px 12px -6px rgba(0,0,0,0.3); }
-        .btn-pay {
-            background: rgba(59, 56, 160, 0.15);
-            border: 1px solid var(--color-secondary);
+        .upi-icon-btn {
+            background: rgba(255,255,255,0.9);
+            border-radius: 1.5rem;
+            padding: 0.8rem 0.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            border: 1px solid rgba(59,56,160,0.25);
+            transition: var(--transition-smooth);
+            flex: 1;
+            font-weight: 700;
+            font-size: 0.7rem;
+        }
+        .upi-icon-btn:active { transform: scale(0.94); background: rgba(59,56,160,0.2); }
+        .btn-secondary {
+            background: rgba(122,133,193,0.2);
             border-radius: 2rem;
-            padding: 0.9rem;
+            padding: 0.8rem;
             font-weight: 700;
             transition: var(--transition-smooth);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            justify-content: center;
+            text-align: center;
         }
-        .btn-pay:active { background: var(--color-primary); color: white; transform: scale(0.96); }
+        .btn-secondary:active { transform: scale(0.97); }
         .tab-active {
             background: linear-gradient(120deg, rgba(59,56,160,0.25), rgba(122,133,193,0.15));
             color: var(--color-primary-dark);
@@ -116,10 +124,6 @@
         .progress-bar { height: 5px; background: #e2e8f0; border-radius: 5px; overflow: hidden; margin-top: 10px; }
         .progress-fill { height: 100%; background: linear-gradient(90deg, var(--color-primary), var(--color-secondary)); width: 0%; border-radius: 5px; }
         @media (prefers-color-scheme: dark) { .account-card { background: rgba(15,25,45,0.8); border-color: #334155; } .progress-bar { background: #334155; } }
-        /* smooth tab transitions */
-        .panel-transition {
-            transition: opacity 0.2s ease, transform 0.2s ease;
-        }
         .toast {
             position: fixed;
             bottom: 30px;
@@ -142,18 +146,15 @@
             box-shadow: 0 20px 30px -12px rgba(0,0,0,0.2);
         }
         .toast.show { opacity: 1; transform: translateX(-50%) scale(1); }
-        /* UPI brand SVG icons */
-        .upi-icon { width: 22px; height: 22px; display: inline-block; vertical-align: middle; margin-right: 8px; }
-        .flex-between { display: flex; justify-content: space-between; align-items: center; }
+        .qr-reader-container { transition: all 0.2s ease; }
         .stat-number { font-weight: 800; letter-spacing: -0.02em; }
-        hr { border-color: rgba(122,133,193,0.25); }
     </style>
 </head>
 <body class="p-4 md:p-6">
 
 <div class="max-w-3xl mx-auto space-y-6">
-    <!-- Header with Udees Pro logo + tagline -->
-    <div class="flex-between">
+    <!-- Header with Udees Pro logo -->
+    <div class="flex justify-between items-center">
         <div class="flex items-center gap-3">
             <div class="w-12 h-12 rounded-2xl flex items-center justify-center shadow-xl" style="background: var(--gradient-vibrant);">
                 <svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -165,7 +166,7 @@
             </div>
             <div>
                 <h1 class="text-2xl font-extrabold tracking-tight" style="background: var(--gradient-vibrant); -webkit-background-clip: text; background-clip: text; color: transparent;">Udees Pro</h1>
-                <p class="text-[10px] font-bold text-slate-400 -mt-1">spend wisely</p>
+                <p class="text-[10px] font-bold text-slate-400 -mt-1">spend wisely · scan & pay</p>
             </div>
         </div>
         <div class="text-[11px] font-mono bg-white/70 dark:bg-slate-800/70 px-3 py-1.5 rounded-full shadow-sm border border-slate-200">
@@ -173,7 +174,7 @@
         </div>
     </div>
 
-    <!-- Stats row with higher contrast -->
+    <!-- Stats row -->
     <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
         <div class="glass-premium p-3 text-center"><div class="text-[11px] font-extrabold text-slate-500 uppercase tracking-wider">Income</div><div id="totalIncome" class="text-2xl font-black text-emerald-700 stat-number">₹0</div></div>
         <div class="glass-premium p-3 text-center"><div class="text-[11px] font-extrabold text-slate-500 uppercase tracking-wider">Expense</div><div id="totalExpense" class="text-2xl font-black text-rose-700 stat-number">₹0</div></div>
@@ -181,20 +182,20 @@
         <div class="glass-premium p-3 text-center bg-indigo-50 dark:bg-indigo-950/30"><div class="text-[11px] font-extrabold text-slate-500 uppercase">Avg Daily Spend</div><div id="avgDailySpend" class="text-xl font-black text-indigo-800 stat-number">₹0</div></div>
     </div>
 
-    <!-- Account breakdown premium cards -->
+    <!-- Account breakdown -->
     <div class="glass-card p-4">
         <h3 class="text-xs font-extrabold uppercase tracking-wider text-slate-500 flex items-center gap-2">📁 Balances by Account</h3>
         <div id="accountsGrid" class="flex flex-wrap gap-3 mt-3"></div>
     </div>
 
-    <!-- Tab bar with smooth transitions -->
+    <!-- Tab bar -->
     <div class="flex gap-2 bg-white/70 dark:bg-slate-800/50 backdrop-blur-xl rounded-2xl p-1 shadow-lg border border-slate-200 dark:border-slate-700">
         <button id="tabAddBtn" class="tab-active flex-1 py-3 rounded-xl text-sm font-extrabold transition-all duration-200">➕ Add</button>
         <button id="tabReportBtn" class="flex-1 py-3 rounded-xl text-sm font-bold text-slate-600 dark:text-slate-300 transition-all duration-200">📊 Reports</button>
     </div>
 
-    <!-- ADD ENTRY PANEL (separate credit/debit) -->
-    <div id="addPanel" class="glass-premium p-5 space-y-5 panel-transition">
+    <!-- ADD ENTRY PANEL -->
+    <div id="addPanel" class="glass-premium p-5 space-y-5">
         <form id="entryForm" class="space-y-4">
             <div class="grid grid-cols-2 gap-3">
                 <div><label class="text-[10px] font-extrabold text-slate-500 uppercase">Date</label><input type="date" id="date" class="input-mobile w-full text-sm"></div>
@@ -208,22 +209,46 @@
                 <div><label class="text-[10px] font-extrabold text-emerald-700 uppercase">Income (₹)</label><input type="number" id="creditAmount" placeholder="0" step="any" class="input-mobile w-full"></div>
                 <div><label class="text-[10px] font-extrabold text-rose-700 uppercase">Expense (₹)</label><input type="number" id="debitAmount" placeholder="0" step="any" class="input-mobile w-full"></div>
             </div>
-            <div><label class="text-[10px] font-extrabold text-slate-500 uppercase">Note</label><textarea id="note" rows="2" placeholder="Optional" class="input-mobile w-full resize-none"></textarea></div>
-            <div class="flex gap-2 items-center">
-                <select id="upiAppSelect" class="input-mobile flex-1 text-sm font-semibold">
-                    <option value="default">📱 UPI (System)</option>
-                    <option value="gpay" data-icon="gpay">💳 Google Pay</option>
-                    <option value="phonepe" data-icon="phonepe">📱 PhonePe</option>
-                    <option value="paytm" data-icon="paytm">🔵 Paytm</option>
-                </select>
-                <button type="button" id="upiPayBtn" class="btn-pay px-5 text-sm">⚡ Pay</button>
+            <div><label class="text-[10px] font-extrabold text-slate-500 uppercase">Note / Payee</label><textarea id="note" rows="2" placeholder="Optional" class="input-mobile w-full resize-none"></textarea></div>
+
+            <!-- UPI App Icons (horizontal tappable boxes) -->
+            <div>
+                <label class="text-[10px] font-extrabold text-slate-500 uppercase mb-2 block">Pay with UPI</label>
+                <div class="flex gap-3">
+                    <button type="button" onclick="openUpiApp('gpay')" class="upi-icon-btn">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M4 4H20V20H4V4Z" fill="#4285F4"/>
+                            <path d="M12 8L16 12L12 16L8 12L12 8Z" fill="white"/>
+                        </svg>
+                        <span>GPay</span>
+                    </button>
+                    <button type="button" onclick="openUpiApp('phonepe')" class="upi-icon-btn">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="12" cy="12" r="10" fill="#5F259F"/>
+                            <path d="M12 6L14 10H10L12 6Z" fill="white"/>
+                        </svg>
+                        <span>PhonePe</span>
+                    </button>
+                    <button type="button" onclick="openUpiApp('paytm')" class="upi-icon-btn">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="4" y="6" width="16" height="12" rx="2" fill="#00BAF2"/>
+                            <path d="M12 10H16V14H12V10Z" fill="white"/>
+                        </svg>
+                        <span>Paytm</span>
+                    </button>
+                </div>
             </div>
+
+            <!-- QR Scan Button -->
+            <button type="button" id="scanQrBtn" class="btn-secondary w-full flex items-center justify-center gap-2">📷 Scan QR Code (UPI)</button>
+            <div id="qr-reader" class="qr-reader-container hidden mt-2 rounded-xl overflow-hidden border border-slate-300"></div>
+
             <button type="submit" class="btn-primary w-full text-base">➕ Add Transaction</button>
         </form>
     </div>
 
-    <!-- MONTHLY REPORT PANEL (with category column) -->
-    <div id="reportPanel" class="glass-premium p-5 hidden space-y-4 panel-transition">
+    <!-- MONTHLY REPORT PANEL -->
+    <div id="reportPanel" class="glass-premium p-5 hidden space-y-4">
         <div class="grid grid-cols-2 gap-3">
             <div><label class="text-[10px] font-extrabold uppercase">📅 Month</label><input type="month" id="reportMonth" class="input-mobile w-full"></div>
             <div><label class="text-[10px] font-extrabold uppercase">🏦 Account</label><select id="filterAccount" class="input-mobile w-full"><option value="all">All</option></select></div>
@@ -251,12 +276,13 @@
     const UPI_ID = "ajith@upi";
     let masterConfig = {};
     let allEntries = [];
+    let html5QrCode = null;
 
     const formatINR = (val) => new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(val || 0);
     const formatDateDMY = (d) => { if(!d) return '—'; let x=new Date(d); return `${x.getDate()}-${x.getMonth()+1}-${x.getFullYear()}`; };
     function showToast(msg) { let t=document.getElementById('toastMsg'); t.innerHTML=`✓ ${msg}`; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2500); }
 
-    // Cache & background sync
+    // Cache & background sync (unchanged)
     function saveCache() { localStorage.setItem('udees_entries',JSON.stringify(allEntries)); localStorage.setItem('udees_config',JSON.stringify(masterConfig)); }
     function loadCache() { let e=localStorage.getItem('udees_entries'), c=localStorage.getItem('udees_config'); if(e) allEntries=JSON.parse(e); if(c) masterConfig=JSON.parse(c); return !!e; }
     async function backgroundSync() {
@@ -280,7 +306,7 @@
         showToast("Transaction saved & synced");
     }
 
-    // UI renders with higher contrast & bolder stats
+    // UI rendering functions
     function computeTotals() { let inc=0,exp=0; allEntries.forEach(e=>{inc+=e.credit||0; exp+=e.debit||0;}); return {inc,exp,balance:inc-exp}; }
     function avgDailySpend() { if(!allEntries.length) return 0; let totalExp=0, days=new Set(); allEntries.forEach(e=>{totalExp+=e.debit||0; if(e.date) days.add(e.date);}); return totalExp/(days.size||1); }
     function renderAccountBreaks() {
@@ -371,21 +397,73 @@
         document.getElementById('date').valueAsDate=new Date();
     });
 
-    // UPI payment with app deep link
-    function triggerUpi() {
+    // UPI App Icons: open respective app
+    window.openUpiApp = function(app) {
         let amount = parseFloat(document.getElementById('debitAmount').value) || parseFloat(document.getElementById('creditAmount').value);
-        if(!amount||amount<=0) { alert("Enter amount in Income/Expense field"); return; }
+        if(!amount || amount<=0) { alert("Enter amount in Income or Expense field first"); return; }
         let note = document.getElementById('note').value || "Udees Pro";
-        let app = document.getElementById('upiAppSelect').value;
         let upiUrl = `upi://pay?pa=${UPI_ID}&pn=Udees%20Pro&am=${amount}&tn=${encodeURIComponent(note)}&cu=INR`;
-        if(app==='gpay') upiUrl += '&pkg=com.google.android.apps.nbu.pay';
-        if(app==='phonepe') upiUrl += '&pkg=com.phonepe.app';
-        if(app==='paytm') upiUrl += '&pkg=net.one97.paytm';
+        if(app === 'gpay') upiUrl += '&pkg=com.google.android.apps.nbu.pay';
+        if(app === 'phonepe') upiUrl += '&pkg=com.phonepe.app';
+        if(app === 'paytm') upiUrl += '&pkg=net.one97.paytm';
         window.location.href = upiUrl;
-    }
-    document.getElementById('upiPayBtn').addEventListener('click', triggerUpi);
+    };
 
-    // Tab switching with smoother transitions
+    // QR Code Scanning
+    const qrReaderDiv = document.getElementById('qr-reader');
+    let isScanning = false;
+
+    document.getElementById('scanQrBtn').onclick = async () => {
+        if (isScanning) {
+            if (html5QrCode) await html5QrCode.stop();
+            qrReaderDiv.classList.add('hidden');
+            isScanning = false;
+            return;
+        }
+        qrReaderDiv.classList.remove('hidden');
+        html5QrCode = new Html5Qrcode("qr-reader");
+        try {
+            await html5QrCode.start(
+                { facingMode: "environment" },
+                { fps: 10, qrbox: 250 },
+                (decodedText) => {
+                    // Stop scanner after successful read
+                    html5QrCode.stop();
+                    qrReaderDiv.classList.add('hidden');
+                    isScanning = false;
+                    parseUpiQr(decodedText);
+                },
+                (error) => { /* ignore errors, just keep scanning */ }
+            );
+            isScanning = true;
+        } catch (err) {
+            console.error("Camera error", err);
+            alert("Could not start camera. Please ensure HTTPS and grant permission.");
+            qrReaderDiv.classList.add('hidden');
+        }
+    };
+
+    function parseUpiQr(qrString) {
+        // Example: upi://pay?pa=merchant@okhdfcbank&pn=Bookstore&am=299.00&cu=INR
+        try {
+            let url = new URL(qrString);
+            if (url.protocol === 'upi:') {
+                let params = new URLSearchParams(url.search);
+                let payee = params.get('pa');
+                let amount = params.get('am');
+                let name = params.get('pn');
+                if (amount) document.getElementById('debitAmount').value = parseFloat(amount);
+                if (payee) document.getElementById('note').value = `Pay to: ${payee} ${name ? '('+name+')' : ''}`;
+                showToast("QR scanned: amount & payee filled");
+            } else {
+                alert("Not a valid UPI QR code");
+            }
+        } catch(e) {
+            alert("Invalid QR data");
+        }
+    }
+
+    // Tab switching
     const addPanel = document.getElementById('addPanel');
     const reportPanel = document.getElementById('reportPanel');
     const tabAdd = document.getElementById('tabAddBtn');
@@ -395,6 +473,7 @@
         reportPanel.classList.add('hidden');
         tabAdd.classList.add('tab-active');
         tabReport.classList.remove('tab-active');
+        if (isScanning && html5QrCode) { html5QrCode.stop(); qrReaderDiv.classList.add('hidden'); isScanning=false; }
     };
     tabReport.onclick = () => {
         addPanel.classList.add('hidden');
