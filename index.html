@@ -2,677 +2,295 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Udees Pro — Smart Expense Tracker</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        * {
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
-            -webkit-tap-highlight-color: transparent;
-            box-sizing: border-box;
-        }
-        body {
-            background: #FFFFFF;
-            color: #1e293b;
-            transition: background 0.2s, color 0.2s;
-            padding: 1rem;
-            margin: 0;
-        }
+        * { font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
+        body { background: #FFFFFF; color: #1e293b; padding: 0.75rem; margin: 0; width: 100%; overflow-x: hidden; }
         @media (prefers-color-scheme: dark) {
-            body {
-                background: #0f172a;
-                color: #f1f5f9;
-            }
-            .card, .glass-premium, .input-mobile, .btn-outline, .account-card, .stat-card {
-                background: #1e293b;
-                border-color: #334155;
-            }
-            .input-mobile {
-                background: #0f172a;
-                color: #f1f5f9;
-            }
-            .btn-primary {
-                background: #0d9488;
-            }
-            .toast {
-                background: #1e293b;
-                color: white;
-                border-color: #0d9488;
-            }
+            body { background: #0f172a; color: #f1f5f9; }
+            .card, .stat-card, .input-mobile, .btn-outline, .account-card { background: #1e293b; border-color: #334155; }
+            .input-mobile { background: #0f172a; color: #f1f5f9; }
         }
-        /* Base card styles with safe padding */
-        .card, .glass-premium {
-            background: #ffffff;
-            border-radius: 1.5rem;
-            border: 1px solid #e2e8f0;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03), 0 1px 2px rgba(0, 0, 0, 0.05);
-            padding: 1.25rem;
-        }
-        .stat-card {
-            background: #f8fafc;
-            border-radius: 1.25rem;
-            padding: 0.75rem;
-            text-align: center;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
-            transition: transform 0.1s;
-        }
-        .stat-card:active, .account-card:active, .btn-primary:active, .btn-outline:active, button:active {
-            transform: scale(0.97);
-        }
-        .input-mobile {
-            background: #ffffff;
-            border: 1px solid #cbd5e1;
-            border-radius: 1rem;
-            padding: 0.75rem 1rem;
-            width: 100%;
-            font-size: 0.95rem;
-            transition: all 0.15s;
-        }
-        .input-mobile:focus {
-            outline: none;
-            border-color: #0d9488;
-            box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.15);
-            transform: scale(0.99);
-        }
-        .btn-primary {
-            background: #0d9488;
-            color: white;
-            border-radius: 1rem;
-            padding: 0.85rem;
-            font-weight: 700;
-            width: 100%;
-            border: none;
-            box-shadow: 0 2px 6px rgba(13, 148, 136, 0.2);
-            transition: all 0.15s;
-        }
-        .btn-outline {
-            background: transparent;
-            border: 1px solid #cbd5e1;
-            border-radius: 1rem;
-            padding: 0.75rem;
-            font-weight: 600;
-            transition: all 0.15s;
-        }
-        .tab-active {
-            background: #0d9488;
-            color: white;
-            box-shadow: 0 2px 6px rgba(13,148,136,0.3);
-        }
-        .tab-inactive {
-            background: transparent;
-            color: #475569;
-        }
-        .account-card {
-            background: #f8fafc;
-            border-radius: 1rem;
-            padding: 0.75rem;
-            border: 1px solid #e2e8f0;
-            flex: 1 1 150px;
-            min-width: 130px;
-        }
-        .progress-bar {
-            height: 4px;
-            background: #e2e8f0;
-            border-radius: 4px;
-            overflow: hidden;
-            margin-top: 8px;
-        }
-        .progress-fill {
-            height: 100%;
-            background: #0d9488;
-            width: 0%;
-            border-radius: 4px;
-        }
-        .toast {
-            position: fixed;
-            bottom: 24px;
-            left: 50%;
-            transform: translateX(-50%) scale(0.95);
-            background: white;
-            padding: 12px 20px;
-            border-radius: 40px;
-            font-weight: 600;
-            z-index: 1000;
-            transition: all 0.2s;
-            opacity: 0;
-            pointer-events: none;
-            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1);
-            border: 1px solid #e2e8f0;
-        }
-        .toast.show {
-            opacity: 1;
-            transform: translateX(-50%) scale(1);
-        }
-        .location-link, .receipt-link {
-            font-size: 0.75rem;
-            color: #0d9488;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-        }
-        .modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.8);
-            backdrop-filter: blur(8px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 2000;
-            opacity: 0;
-            pointer-events: none;
-            transition: 0.2s;
-        }
-        .modal.show {
-            opacity: 1;
-            pointer-events: auto;
-        }
-        .modal-content {
-            max-width: 90%;
-            max-height: 80%;
-            border-radius: 1.5rem;
-            overflow: hidden;
-            box-shadow: 0 25px 50px -12px black;
-        }
-        /* FIX: Prevent overflow in forms and report filters */
-        .grid {
-            gap: 0.75rem;
-        }
-        /* On small screens, make report filters stack vertically */
-        @media (max-width: 560px) {
-            .report-filters {
-                grid-template-columns: 1fr !important;
-            }
-            .report-filters > div {
-                width: 100%;
-            }
-            body {
-                padding: 0.75rem;
-            }
-            .card, .glass-premium {
-                padding: 1rem;
-            }
-            .input-mobile, select {
-                font-size: 14px;
-                padding: 0.6rem 0.8rem;
-            }
-        }
-        /* Ensure tables can scroll horizontally */
-        .overflow-x-auto {
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-        }
-        table {
-            min-width: 500px;
-        }
+        .card { background: #ffffff; border-radius: 1.25rem; border: 1px solid #e2e8f0; padding: 1rem; box-shadow: 0 4px 12px rgba(0,0,0,0.03); }
+        .stat-card { background: #f8fafc; border-radius: 1rem; padding: 0.5rem; text-align: center; border: 1px solid #e2e8f0; }
+        .input-mobile { border: 1px solid #cbd5e1; border-radius: 0.75rem; padding: 0.65rem; width: 100%; font-size: 16px; transition: 0.2s; appearance: none; }
+        .input-mobile:focus { border-color: #0d9488; outline: none; box-shadow: 0 0 0 3px rgba(13,148,136,0.1); }
+        .btn-primary { background: #0d9488; color: white; border-radius: 0.75rem; padding: 0.85rem; font-weight: 700; width: 100%; border: none; }
+        .btn-outline { border: 1px solid #cbd5e1; border-radius: 0.75rem; padding: 0.65rem; font-weight: 600; width: 100%; }
+        .tab-active { background: #0d9488; color: white; }
+        .tab-inactive { color: #475569; }
+        .account-card { border-radius: 0.75rem; padding: 0.75rem; border: 1px solid #e2e8f0; flex: 1 1 calc(50% - 0.5rem); min-width: 0; }
+        .progress-bar { height: 4px; background: #e2e8f0; border-radius: 4px; margin-top: 8px; overflow: hidden; }
+        .progress-fill { height: 100%; background: #0d9488; width: 0%; }
+        .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) scale(0.9); background: #1e293b; color: white; padding: 10px 20px; border-radius: 20px; opacity: 0; transition: 0.3s; pointer-events: none; z-index: 1000; width: 90%; max-width: 300px; text-align: center; }
+        .toast.show { opacity: 1; transform: translateX(-50%) scale(1); }
+        .overflow-x-auto { margin: 0 -0.25rem; width: calc(100% + 0.5rem); }
+        table { font-size: 0.7rem; min-width: 450px; }
+        .modal { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); display:none; align-items:center; justify-content:center; z-index:2000; }
     </style>
 </head>
 <body>
 
 <div class="max-w-2xl mx-auto space-y-4">
-    <!-- Header -->
-    <div class="flex justify-between items-center">
+    <div class="flex justify-between items-center px-1">
         <div>
-            <h1 class="text-2xl font-bold text-slate-800 dark:text-white">Udees Pro</h1>
-            <p class="text-xs text-slate-500 dark:text-slate-400">spend · save · voice · receipts</p>
+            <h1 class="text-xl font-bold dark:text-white">Udees Pro</h1>
+            <p class="text-[10px] text-slate-500">spend · save · voice · receipts</p>
         </div>
-        <div class="text-[11px] font-mono bg-slate-100 dark:bg-slate-800 px-3 py-1 rounded-full">
-            <span class="text-emerald-600 dark:text-emerald-400">●</span> live
+        <div class="text-[10px] font-mono bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded-full">● live</div>
+    </div>
+
+    <div class="grid grid-cols-2 gap-2">
+        <div class="stat-card">
+            <div class="text-[9px] font-bold text-slate-500">INCOME</div>
+            <div id="totalIncome" class="text-base font-bold text-emerald-600 truncate">₹0</div>
+        </div>
+        <div class="stat-card">
+            <div class="text-[9px] font-bold text-slate-500">EXPENSE</div>
+            <div id="totalExpense" class="text-base font-bold text-rose-600 truncate">₹0</div>
+        </div>
+        <div class="stat-card">
+            <div class="text-[9px] font-bold text-slate-500">NET</div>
+            <div id="netBalance" class="text-base font-bold dark:text-white truncate">₹0</div>
+        </div>
+        <div class="stat-card">
+            <div class="text-[9px] font-bold text-slate-500">AVG DAILY</div>
+            <div id="avgDailySpend" class="text-base font-bold text-teal-600 truncate">₹0</div>
         </div>
     </div>
 
-    <!-- Stats Grid -->
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-        <div class="stat-card"><div class="text-[11px] font-semibold text-slate-500">INCOME</div><div id="totalIncome" class="text-xl font-bold text-emerald-600">₹0</div></div>
-        <div class="stat-card"><div class="text-[11px] font-semibold text-slate-500">EXPENSE</div><div id="totalExpense" class="text-xl font-bold text-rose-600">₹0</div></div>
-        <div class="stat-card"><div class="text-[11px] font-semibold text-slate-500">NET</div><div id="netBalance" class="text-xl font-bold text-slate-800 dark:text-white">₹0</div></div>
-        <div class="stat-card"><div class="text-[11px] font-semibold text-slate-500">AVG DAILY</div><div id="avgDailySpend" class="text-lg font-bold text-teal-600">₹0</div></div>
-    </div>
-
-    <!-- Accounts Summary -->
     <div class="card">
-        <h3 class="text-xs font-semibold uppercase text-slate-500">Balances by Account</h3>
-        <div id="accountsGrid" class="flex flex-wrap gap-2 mt-2"></div>
+        <h3 class="text-[10px] font-bold uppercase text-slate-500 mb-2">Balances by Account</h3>
+        <div id="accountsGrid" class="flex flex-wrap gap-2"></div>
     </div>
 
-    <!-- Tab Bar -->
-    <div class="flex gap-2 bg-slate-100 dark:bg-slate-800/50 p-1 rounded-xl">
-        <button id="tabAddBtn" class="tab-active flex-1 py-2.5 rounded-lg text-sm font-bold transition-all">➕ Add</button>
-        <button id="tabReportBtn" class="tab-inactive flex-1 py-2.5 rounded-lg text-sm font-semibold transition-all">📊 Reports</button>
+    <div class="flex gap-1 bg-slate-100 dark:bg-slate-800/50 p-1 rounded-xl">
+        <button id="tabAddBtn" class="tab-active flex-1 py-2 rounded-lg text-xs font-bold">➕ Add</button>
+        <button id="tabReportBtn" class="tab-inactive flex-1 py-2 rounded-lg text-xs font-bold">📊 Reports</button>
     </div>
 
-    <!-- ADD ENTRY PANEL (fixed layout, no overflow) -->
-    <div id="addPanel" class="card space-y-4">
+    <div id="addPanel" class="card space-y-3">
         <form id="entryForm" class="space-y-3">
-            <!-- Row 1: Date + Mode -->
-            <div class="grid grid-cols-2 gap-3">
-                <div><label class="text-[10px] font-semibold text-slate-500">DATE</label><input type="date" id="date" class="input-mobile"></div>
-                <div><label class="text-[10px] font-semibold text-slate-500">MODE</label><select id="mode" class="input-mobile"><option value="UPI">UPI</option><option value="CASH">CASH</option><option value="BANK">BANK</option></select></div>
+            <div class="grid grid-cols-2 gap-2">
+                <div><label class="text-[10px] font-bold text-slate-500">DATE</label><input type="date" id="date" class="input-mobile"></div>
+                <div><label class="text-[10px] font-bold text-slate-500">MODE</label><select id="mode" class="input-mobile"><option value="UPI">UPI</option><option value="CASH">CASH</option><option value="BANK">BANK</option></select></div>
             </div>
-            <!-- Row 2: Account + Category -->
-            <div class="grid grid-cols-2 gap-3">
-                <div><label class="text-[10px] font-semibold text-slate-500">ACCOUNT</label><select id="account" required class="input-mobile"></select></div>
-                <div><label class="text-[10px] font-semibold text-slate-500">CATEGORY</label><select id="particulars" required class="input-mobile"></select></div>
+            <div class="grid grid-cols-2 gap-2">
+                <div><label class="text-[10px] font-bold text-slate-500">ACCOUNT</label><select id="account" required class="input-mobile"></select></div>
+                <div><label class="text-[10px] font-bold text-slate-500">CATEGORY</label><select id="particulars" required class="input-mobile"></select></div>
             </div>
-            <!-- Row 3: Income + Expense -->
-            <div class="grid grid-cols-2 gap-3">
-                <div><label class="text-[10px] font-semibold text-emerald-600">INCOME (₹)</label><input type="number" id="creditAmount" placeholder="0" step="any" class="input-mobile"></div>
-                <div><label class="text-[10px] font-semibold text-rose-600">EXPENSE (₹)</label><input type="number" id="debitAmount" placeholder="0" step="any" class="input-mobile"></div>
+            <div class="grid grid-cols-2 gap-2">
+                <div><label class="text-[10px] font-bold text-emerald-600">INCOME (₹)</label><input type="number" id="creditAmount" placeholder="0" class="input-mobile"></div>
+                <div><label class="text-[10px] font-bold text-rose-600">EXPENSE (₹)</label><input type="number" id="debitAmount" placeholder="0" class="input-mobile"></div>
             </div>
-            <!-- Note + Voice -->
             <div>
-                <label class="text-[10px] font-semibold text-slate-500">NOTE / PAYEE</label>
+                <label class="text-[10px] font-bold text-slate-500">NOTE / PAYEE</label>
                 <div class="flex gap-2">
-                    <textarea id="note" rows="2" placeholder="Optional" class="input-mobile resize-none flex-1"></textarea>
-                    <button type="button" id="voiceBtn" class="btn-outline w-auto px-4 text-xl">🎤</button>
+                    <textarea id="note" rows="2" placeholder="Optional..." class="input-mobile flex-1 resize-none"></textarea>
+                    <button type="button" id="voiceBtn" class="btn-outline w-12 text-lg">🎤</button>
                 </div>
             </div>
-            <!-- Receipt & Location -->
-            <button type="button" id="attachReceiptBtn" class="btn-outline w-full flex items-center justify-center gap-2">📎 Attach Receipt</button>
+            <div class="grid grid-cols-2 gap-2">
+                <button type="button" id="attachReceiptBtn" class="btn-outline text-[11px]">📎 Receipt</button>
+                <button type="button" id="locateBtn" class="btn-outline text-[11px]">📍 Location</button>
+            </div>
             <input type="file" id="receiptInput" accept="image/*" capture="environment" class="hidden">
-            <div id="receiptPreview" class="text-xs text-slate-500 text-center hidden"></div>
-
-            <button type="button" id="locateBtn" class="btn-outline w-full flex items-center justify-center gap-2">📍 Add Current Location</button>
-            <input type="hidden" id="latitude" value="">
-            <input type="hidden" id="longitude" value="">
-            <div id="locationStatus" class="text-xs text-slate-400 text-center hidden"></div>
-
-            <button type="submit" class="btn-primary mt-2">➕ Add Transaction</button>
+            <div id="receiptPreview" class="text-[10px] text-slate-500 text-center hidden"></div>
+            <div id="locationStatus" class="text-[10px] text-slate-400 text-center hidden"></div>
+            
+            <input type="hidden" id="latitude" value=""><input type="hidden" id="longitude" value="">
+            <button type="submit" class="btn-primary mt-1">Add Transaction</button>
         </form>
     </div>
 
-    <!-- REPORT PANEL (fixed responsive filters) -->
-    <div id="reportPanel" class="card hidden space-y-4">
-        <!-- Report filters: stack on narrow screens -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 report-filters">
-            <div><label class="text-[10px] font-semibold text-slate-500">MONTH</label><input type="month" id="reportMonth" class="input-mobile"></div>
-            <div><label class="text-[10px] font-semibold text-slate-500">ACCOUNT</label><select id="filterAccount" class="input-mobile"></select></div>
-            <div><label class="text-[10px] font-semibold text-slate-500">CATEGORY</label><select id="filterCategory" class="input-mobile"></select></div>
-            <div class="flex items-end"><button id="applyReportBtn" class="btn-primary py-2">Apply</button></div>
+    <div id="reportPanel" class="card hidden space-y-3">
+        <div class="grid grid-cols-2 gap-2">
+            <div><label class="text-[10px] font-bold text-slate-500">MONTH</label><input type="month" id="reportMonth" class="input-mobile"></div>
+            <div><label class="text-[10px] font-bold text-slate-500">ACCOUNT</label><select id="filterAccount" class="input-mobile"></select></div>
         </div>
-        <!-- Summary cards -->
-        <div class="grid grid-cols-2 gap-3">
-            <div class="card p-3 text-center"><span class="text-xs text-slate-500">Income</span><br><span id="reportIncome" class="text-xl font-bold text-emerald-600">₹0</span></div>
-            <div class="card p-3 text-center"><span class="text-xs text-slate-500">Expense</span><br><span id="reportExpense" class="text-xl font-bold text-rose-600">₹0</span></div>
+        <div class="grid grid-cols-2 gap-2">
+            <div><label class="text-[10px] font-bold text-slate-500">CATEGORY</label><select id="filterCategory" class="input-mobile"></select></div>
+            <div class="flex items-end"><button id="applyReportBtn" class="btn-primary py-2 text-xs">Apply</button></div>
         </div>
-        <!-- Report table -->
-        <div class="overflow-x-auto max-h-80 overflow-y-auto">
-            <table class="w-full text-sm">
-                <thead class="text-slate-500 border-b border-slate-200 dark:border-slate-700"><tr><th class="py-2 text-left">Date</th><th class="text-left">Account</th><th class="text-left">Category</th><th class="text-right">Amount</th><th class="text-center">📍</th><th class="text-center">📸</th></tr></thead>
+        <div class="grid grid-cols-2 gap-2">
+            <div class="card p-2 text-center"><span class="text-[9px] text-slate-500">Income</span><br><span id="reportIncome" class="text-base font-bold text-emerald-600">₹0</span></div>
+            <div class="card p-2 text-center"><span class="text-[9px] text-slate-500">Expense</span><br><span id="reportExpense" class="text-base font-bold text-rose-600">₹0</span></div>
+        </div>
+        <div class="overflow-x-auto rounded-lg border dark:border-slate-800">
+            <table class="w-full">
+                <thead class="bg-slate-50 dark:bg-slate-900">
+                    <tr><th class="p-2 text-left">Date</th><th class="p-2 text-left">Cat</th><th class="p-2 text-right">Amt</th><th class="p-2 text-center">📍</th><th class="p-2 text-center">📸</th></tr>
+                </thead>
                 <tbody id="reportTableBody"></tbody>
             </table>
         </div>
     </div>
 </div>
 
-<!-- Receipt Modal -->
-<div id="receiptModal" class="modal">
-    <div class="modal-content">
-        <img id="modalImage" src="" alt="Receipt">
-    </div>
-</div>
-
+<div id="receiptModal" class="modal" onclick="this.style.display='none'"><img id="modalImage" class="max-w-[90%] max-height-[80%] rounded-xl shadow-2xl"></div>
 <div id="toastMsg" class="toast">✓ Done</div>
 
 <script>
-    // ==================== CONFIGURATION ====================
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyKaGhWnNqF22Wgn6ILokGj5sROF-Pqk4h-grULLvop6rhWEe4cZ_WxrfNY4qy_yhCq/exec"; // REPLACE WITH YOUR WEB APP URL
-    let masterConfig = {};
-    let allEntries = [];
-    let currentReceiptBase64 = "";
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyKaGhWnNqF22Wgn6ILokGj5sROF-Pqk4h-grULLvop6rhWEe4cZ_WxrfNY4qy_yhCq/exec"; 
+    let masterConfig = {}; let allEntries = []; let currentReceiptBase64 = "";
 
     const formatINR = (val) => new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(val || 0);
-    function formatDateDisplay(dateStr) {
-        if (!dateStr) return '—';
-        let d = new Date(dateStr);
-        return d.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
-    }
+    const formatDate = (d) => new Date(d).toLocaleDateString('en-IN', { day: '2-digit', month: 'short' });
+
     function showToast(msg) {
-        const toast = document.getElementById('toastMsg');
-        toast.innerHTML = `✓ ${msg}`;
-        toast.classList.add('show');
-        setTimeout(() => toast.classList.remove('show'), 2500);
+        const t = document.getElementById('toastMsg'); t.innerText = `✓ ${msg}`; t.classList.add('show');
+        setTimeout(() => t.classList.remove('show'), 2500);
     }
 
-    // Cache & sync
-    function saveCache() {
-        localStorage.setItem('udees_entries', JSON.stringify(allEntries));
-        localStorage.setItem('udees_config', JSON.stringify(masterConfig));
-    }
-    function loadCache() {
-        const e = localStorage.getItem('udees_entries');
-        const c = localStorage.getItem('udees_config');
-        if (e) allEntries = JSON.parse(e);
-        if (c) masterConfig = JSON.parse(c);
-        return !!e;
-    }
     async function backgroundSync() {
         try {
-            const [entriesRes, settingsRes] = await Promise.all([
-                fetch(`${SCRIPT_URL}?action=getEntries`).then(r => r.json()).catch(() => []),
-                fetch(`${SCRIPT_URL}?action=getSettings`).then(r => r.json()).catch(() => ({}))
+            const [entries, settings] = await Promise.all([
+                fetch(`${SCRIPT_URL}?action=getEntries`).then(r => r.json()),
+                fetch(`${SCRIPT_URL}?action=getSettings`).then(r => r.json())
             ]);
-            let remoteEntries = Array.isArray(entriesRes) ? entriesRes : [];
-            const remoteConfig = settingsRes.config || {};
-            const map = new Map();
-            allEntries.forEach(e => { if (e.id) map.set(e.id, e); });
-            remoteEntries.forEach(r => { if (r.id) map.set(r.id, { ...r, receipt: r.receipt || "" }); });
-            allEntries = Array.from(map.values()).sort((a,b) => new Date(b.date) - new Date(a.date));
-            masterConfig = remoteConfig;
-            saveCache();
+            allEntries = entries.sort((a,b) => new Date(b.date) - new Date(a.date));
+            masterConfig = settings.config;
             renderAllUI();
-        } catch (err) { console.warn(err); }
-    }
-    async function addEntryLocal(entry) {
-        const tempId = 'local_' + Date.now() + '_' + Math.random();
-        allEntries.unshift({ ...entry, id: tempId });
-        saveCache();
-        renderAllUI();
-        fetch(SCRIPT_URL, {
-            method: "POST",
-            mode: "no-cors",
-            headers: { "Content-Type": "text/plain" },
-            body: JSON.stringify(entry)
-        }).catch(() => {});
-        setTimeout(() => backgroundSync(), 1500);
-        showToast("Transaction saved & synced");
+        } catch (e) { console.warn("Sync failed, using offline data"); }
     }
 
-    // UI rendering
-    function computeTotals() {
-        let inc = 0, exp = 0;
-        allEntries.forEach(e => { inc += e.credit || 0; exp += e.debit || 0; });
-        return { inc, exp, balance: inc - exp };
-    }
-    function avgDailySpend() {
-        if (!allEntries.length) return 0;
-        let totalExp = 0, days = new Set();
-        allEntries.forEach(e => { totalExp += e.debit || 0; if (e.date) days.add(e.date); });
-        return totalExp / (days.size || 1);
-    }
-    function renderAccountBreaks() {
-        const map = new Map();
-        allEntries.forEach(e => {
-            if (!e.account) return;
-            if (!map.has(e.account)) map.set(e.account, { inc: 0, exp: 0 });
-            const d = map.get(e.account);
-            d.inc += e.credit || 0;
-            d.exp += e.debit || 0;
-        });
-        const container = document.getElementById('accountsGrid');
-        if (!map.size) { container.innerHTML = '<div class="text-xs text-slate-400">No accounts yet</div>'; return; }
-        const totalExpAll = Array.from(map.values()).reduce((sum, v) => sum + v.exp, 0);
-        let html = '';
-        for (let [acc, val] of map.entries()) {
-            const percent = totalExpAll > 0 ? (val.exp / totalExpAll) * 100 : 0;
-            html += `
-                <div class="account-card">
-                    <div class="flex justify-between items-center">
-                        <span class="font-bold text-sm">${acc}</span>
-                        <div class="text-right text-xs">
-                            <div class="text-emerald-600">+${formatINR(val.inc)}</div>
-                            <div class="text-rose-600">-${formatINR(val.exp)}</div>
-                        </div>
-                    </div>
-                    <div class="progress-bar"><div class="progress-fill" style="width: ${percent}%"></div></div>
-                </div>
-            `;
-        }
-        container.innerHTML = html;
-    }
-    function populateDropdowns() {
-        const accounts = Object.keys(masterConfig);
-        const accSel = document.getElementById('account');
-        const filterAcc = document.getElementById('filterAccount');
-        if (accounts.length) {
-            accSel.innerHTML = '<option value="" disabled selected>Select account</option>' + accounts.map(a => `<option value="${a}">${a}</option>`).join('');
-            filterAcc.innerHTML = '<option value="all">All Accounts</option>' + accounts.map(a => `<option value="${a}">${a}</option>`).join('');
-        } else {
-            accSel.innerHTML = '<option>No accounts</option>';
-            filterAcc.innerHTML = '<option value="all">All</option>';
-        }
-        updateParticulars();
-    }
-    function updateParticulars() {
-        const acc = document.getElementById('account').value;
-        const partSel = document.getElementById('particulars');
-        if (acc && masterConfig[acc]) {
-            partSel.innerHTML = '<option value="" disabled selected>Select category</option>' + masterConfig[acc].map(p => `<option value="${p}">${p}</option>`).join('');
-        } else {
-            partSel.innerHTML = '<option value="">Choose account first</option>';
-        }
-    }
     function renderAllUI() {
-        const { inc, exp, balance } = computeTotals();
-        document.getElementById('totalIncome').innerHTML = formatINR(inc);
-        document.getElementById('totalExpense').innerHTML = formatINR(exp);
-        document.getElementById('netBalance').innerHTML = formatINR(balance);
-        document.getElementById('avgDailySpend').innerHTML = formatINR(avgDailySpend());
-        renderAccountBreaks();
-        populateDropdowns();
-        if (!document.getElementById('reportPanel').classList.contains('hidden')) applyReportFilters();
-    }
-
-    // Report filters
-    function updateFilterCategories() {
-        const fAcc = document.getElementById('filterAccount').value;
-        const catSel = document.getElementById('filterCategory');
-        if (fAcc === 'all') {
-            const allCats = new Set();
-            allEntries.forEach(e => { if (e.particulars) allCats.add(e.particulars); });
-            catSel.innerHTML = '<option value="all">All Categories</option>' + Array.from(allCats).map(c => `<option value="${c}">${c}</option>`).join('');
-        } else {
-            const cats = masterConfig[fAcc] || [];
-            catSel.innerHTML = '<option value="all">All Categories</option>' + cats.map(c => `<option value="${c}">${c}</option>`).join('');
-        }
-    }
-    function applyReportFilters() {
-        const monthVal = document.getElementById('reportMonth').value;
-        if (!monthVal) return;
-        const [year, month] = monthVal.split('-');
-        const accFilter = document.getElementById('filterAccount').value;
-        const catFilter = document.getElementById('filterCategory').value;
-        const filtered = allEntries.filter(e => {
-            if (!e.date) return false;
-            const d = new Date(e.date);
-            if (d.getFullYear() != year || (d.getMonth()+1) != parseInt(month)) return false;
-            if (accFilter !== 'all' && e.account !== accFilter) return false;
-            if (catFilter !== 'all' && e.particulars !== catFilter) return false;
-            return true;
+        let inc = 0, exp = 0, accMap = new Map();
+        allEntries.forEach(e => {
+            inc += e.credit || 0; exp += e.debit || 0;
+            if (e.account) {
+                if (!accMap.has(e.account)) accMap.set(e.account, { inc: 0, exp: 0 });
+                accMap.get(e.account).inc += e.credit || 0; accMap.get(e.account).exp += e.debit || 0;
+            }
         });
-        let incSum = 0, expSum = 0;
-        filtered.forEach(e => { incSum += e.credit || 0; expSum += e.debit || 0; });
-        document.getElementById('reportIncome').innerHTML = formatINR(incSum);
-        document.getElementById('reportExpense').innerHTML = formatINR(expSum);
-        const tbody = document.getElementById('reportTableBody');
-        if (!filtered.length) {
-            tbody.innerHTML = '<tr><td colspan="6" class="text-center py-5 text-slate-400">No entries</td></tr>';
-            return;
-        }
-        tbody.innerHTML = filtered.map(e => {
-            const amount = (e.credit || 0) > 0 ? e.credit : e.debit;
-            const cls = (e.credit || 0) > 0 ? 'text-emerald-600' : 'text-rose-600';
-            let locationHtml = '';
-            if (e.lat && e.lng) {
-                locationHtml = `<a href="https://maps.google.com/?q=${e.lat},${e.lng}" target="_blank" class="location-link" title="View on map">📍</a>`;
-            } else {
-                locationHtml = '<span class="text-slate-300">—</span>';
-            }
-            let receiptHtml = '';
-            if (e.receipt && e.receipt.length > 50) {
-                receiptHtml = `<button class="receipt-link" onclick="showReceipt('${e.receipt}')">📸</button>`;
-            } else {
-                receiptHtml = '<span class="text-slate-300">—</span>';
-            }
-            return `<tr class="border-b border-slate-100"><td class="py-2 text-xs">${formatDateDisplay(e.date)}</td><td class="py-2">${e.account}</td><td class="py-2">${e.particulars}</td><td class="py-2 text-right font-semibold ${cls}">${formatINR(amount)}</td><td class="py-2 text-center">${locationHtml}</td><td class="py-2 text-center">${receiptHtml}</td></tr>`;
-        }).join('');
+
+        document.getElementById('totalIncome').innerText = formatINR(inc);
+        document.getElementById('totalExpense').innerText = formatINR(exp);
+        document.getElementById('netBalance').innerText = formatINR(inc - exp);
+        
+        let html = '';
+        accMap.forEach((v, k) => {
+            const pct = exp > 0 ? (v.exp / exp) * 100 : 0;
+            html += `<div class="account-card"><div class="flex justify-between text-[10px] font-bold"><span>${k}</span><span class="text-rose-500">-${formatINR(v.exp)}</span></div><div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div></div>`;
+        });
+        document.getElementById('accountsGrid').innerHTML = html;
+
+        const accounts = Object.keys(masterConfig);
+        document.getElementById('account').innerHTML = '<option value="" disabled selected>Account</option>' + accounts.map(a => `<option value="${a}">${a}</option>`).join('');
+        document.getElementById('filterAccount').innerHTML = '<option value="all">All Accounts</option>' + accounts.map(a => `<option value="${a}">${a}</option>`).join('');
     }
 
-    window.showReceipt = (base64) => {
-        const modal = document.getElementById('receiptModal');
-        const img = document.getElementById('modalImage');
-        img.src = base64;
-        modal.classList.add('show');
-        modal.onclick = () => modal.classList.remove('show');
+    document.getElementById('account').onchange = (e) => {
+        const cats = masterConfig[e.target.value] || [];
+        document.getElementById('particulars').innerHTML = '<option value="" disabled selected>Category</option>' + cats.map(c => `<option value="${c}">${c}</option>`).join('');
     };
 
-    // Voice input
-    const voiceBtn = document.getElementById('voiceBtn');
-    let recognition = null;
-    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-        recognition = new SpeechRecognition();
-        recognition.continuous = false;
-        recognition.lang = 'en-IN';
-        recognition.interimResults = false;
-        recognition.onresult = (event) => {
-            const text = event.results[0][0].transcript;
-            document.getElementById('note').value = text;
-            const amountMatch = text.match(/(\d+(?:\.\d{1,2})?)/);
-            if (amountMatch) {
-                const amt = parseFloat(amountMatch[1]);
-                if (!isNaN(amt)) {
-                    document.getElementById('debitAmount').value = amt;
-                    document.getElementById('creditAmount').value = '';
-                    showToast(`Amount ₹${amt} filled from voice`);
-                }
-            }
+    // Form
+    document.getElementById('entryForm').onsubmit = async (e) => {
+        e.preventDefault();
+        const btn = e.target.querySelector('button[type="submit"]');
+        btn.disabled = true; btn.innerText = "Syncing...";
+
+        const payload = {
+            date: document.getElementById('date').value,
+            mode: document.getElementById('mode').value,
+            account: document.getElementById('account').value,
+            particulars: document.getElementById('particulars').value,
+            credit: parseFloat(document.getElementById('creditAmount').value) || 0,
+            debit: parseFloat(document.getElementById('debitAmount').value) || 0,
+            note: document.getElementById('note').value,
+            lat: document.getElementById('latitude').value,
+            lng: document.getElementById('longitude').value,
+            receipt: currentReceiptBase64
         };
-        recognition.onerror = () => showToast("Voice not recognized", true);
-        voiceBtn.onclick = () => recognition.start();
-    } else {
-        voiceBtn.onclick = () => alert("Voice input not supported on this browser");
+
+        fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: JSON.stringify(payload) })
+        .then(() => {
+            showToast("Logged!"); e.target.reset(); 
+            document.getElementById('date').valueAsDate = new Date();
+            btn.disabled = false; btn.innerText = "Add Transaction";
+            backgroundSync();
+        });
+    };
+
+    // Voice
+    const voiceBtn = document.getElementById('voiceBtn');
+    if ('webkitSpeechRecognition' in window) {
+        const rec = new webkitSpeechRecognition(); rec.lang = 'en-IN';
+        rec.onresult = (e) => {
+            const text = e.results[0][0].transcript; document.getElementById('note').value = text;
+            const amt = text.match(/(\d+)/); if (amt) document.getElementById('debitAmount').value = amt[0];
+        };
+        voiceBtn.onclick = () => rec.start();
     }
 
-    // Receipt attachment
-    const attachBtn = document.getElementById('attachReceiptBtn');
-    const receiptInput = document.getElementById('receiptInput');
-    const receiptPreview = document.getElementById('receiptPreview');
-    attachBtn.onclick = () => receiptInput.click();
-    receiptInput.onchange = (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
+    // Receipt
+    document.getElementById('attachReceiptBtn').onclick = () => document.getElementById('receiptInput').click();
+    document.getElementById('receiptInput').onchange = (e) => {
         const reader = new FileReader();
         reader.onload = (ev) => {
-            const img = new Image();
+            const img = new Image(); img.src = ev.target.result;
             img.onload = () => {
-                const canvas = document.createElement('canvas');
-                const ctx = canvas.getContext('2d');
-                let width = img.width;
-                let height = img.height;
-                const maxSize = 800;
-                if (width > maxSize) {
-                    height = (height * maxSize) / width;
-                    width = maxSize;
-                }
-                canvas.width = width;
-                canvas.height = height;
-                ctx.drawImage(img, 0, 0, width, height);
-                const compressed = canvas.toDataURL('image/jpeg', 0.6);
-                currentReceiptBase64 = compressed;
-                receiptPreview.classList.remove('hidden');
-                receiptPreview.innerHTML = 'Receipt attached ✓ (click to change)';
-                showToast("Receipt attached");
+                const canvas = document.createElement('canvas'); const ctx = canvas.getContext('2d');
+                canvas.width = 600; canvas.height = (img.height * 600) / img.width;
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                currentReceiptBase64 = canvas.toDataURL('image/jpeg', 0.5);
+                document.getElementById('receiptPreview').innerText = "Receipt Attached ✓";
+                document.getElementById('receiptPreview').classList.remove('hidden');
             };
-            img.src = ev.target.result;
         };
-        reader.readAsDataURL(file);
+        reader.readAsDataURL(e.target.files[0]);
     };
 
-    // Location capture
+    // Location
     document.getElementById('locateBtn').onclick = () => {
-        if (!navigator.geolocation) { alert("Not supported"); return; }
-        const statusDiv = document.getElementById('locationStatus');
-        statusDiv.classList.remove('hidden');
-        statusDiv.innerHTML = "📍 Getting location...";
-        navigator.geolocation.getCurrentPosition(
-            (pos) => {
-                document.getElementById('latitude').value = pos.coords.latitude;
-                document.getElementById('longitude').value = pos.coords.longitude;
-                statusDiv.innerHTML = `✅ Location: ${pos.coords.latitude.toFixed(4)}, ${pos.coords.longitude.toFixed(4)}`;
-                setTimeout(() => statusDiv.classList.add('hidden'), 3000);
-                showToast("Location saved");
-            },
-            (err) => {
-                statusDiv.innerHTML = `❌ ${err.message}`;
-                setTimeout(() => statusDiv.classList.add('hidden'), 3000);
-            }
-        );
+        navigator.geolocation.getCurrentPosition(p => {
+            document.getElementById('latitude').value = p.coords.latitude;
+            document.getElementById('longitude').value = p.coords.longitude;
+            document.getElementById('locationStatus').innerText = "Location Captured ✓";
+            document.getElementById('locationStatus').classList.remove('hidden');
+        });
     };
 
-    // Form submit
-    document.getElementById('entryForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const date = document.getElementById('date').value;
-        const mode = document.getElementById('mode').value;
-        const account = document.getElementById('account').value;
-        const particulars = document.getElementById('particulars').value;
-        let credit = parseFloat(document.getElementById('creditAmount').value) || 0;
-        let debit = parseFloat(document.getElementById('debitAmount').value) || 0;
-        const note = document.getElementById('note').value;
-        const lat = document.getElementById('latitude').value || null;
-        const lng = document.getElementById('longitude').value || null;
-        const receipt = currentReceiptBase64;
-        if (!date || !account || !particulars) { alert("Fill date, account & category"); return; }
-        if (credit > 0 && debit > 0) { alert("Can't have both income & expense"); return; }
-        if (credit === 0 && debit === 0) { alert("Enter either income or expense"); return; }
-        await addEntryLocal({ date, mode, account, particulars, credit, debit, note, lat, lng, receipt });
-        document.getElementById('creditAmount').value = '';
-        document.getElementById('debitAmount').value = '';
-        document.getElementById('note').value = '';
-        document.getElementById('latitude').value = '';
-        document.getElementById('longitude').value = '';
-        document.getElementById('locationStatus').classList.add('hidden');
-        currentReceiptBase64 = '';
-        receiptPreview.classList.add('hidden');
-        receiptInput.value = '';
-        document.getElementById('date').valueAsDate = new Date();
-    });
-
-    // Tab switching
-    const addPanel = document.getElementById('addPanel');
-    const reportPanel = document.getElementById('reportPanel');
-    const tabAdd = document.getElementById('tabAddBtn');
-    const tabReport = document.getElementById('tabReportBtn');
-    tabAdd.onclick = () => {
-        addPanel.classList.remove('hidden');
-        reportPanel.classList.add('hidden');
-        tabAdd.classList.add('tab-active');
-        tabAdd.classList.remove('tab-inactive');
-        tabReport.classList.remove('tab-active');
-        tabReport.classList.add('tab-inactive');
+    // Tabs
+    document.getElementById('tabAddBtn').onclick = () => {
+        document.getElementById('addPanel').classList.remove('hidden');
+        document.getElementById('reportPanel').classList.add('hidden');
+        document.getElementById('tabAddBtn').className = "tab-active flex-1 py-2 rounded-lg text-xs font-bold";
+        document.getElementById('tabReportBtn').className = "tab-inactive flex-1 py-2 rounded-lg text-xs font-bold";
     };
-    tabReport.onclick = () => {
-        addPanel.classList.add('hidden');
-        reportPanel.classList.remove('hidden');
-        tabReport.classList.add('tab-active');
-        tabReport.classList.remove('tab-inactive');
-        tabAdd.classList.remove('tab-active');
-        tabAdd.classList.add('tab-inactive');
-        if (!document.getElementById('reportMonth').value) {
-            const now = new Date();
-            document.getElementById('reportMonth').value = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
-        }
-        updateFilterCategories();
-        applyReportFilters();
+    document.getElementById('tabReportBtn').onclick = () => {
+        document.getElementById('addPanel').classList.add('hidden');
+        document.getElementById('reportPanel').classList.remove('hidden');
+        document.getElementById('tabReportBtn').className = "tab-active flex-1 py-2 rounded-lg text-xs font-bold";
+        document.getElementById('tabAddBtn').className = "tab-inactive flex-1 py-2 rounded-lg text-xs font-bold";
+        applyFilters();
     };
-    document.getElementById('filterAccount').addEventListener('change', () => { updateFilterCategories(); applyReportFilters(); });
-    document.getElementById('filterCategory').addEventListener('change', applyReportFilters);
-    document.getElementById('applyReportBtn').addEventListener('click', applyReportFilters);
-    document.getElementById('account').addEventListener('change', updateParticulars);
 
-    // Initialization
-    (async () => {
-        if (loadCache()) renderAllUI();
-        await backgroundSync();
-        document.getElementById('date').valueAsDate = new Date();
-        renderAllUI();
-    })();
+    function applyFilters() {
+        const month = document.getElementById('reportMonth').value;
+        const tbody = document.getElementById('reportTableBody');
+        const filtered = allEntries.filter(e => e.date && e.date.includes(month));
+        
+        tbody.innerHTML = filtered.map(e => `
+            <tr class="border-b dark:border-slate-800">
+                <td class="p-2">${formatDate(e.date)}</td>
+                <td class="p-2">${e.particulars}</td>
+                <td class="p-2 text-right font-bold ${e.credit > 0 ? 'text-emerald-500' : 'text-rose-500'}">${formatINR(e.credit || e.debit)}</td>
+                <td class="p-2 text-center">${e.lat ? '📍' : ''}</td>
+                <td class="p-2 text-center" onclick="showModal('${e.receipt}')">${e.receipt ? '📸' : ''}</td>
+            </tr>
+        `).join('');
+    }
+
+    window.showModal = (src) => { if(src) { document.getElementById('modalImage').src = src; document.getElementById('receiptModal').style.display='flex'; } };
+
+    // Init
+    document.getElementById('date').valueAsDate = new Date();
+    backgroundSync();
 </script>
 </body>
 </html>
