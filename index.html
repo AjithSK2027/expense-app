@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <title>Udees Pro — Expense Tracker with Location</title>
+    <title>Udees Pro — Smart Expense Tracker</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
     <style>
@@ -21,7 +21,7 @@
                 background: #0f172a;
                 color: #f1f5f9;
             }
-            .card, .glass-premium, .input-mobile, .btn-outline, .account-card {
+            .card, .glass-premium, .input-mobile, .btn-outline, .account-card, .stat-card {
                 background: #1e293b;
                 border-color: #334155;
             }
@@ -32,33 +32,32 @@
             .btn-primary {
                 background: #0d9488;
             }
-            .btn-primary:active {
-                background: #0f766e;
-            }
             .toast {
                 background: #1e293b;
                 color: white;
                 border-color: #0d9488;
             }
-            .stat-card {
-                background: #1e293b;
-            }
         }
-        .card {
+        /* Shared card styles with shadow & transition */
+        .card, .glass-premium, .stat-card, .account-card, .input-mobile, button, .tab-active, .tab-inactive, .btn-primary, .btn-outline {
+            transition: all 0.15s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.03), 0 1px 1px rgba(0,0,0,0.02);
+        }
+        .card, .glass-premium {
             background: #ffffff;
             border-radius: 1.5rem;
             border: 1px solid #e2e8f0;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03), 0 1px 2px rgba(0, 0, 0, 0.05);
-            transition: transform 0.1s ease, box-shadow 0.2s ease;
         }
-        .card:active {
-            transform: scale(0.98);
+        .stat-card {
+            background: #f8fafc;
+            border-radius: 1.25rem;
+            padding: 0.75rem;
+            text-align: center;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
         }
-        .glass-premium {
-            background: #ffffff;
-            border-radius: 1.5rem;
-            border: 1px solid #e2e8f0;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+        .stat-card:active, .account-card:active, .btn-primary:active, .btn-outline:active, button:active {
+            transform: scale(0.97);
         }
         .input-mobile {
             background: #ffffff;
@@ -66,7 +65,6 @@
             border-radius: 1rem;
             padding: 0.75rem 1rem;
             width: 100%;
-            transition: all 0.15s ease;
             font-size: 0.95rem;
         }
         .input-mobile:focus {
@@ -81,15 +79,9 @@
             border-radius: 1rem;
             padding: 0.85rem;
             font-weight: 700;
-            transition: all 0.15s ease;
             width: 100%;
             border: none;
             box-shadow: 0 2px 6px rgba(13, 148, 136, 0.2);
-        }
-        .btn-primary:active {
-            transform: scale(0.97);
-            background: #0f766e;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
         .btn-outline {
             background: transparent;
@@ -97,11 +89,6 @@
             border-radius: 1rem;
             padding: 0.75rem;
             font-weight: 600;
-            transition: all 0.15s ease;
-        }
-        .btn-outline:active {
-            background: #f1f5f9;
-            transform: scale(0.97);
         }
         .tab-active {
             background: #0d9488;
@@ -112,28 +99,12 @@
             background: transparent;
             color: #475569;
         }
-        .stat-card {
-            background: #f8fafc;
-            border-radius: 1.25rem;
-            padding: 0.75rem;
-            text-align: center;
-            transition: transform 0.1s;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.03);
-        }
-        .stat-card:active {
-            transform: scale(0.98);
-        }
         .account-card {
             background: #f8fafc;
             border-radius: 1rem;
             padding: 0.75rem;
             border: 1px solid #e2e8f0;
             flex: 1 1 150px;
-            transition: all 0.15s;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.02);
-        }
-        .account-card:active {
-            transform: scale(0.98);
         }
         .progress-bar {
             height: 4px;
@@ -168,15 +139,40 @@
             opacity: 1;
             transform: translateX(-50%) scale(1);
         }
-        .location-link {
-            font-size: 0.7rem;
+        .location-link, .receipt-link {
+            font-size: 0.75rem;
             color: #0d9488;
             text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
         }
-        @media (prefers-color-scheme: dark) {
-            .toast { background: #1e293b; border-color: #334155; color: white; }
-            .btn-outline:active { background: #334155; }
-            .stat-card:active, .account-card:active { background: #334155; }
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            pointer-events: none;
+            transition: 0.2s;
+        }
+        .modal.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .modal-content {
+            max-width: 90%;
+            max-height: 80%;
+            border-radius: 1.5rem;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px black;
         }
     </style>
 </head>
@@ -187,7 +183,7 @@
     <div class="flex justify-between items-center">
         <div>
             <h1 class="text-2xl font-bold text-slate-800 dark:text-white">Udees Pro</h1>
-            <p class="text-xs text-slate-500 dark:text-slate-400">spend · save · track location</p>
+            <p class="text-xs text-slate-500 dark:text-slate-400">spend · save · voice · receipts</p>
         </div>
         <div class="text-[11px] font-mono bg-slate-100 dark:bg-slate-800 px-3 py-1 rounded-full">
             <span class="text-emerald-600 dark:text-emerald-400">●</span> live
@@ -215,7 +211,7 @@
     </div>
 
     <!-- ADD ENTRY PANEL -->
-    <div id="addPanel" class="glass-premium p-5 space-y-4">
+    <div id="addPanel" class="card p-5 space-y-4">
         <form id="entryForm" class="space-y-3">
             <div class="grid grid-cols-2 gap-3">
                 <div><label class="text-[10px] font-semibold text-slate-500">DATE</label><input type="date" id="date" class="input-mobile"></div>
@@ -229,9 +225,20 @@
                 <div><label class="text-[10px] font-semibold text-emerald-600">INCOME (₹)</label><input type="number" id="creditAmount" placeholder="0" step="any" class="input-mobile"></div>
                 <div><label class="text-[10px] font-semibold text-rose-600">EXPENSE (₹)</label><input type="number" id="debitAmount" placeholder="0" step="any" class="input-mobile"></div>
             </div>
-            <div><label class="text-[10px] font-semibold text-slate-500">NOTE / PAYEE</label><textarea id="note" rows="2" placeholder="Optional" class="input-mobile resize-none"></textarea></div>
+            <div>
+                <label class="text-[10px] font-semibold text-slate-500">NOTE / PAYEE</label>
+                <div class="flex gap-2">
+                    <textarea id="note" rows="2" placeholder="Optional" class="input-mobile resize-none flex-1"></textarea>
+                    <button type="button" id="voiceBtn" class="btn-outline w-auto px-4 text-xl">🎤</button>
+                </div>
+            </div>
             
-            <!-- Location Capture (optional) -->
+            <!-- Receipt Attachment -->
+            <button type="button" id="attachReceiptBtn" class="btn-outline w-full flex items-center justify-center gap-2">📎 Attach Receipt</button>
+            <input type="file" id="receiptInput" accept="image/*" capture="environment" class="hidden">
+            <div id="receiptPreview" class="text-xs text-slate-500 text-center hidden">Receipt attached ✓</div>
+
+            <!-- Location Capture -->
             <button type="button" id="locateBtn" class="btn-outline w-full flex items-center justify-center gap-2">📍 Add Current Location</button>
             <input type="hidden" id="latitude" value="">
             <input type="hidden" id="longitude" value="">
@@ -242,7 +249,7 @@
     </div>
 
     <!-- REPORT PANEL -->
-    <div id="reportPanel" class="glass-premium p-5 hidden space-y-4">
+    <div id="reportPanel" class="card p-5 hidden space-y-4">
         <div class="grid grid-cols-2 gap-3">
             <div><label class="text-[10px] font-semibold text-slate-500">MONTH</label><input type="month" id="reportMonth" class="input-mobile"></div>
             <div><label class="text-[10px] font-semibold text-slate-500">ACCOUNT</label><select id="filterAccount" class="input-mobile"></select></div>
@@ -255,10 +262,17 @@
         </div>
         <div class="overflow-x-auto max-h-80 overflow-y-auto">
             <table class="w-full text-sm">
-                <thead class="text-slate-500 border-b border-slate-200"><tr><th class="py-2 text-left">Date</th><th class="text-left">Account</th><th class="text-left">Category</th><th class="text-right">Amount</th><th class="text-center">📍</th></tr></thead>
+                <thead class="text-slate-500 border-b border-slate-200"><tr><th class="py-2 text-left">Date</th><th class="text-left">Account</th><th class="text-left">Category</th><th class="text-right">Amount</th><th class="text-center">📍</th><th class="text-center">📸</th></tr></thead>
                 <tbody id="reportTableBody"></tbody>
             </table>
         </div>
+    </div>
+</div>
+
+<!-- Modal for Receipt Preview -->
+<div id="receiptModal" class="modal">
+    <div class="modal-content">
+        <img id="modalImage" src="" alt="Receipt" class="max-w-full max-h-full object-contain">
     </div>
 </div>
 
@@ -266,11 +280,12 @@
 
 <script>
     // ==================== CONFIGURATION ====================
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyKaGhWnNqF22Wgn6ILokGj5sROF-Pqk4h-grULLvop6rhWEe4cZ_WxrfNY4qy_yhCq/exec"; // Replace with your web app URL
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyKaGhWnNqF22Wgn6ILokGj5sROF-Pqk4h-grULLvop6rhWEe4cZ_WxrfNY4qy_yhCq/exec"; // REPLACE WITH YOUR URL
     let masterConfig = {};
-    let allEntries = []; // each entry includes lat, lng
+    let allEntries = [];
+    let currentReceiptBase64 = ""; // for new entry
 
-    // Format INR
+    // Formatting helpers
     const formatINR = (val) => new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(val || 0);
     function formatDateDisplay(dateStr) {
         if (!dateStr) return '—';
@@ -284,7 +299,7 @@
         setTimeout(() => toast.classList.remove('show'), 2500);
     }
 
-    // Cache & sync (extended to store lat/lng)
+    // Cache & sync (with receipt)
     function saveCache() {
         localStorage.setItem('udees_entries', JSON.stringify(allEntries));
         localStorage.setItem('udees_config', JSON.stringify(masterConfig));
@@ -306,7 +321,7 @@
             const remoteConfig = settingsRes.config || {};
             const map = new Map();
             allEntries.forEach(e => { if (e.id) map.set(e.id, e); });
-            remoteEntries.forEach(r => { if (r.id) map.set(r.id, { ...r, lat: r.lat, lng: r.lng }); });
+            remoteEntries.forEach(r => { if (r.id) map.set(r.id, { ...r, receipt: r.receipt || "" }); });
             allEntries = Array.from(map.values()).sort((a,b) => new Date(b.date) - new Date(a.date));
             masterConfig = remoteConfig;
             saveCache();
@@ -318,18 +333,17 @@
         allEntries.unshift({ ...entry, id: tempId });
         saveCache();
         renderAllUI();
-        // Send to server (including lat/lng if present)
         fetch(SCRIPT_URL, {
             method: "POST",
             mode: "no-cors",
             headers: { "Content-Type": "text/plain" },
-            body: JSON.stringify({ date: entry.date, mode: entry.mode, account: entry.account, particulars: entry.particulars, credit: entry.credit, debit: entry.debit, note: entry.note, lat: entry.lat, lng: entry.lng })
+            body: JSON.stringify(entry)
         }).catch(() => {});
         setTimeout(() => backgroundSync(), 1500);
         showToast("Transaction saved & synced");
     }
 
-    // UI rendering
+    // UI rendering (account cards, totals)
     function computeTotals() {
         let inc = 0, exp = 0;
         allEntries.forEach(e => { inc += e.credit || 0; exp += e.debit || 0; });
@@ -404,7 +418,7 @@
         if (!document.getElementById('reportPanel').classList.contains('hidden')) applyReportFilters();
     }
 
-    // Report filters with location column
+    // Report filters (with receipt icon)
     function updateFilterCategories() {
         const fAcc = document.getElementById('filterAccount').value;
         const catSel = document.getElementById('filterCategory');
@@ -437,7 +451,7 @@
         document.getElementById('reportExpense').innerHTML = formatINR(expSum);
         const tbody = document.getElementById('reportTableBody');
         if (!filtered.length) {
-            tbody.innerHTML = '<tr><td colspan="5" class="text-center py-5 text-slate-400">No entries</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="6" class="text-center py-5 text-slate-400">No entries</td></tr>';
             return;
         }
         tbody.innerHTML = filtered.map(e => {
@@ -449,42 +463,115 @@
             } else {
                 locationHtml = '<span class="text-slate-300">—</span>';
             }
-            return `<tr class="border-b border-slate-100"><td class="py-2 text-xs">${formatDateDisplay(e.date)}</td><td class="py-2">${e.account}</td><td class="py-2">${e.particulars}</td><td class="py-2 text-right font-semibold ${cls}">${formatINR(amount)}</td><td class="py-2 text-center">${locationHtml}</td></tr>`;
+            let receiptHtml = '';
+            if (e.receipt && e.receipt.length > 50) {
+                receiptHtml = `<button class="receipt-link" onclick="showReceipt('${e.receipt}')">📸</button>`;
+            } else {
+                receiptHtml = '<span class="text-slate-300">—</span>';
+            }
+            return `<tr class="border-b border-slate-100"><td class="py-2 text-xs">${formatDateDisplay(e.date)}</td><td class="py-2">${e.account}</td><td class="py-2">${e.particulars}</td><td class="py-2 text-right font-semibold ${cls}">${formatINR(amount)}</td><td class="py-2 text-center">${locationHtml}</td><td class="py-2 text-center">${receiptHtml}</td></tr>`;
         }).join('');
     }
+
+    // Receipt modal
+    window.showReceipt = (base64) => {
+        const modal = document.getElementById('receiptModal');
+        const img = document.getElementById('modalImage');
+        img.src = base64;
+        modal.classList.add('show');
+        modal.onclick = () => modal.classList.remove('show');
+    };
+
+    // Voice input
+    const voiceBtn = document.getElementById('voiceBtn');
+    let recognition = null;
+    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        recognition = new SpeechRecognition();
+        recognition.continuous = false;
+        recognition.lang = 'en-IN';
+        recognition.interimResults = false;
+        recognition.onresult = (event) => {
+            const text = event.results[0][0].transcript;
+            document.getElementById('note').value = text;
+            // Try to extract amount
+            const amountMatch = text.match(/(\d+(?:\.\d{1,2})?)/);
+            if (amountMatch) {
+                const amt = parseFloat(amountMatch[1]);
+                if (!isNaN(amt)) {
+                    // Assume expense if amount present
+                    document.getElementById('debitAmount').value = amt;
+                    document.getElementById('creditAmount').value = '';
+                    showToast(`Amount ₹${amt} filled from voice`);
+                }
+            }
+        };
+        recognition.onerror = () => showToast("Voice not recognized", true);
+        voiceBtn.onclick = () => recognition.start();
+    } else {
+        voiceBtn.onclick = () => alert("Voice input not supported on this browser");
+    }
+
+    // Receipt attachment (compress image)
+    const attachBtn = document.getElementById('attachReceiptBtn');
+    const receiptInput = document.getElementById('receiptInput');
+    const receiptPreview = document.getElementById('receiptPreview');
+    attachBtn.onclick = () => receiptInput.click();
+    receiptInput.onchange = (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+            const img = new Image();
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                let width = img.width;
+                let height = img.height;
+                const maxSize = 800;
+                if (width > maxSize) {
+                    height = (height * maxSize) / width;
+                    width = maxSize;
+                }
+                canvas.width = width;
+                canvas.height = height;
+                ctx.drawImage(img, 0, 0, width, height);
+                const compressed = canvas.toDataURL('image/jpeg', 0.6); // base64
+                currentReceiptBase64 = compressed;
+                receiptPreview.classList.remove('hidden');
+                receiptPreview.innerHTML = 'Receipt attached ✓ (click to change)';
+                showToast("Receipt attached");
+            };
+            img.src = ev.target.result;
+        };
+        reader.readAsDataURL(file);
+    };
 
     // Location capture
     let currentLat = null, currentLng = null;
     document.getElementById('locateBtn').onclick = () => {
-        if (!navigator.geolocation) {
-            alert("Geolocation not supported");
-            return;
-        }
-        document.getElementById('locateBtn').disabled = true;
-        document.getElementById('locationStatus').classList.remove('hidden');
-        document.getElementById('locationStatus').innerHTML = "📍 Getting location...";
+        if (!navigator.geolocation) { alert("Not supported"); return; }
+        const statusDiv = document.getElementById('locationStatus');
+        statusDiv.classList.remove('hidden');
+        statusDiv.innerHTML = "📍 Getting location...";
         navigator.geolocation.getCurrentPosition(
             (pos) => {
                 currentLat = pos.coords.latitude;
                 currentLng = pos.coords.longitude;
                 document.getElementById('latitude').value = currentLat;
                 document.getElementById('longitude').value = currentLng;
-                document.getElementById('locationStatus').innerHTML = `✅ Location captured: ${currentLat.toFixed(4)}, ${currentLng.toFixed(4)}`;
-                setTimeout(() => {
-                    document.getElementById('locationStatus').classList.add('hidden');
-                }, 3000);
+                statusDiv.innerHTML = `✅ Location: ${currentLat.toFixed(4)}, ${currentLng.toFixed(4)}`;
+                setTimeout(() => statusDiv.classList.add('hidden'), 3000);
                 showToast("Location saved");
-                document.getElementById('locateBtn').disabled = false;
             },
             (err) => {
-                document.getElementById('locationStatus').innerHTML = `❌ Error: ${err.message}`;
-                document.getElementById('locateBtn').disabled = false;
-                setTimeout(() => document.getElementById('locationStatus').classList.add('hidden'), 3000);
+                statusDiv.innerHTML = `❌ ${err.message}`;
+                setTimeout(() => statusDiv.classList.add('hidden'), 3000);
             }
         );
     };
 
-    // Form submit (includes lat/lng)
+    // Form submit
     document.getElementById('entryForm').addEventListener('submit', async (e) => {
         e.preventDefault();
         const date = document.getElementById('date').value;
@@ -496,19 +583,22 @@
         const note = document.getElementById('note').value;
         const lat = document.getElementById('latitude').value || null;
         const lng = document.getElementById('longitude').value || null;
+        const receipt = currentReceiptBase64;
         if (!date || !account || !particulars) { alert("Fill date, account & category"); return; }
         if (credit > 0 && debit > 0) { alert("Can't have both income & expense"); return; }
         if (credit === 0 && debit === 0) { alert("Enter either income or expense"); return; }
-        await addEntryLocal({ date, mode, account, particulars, credit, debit, note, lat, lng });
+        await addEntryLocal({ date, mode, account, particulars, credit, debit, note, lat, lng, receipt });
+        // Reset form
         document.getElementById('creditAmount').value = '';
         document.getElementById('debitAmount').value = '';
         document.getElementById('note').value = '';
         document.getElementById('latitude').value = '';
         document.getElementById('longitude').value = '';
         document.getElementById('locationStatus').classList.add('hidden');
+        currentReceiptBase64 = '';
+        receiptPreview.classList.add('hidden');
+        receiptInput.value = '';
         document.getElementById('date').valueAsDate = new Date();
-        currentLat = null;
-        currentLng = null;
     });
 
     // Tab switching
