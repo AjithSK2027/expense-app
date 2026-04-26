@@ -3,269 +3,280 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <title>Udees Pro — Premium Money Manager</title>
+    <title>Udees Pro — Expense Tracker with Location</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
     <style>
-        * { font-family: 'Inter', system-ui, -apple-system, sans-serif; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
         body {
-            background: radial-gradient(ellipse at 30% 10%, #0B1120 0%, #030614 100%);
-            color: #EFF3F6;
-            min-height: 100vh;
-            padding: 1rem;
+            background: #FFFFFF;
+            color: #1e293b;
+            transition: background 0.2s, color 0.2s;
         }
-        /* Glassmorphism Core */
-        .glass-premium {
-            background: rgba(15, 25, 45, 0.65);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(72, 187, 255, 0.15);
-            border-radius: 2rem;
-            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255,255,255,0.05);
+        @media (prefers-color-scheme: dark) {
+            body {
+                background: #0f172a;
+                color: #f1f5f9;
+            }
+            .card, .glass-premium, .input-mobile, .btn-outline, .account-card {
+                background: #1e293b;
+                border-color: #334155;
+            }
+            .input-mobile {
+                background: #0f172a;
+                color: #f1f5f9;
+            }
+            .btn-primary {
+                background: #0d9488;
+            }
+            .btn-primary:active {
+                background: #0f766e;
+            }
+            .toast {
+                background: #1e293b;
+                color: white;
+                border-color: #0d9488;
+            }
+            .stat-card {
+                background: #1e293b;
+            }
         }
-        .glass-card {
-            background: rgba(12, 20, 30, 0.7);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(0, 255, 255, 0.08);
+        .card {
+            background: #ffffff;
             border-radius: 1.5rem;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03), 0 1px 2px rgba(0, 0, 0, 0.05);
+            transition: transform 0.1s ease, box-shadow 0.2s ease;
         }
-        .glass-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 15px 30px -12px rgba(0, 200, 255, 0.2);
-        }
-        /* Inputs */
-        .input-mobile {
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid #2D3A5E;
-            border-radius: 1.5rem;
-            padding: 1rem 1.2rem;
-            color: white;
-            font-weight: 500;
-            transition: all 0.2s;
-        }
-        .input-mobile:focus {
-            border-color: #00E5FF;
-            box-shadow: 0 0 0 3px rgba(0, 229, 255, 0.2);
-            outline: none;
+        .card:active {
             transform: scale(0.98);
         }
-        /* Buttons */
+        .glass-premium {
+            background: #ffffff;
+            border-radius: 1.5rem;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+        }
+        .input-mobile {
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            border-radius: 1rem;
+            padding: 0.75rem 1rem;
+            width: 100%;
+            transition: all 0.15s ease;
+            font-size: 0.95rem;
+        }
+        .input-mobile:focus {
+            outline: none;
+            border-color: #0d9488;
+            box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.15);
+            transform: scale(0.99);
+        }
         .btn-primary {
-            background: linear-gradient(95deg, #00C9FF 0%, #92FE9D 100%);
-            border-radius: 1.8rem;
-            padding: 1rem;
-            font-weight: 800;
-            color: #0A0F1C;
-            transition: all 0.2s;
-            box-shadow: 0 8px 18px rgba(0, 201, 255, 0.3);
-        }
-        .btn-primary:active { transform: scale(0.97); }
-        .btn-secondary {
-            background: rgba(0, 201, 255, 0.15);
-            border: 1px solid rgba(0, 201, 255, 0.4);
-            border-radius: 1.8rem;
-            padding: 0.8rem;
-            font-weight: 700;
-            transition: all 0.2s;
-        }
-        .btn-secondary:active { transform: scale(0.96); background: rgba(0, 201, 255, 0.3); }
-        /* UPI Icon Boxes */
-        .upi-icon-box {
-            background: rgba(0, 0, 0, 0.5);
-            border-radius: 1.2rem;
-            padding: 0.7rem 0;
-            text-align: center;
-            transition: all 0.2s;
-            border: 1px solid #2D3A5E;
-            flex: 1;
-        }
-        .upi-icon-box:active {
-            transform: scale(0.94);
-            background: rgba(0, 201, 255, 0.2);
-            border-color: #00E5FF;
-        }
-        /* Tabs */
-        .tab-active {
-            background: linear-gradient(120deg, rgba(0, 201, 255, 0.25), rgba(146, 254, 157, 0.1));
-            border-bottom: 2px solid #00E5FF;
+            background: #0d9488;
             color: white;
-            font-weight: 800;
+            border-radius: 1rem;
+            padding: 0.85rem;
+            font-weight: 700;
+            transition: all 0.15s ease;
+            width: 100%;
+            border: none;
+            box-shadow: 0 2px 6px rgba(13, 148, 136, 0.2);
         }
-        /* Stat numbers */
-        .stat-number {
-            font-feature-settings: "tnum";
-            font-variant-numeric: tabular-nums;
-            font-weight: 800;
-            letter-spacing: -0.02em;
+        .btn-primary:active {
+            transform: scale(0.97);
+            background: #0f766e;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
-        /* Progress bar */
-        .progress-bar-custom {
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #cbd5e1;
+            border-radius: 1rem;
+            padding: 0.75rem;
+            font-weight: 600;
+            transition: all 0.15s ease;
+        }
+        .btn-outline:active {
+            background: #f1f5f9;
+            transform: scale(0.97);
+        }
+        .tab-active {
+            background: #0d9488;
+            color: white;
+            box-shadow: 0 2px 6px rgba(13,148,136,0.3);
+        }
+        .tab-inactive {
+            background: transparent;
+            color: #475569;
+        }
+        .stat-card {
+            background: #f8fafc;
+            border-radius: 1.25rem;
+            padding: 0.75rem;
+            text-align: center;
+            transition: transform 0.1s;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+        }
+        .stat-card:active {
+            transform: scale(0.98);
+        }
+        .account-card {
+            background: #f8fafc;
+            border-radius: 1rem;
+            padding: 0.75rem;
+            border: 1px solid #e2e8f0;
+            flex: 1 1 150px;
+            transition: all 0.15s;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+        }
+        .account-card:active {
+            transform: scale(0.98);
+        }
+        .progress-bar {
             height: 4px;
-            background: #1E2A3A;
+            background: #e2e8f0;
             border-radius: 4px;
             overflow: hidden;
+            margin-top: 8px;
         }
         .progress-fill {
             height: 100%;
-            background: linear-gradient(90deg, #00C9FF, #92FE9D);
+            background: #0d9488;
             width: 0%;
             border-radius: 4px;
         }
-        /* Account card */
-        .account-card {
-            background: rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(8px);
-            border-radius: 1.2rem;
-            padding: 0.8rem 1rem;
-            border: 1px solid rgba(0, 201, 255, 0.2);
-            transition: all 0.2s;
-        }
-        .account-card:hover { border-color: rgba(0, 201, 255, 0.6); transform: translateY(-2px); }
-        /* Toast */
         .toast {
             position: fixed;
-            bottom: 2rem;
+            bottom: 24px;
             left: 50%;
-            transform: translateX(-50%) scale(0.9);
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(20px);
-            padding: 0.8rem 1.8rem;
-            border-radius: 3rem;
+            transform: translateX(-50%) scale(0.95);
+            background: white;
+            padding: 12px 20px;
+            border-radius: 40px;
             font-weight: 600;
             z-index: 1000;
             transition: all 0.2s;
             opacity: 0;
             pointer-events: none;
-            border: 1px solid #00E5FF;
-            color: white;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1);
+            border: 1px solid #e2e8f0;
         }
-        .toast.show { opacity: 1; transform: translateX(-50%) scale(1); }
-        ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-track { background: #0F172A; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb { background: #00C9FF; border-radius: 10px; }
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) scale(1);
+        }
+        .location-link {
+            font-size: 0.7rem;
+            color: #0d9488;
+            text-decoration: none;
+        }
+        @media (prefers-color-scheme: dark) {
+            .toast { background: #1e293b; border-color: #334155; color: white; }
+            .btn-outline:active { background: #334155; }
+            .stat-card:active, .account-card:active { background: #334155; }
+        }
     </style>
 </head>
-<body>
+<body class="p-4">
 
-<div class="max-w-3xl mx-auto space-y-5">
+<div class="max-w-2xl mx-auto space-y-4">
     <!-- Header -->
     <div class="flex justify-between items-center">
-        <div class="flex items-center gap-3">
-            <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-cyan-400 to-emerald-400 flex items-center justify-center shadow-2xl">
-                <span class="text-2xl font-black">💎</span>
-            </div>
-            <div>
-                <h1 class="text-2xl font-black tracking-tight bg-gradient-to-r from-cyan-300 to-emerald-300 bg-clip-text text-transparent">Udees Pro</h1>
-                <p class="text-[10px] font-bold text-cyan-300/70 -mt-1">spend · save · scan</p>
-            </div>
+        <div>
+            <h1 class="text-2xl font-bold text-slate-800 dark:text-white">Udees Pro</h1>
+            <p class="text-xs text-slate-500 dark:text-slate-400">spend · save · track location</p>
         </div>
-        <div class="text-[11px] font-mono bg-black/40 px-3 py-1.5 rounded-full border border-cyan-500/30">
-            <span class="text-emerald-400">●</span> live
+        <div class="text-[11px] font-mono bg-slate-100 dark:bg-slate-800 px-3 py-1 rounded-full">
+            <span class="text-emerald-600 dark:text-emerald-400">●</span> live
         </div>
     </div>
 
     <!-- Stats Grid -->
     <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-        <div class="glass-premium p-3 text-center"><div class="text-[11px] font-bold text-cyan-300/70 uppercase">Income</div><div id="totalIncome" class="text-2xl font-black text-emerald-400 stat-number">₹0</div></div>
-        <div class="glass-premium p-3 text-center"><div class="text-[11px] font-bold text-cyan-300/70 uppercase">Expense</div><div id="totalExpense" class="text-2xl font-black text-rose-400 stat-number">₹0</div></div>
-        <div class="glass-premium p-3 text-center"><div class="text-[11px] font-bold text-cyan-300/70 uppercase">Net</div><div id="netBalance" class="text-2xl font-black text-white stat-number">₹0</div></div>
-        <div class="glass-premium p-3 text-center bg-cyan-900/20"><div class="text-[11px] font-bold text-cyan-300/70 uppercase">Avg Daily</div><div id="avgDailySpend" class="text-xl font-black text-cyan-300 stat-number">₹0</div></div>
+        <div class="stat-card"><div class="text-[11px] font-semibold text-slate-500">INCOME</div><div id="totalIncome" class="text-xl font-bold text-emerald-600">₹0</div></div>
+        <div class="stat-card"><div class="text-[11px] font-semibold text-slate-500">EXPENSE</div><div id="totalExpense" class="text-xl font-bold text-rose-600">₹0</div></div>
+        <div class="stat-card"><div class="text-[11px] font-semibold text-slate-500">NET</div><div id="netBalance" class="text-xl font-bold text-slate-800 dark:text-white">₹0</div></div>
+        <div class="stat-card"><div class="text-[11px] font-semibold text-slate-500">AVG DAILY</div><div id="avgDailySpend" class="text-lg font-bold text-teal-600">₹0</div></div>
     </div>
 
-    <!-- Accounts Summary (Premium Cards) -->
-    <div class="glass-card p-4">
-        <h3 class="text-xs font-black uppercase tracking-wider text-cyan-300/80 flex items-center gap-2">📁 Balances by Account</h3>
-        <div id="accountsGrid" class="flex flex-wrap gap-3 mt-3"></div>
+    <!-- Accounts Summary -->
+    <div class="card p-4">
+        <h3 class="text-xs font-semibold uppercase text-slate-500">Balances by Account</h3>
+        <div id="accountsGrid" class="flex flex-wrap gap-2 mt-2"></div>
     </div>
 
     <!-- Tab Bar -->
-    <div class="flex gap-2 bg-slate-900/50 backdrop-blur-xl rounded-2xl p-1 border border-slate-700">
-        <button id="tabAddBtn" class="tab-active flex-1 py-3 rounded-xl text-sm font-bold transition-all">➕ Add</button>
-        <button id="tabReportBtn" class="flex-1 py-3 rounded-xl text-sm font-bold text-slate-300 transition-all">📊 Reports</button>
+    <div class="flex gap-2 bg-slate-100 dark:bg-slate-800/50 p-1 rounded-xl">
+        <button id="tabAddBtn" class="tab-active flex-1 py-2.5 rounded-lg text-sm font-bold transition-all">➕ Add</button>
+        <button id="tabReportBtn" class="tab-inactive flex-1 py-2.5 rounded-lg text-sm font-semibold transition-all">📊 Reports</button>
     </div>
 
     <!-- ADD ENTRY PANEL -->
-    <div id="addPanel" class="glass-premium p-5 space-y-5">
-        <form id="entryForm" class="space-y-4">
+    <div id="addPanel" class="glass-premium p-5 space-y-4">
+        <form id="entryForm" class="space-y-3">
             <div class="grid grid-cols-2 gap-3">
-                <div><label class="text-[10px] font-bold text-cyan-300/80 uppercase">Date</label><input type="date" id="date" class="input-mobile w-full text-sm"></div>
-                <div><label class="text-[10px] font-bold text-cyan-300/80 uppercase">Mode</label><select id="mode" class="input-mobile w-full text-sm"><option value="UPI">UPI</option><option value="CASH">CASH</option><option value="BANK">BANK</option></select></div>
-            </div>
-            <div class="grid grid-cols-2 gap-3">
-                <div><label class="text-[10px] font-bold text-cyan-300/80 uppercase">Account</label><select id="account" required class="input-mobile w-full"><option value="">Select</option></select></div>
-                <div><label class="text-[10px] font-bold text-cyan-300/80 uppercase">Category</label><select id="particulars" required class="input-mobile w-full"><option value="">Choose account</option></select></div>
+                <div><label class="text-[10px] font-semibold text-slate-500">DATE</label><input type="date" id="date" class="input-mobile"></div>
+                <div><label class="text-[10px] font-semibold text-slate-500">MODE</label><select id="mode" class="input-mobile"><option value="UPI">UPI</option><option value="CASH">CASH</option><option value="BANK">BANK</option></select></div>
             </div>
             <div class="grid grid-cols-2 gap-3">
-                <div><label class="text-[10px] font-bold text-emerald-400 uppercase">Income (₹)</label><input type="number" id="creditAmount" placeholder="0" step="any" class="input-mobile w-full"></div>
-                <div><label class="text-[10px] font-bold text-rose-400 uppercase">Expense (₹)</label><input type="number" id="debitAmount" placeholder="0" step="any" class="input-mobile w-full"></div>
+                <div><label class="text-[10px] font-semibold text-slate-500">ACCOUNT</label><select id="account" required class="input-mobile"></select></div>
+                <div><label class="text-[10px] font-semibold text-slate-500">CATEGORY</label><select id="particulars" required class="input-mobile"></select></div>
             </div>
-            <div><label class="text-[10px] font-bold text-cyan-300/80 uppercase">Note / Payee</label><textarea id="note" rows="2" placeholder="Optional" class="input-mobile w-full resize-none"></textarea></div>
-
-            <!-- UPI App Icons as tappable boxes -->
-            <div>
-                <label class="text-[10px] font-bold text-cyan-300/80 uppercase mb-2 block">Instant UPI Pay</label>
-                <div class="flex gap-3">
-                    <button type="button" onclick="openUpiApp('gpay')" class="upi-icon-box flex flex-col items-center gap-1"><span class="text-xl">💚</span><span class="text-[10px] font-bold">GPay</span></button>
-                    <button type="button" onclick="openUpiApp('phonepe')" class="upi-icon-box flex flex-col items-center gap-1"><span class="text-xl">🟠</span><span class="text-[10px] font-bold">PhonePe</span></button>
-                    <button type="button" onclick="openUpiApp('paytm')" class="upi-icon-box flex flex-col items-center gap-1"><span class="text-xl">🔵</span><span class="text-[10px] font-bold">Paytm</span></button>
-                </div>
+            <div class="grid grid-cols-2 gap-3">
+                <div><label class="text-[10px] font-semibold text-emerald-600">INCOME (₹)</label><input type="number" id="creditAmount" placeholder="0" step="any" class="input-mobile"></div>
+                <div><label class="text-[10px] font-semibold text-rose-600">EXPENSE (₹)</label><input type="number" id="debitAmount" placeholder="0" step="any" class="input-mobile"></div>
             </div>
+            <div><label class="text-[10px] font-semibold text-slate-500">NOTE / PAYEE</label><textarea id="note" rows="2" placeholder="Optional" class="input-mobile resize-none"></textarea></div>
+            
+            <!-- Location Capture (optional) -->
+            <button type="button" id="locateBtn" class="btn-outline w-full flex items-center justify-center gap-2">📍 Add Current Location</button>
+            <input type="hidden" id="latitude" value="">
+            <input type="hidden" id="longitude" value="">
+            <div id="locationStatus" class="text-xs text-slate-400 text-center hidden"></div>
 
-            <!-- QR Scan Button -->
-            <button type="button" id="scanQrBtn" class="btn-secondary w-full flex items-center justify-center gap-2">📷 Scan UPI QR Code</button>
-            <div id="qr-reader" class="hidden mt-2 rounded-xl overflow-hidden border border-cyan-500/40"></div>
-
-            <button type="submit" class="btn-primary w-full text-base font-black">➕ Add Transaction</button>
+            <button type="submit" class="btn-primary mt-2">➕ Add Transaction</button>
         </form>
     </div>
 
-    <!-- MONTHLY REPORT PANEL -->
+    <!-- REPORT PANEL -->
     <div id="reportPanel" class="glass-premium p-5 hidden space-y-4">
         <div class="grid grid-cols-2 gap-3">
-            <div><label class="text-[10px] font-bold text-cyan-300/80 uppercase">📅 Month</label><input type="month" id="reportMonth" class="input-mobile w-full"></div>
-            <div><label class="text-[10px] font-bold text-cyan-300/80 uppercase">🏦 Account</label><select id="filterAccount" class="input-mobile w-full"><option value="all">All</option></select></div>
-            <div><label class="text-[10px] font-bold text-cyan-300/80 uppercase">📂 Category</label><select id="filterCategory" class="input-mobile w-full"><option value="all">All</option></select></div>
-            <div class="flex items-end"><button id="applyReportBtn" class="btn-secondary w-full py-3 font-bold">Apply</button></div>
+            <div><label class="text-[10px] font-semibold text-slate-500">MONTH</label><input type="month" id="reportMonth" class="input-mobile"></div>
+            <div><label class="text-[10px] font-semibold text-slate-500">ACCOUNT</label><select id="filterAccount" class="input-mobile"></select></div>
+            <div><label class="text-[10px] font-semibold text-slate-500">CATEGORY</label><select id="filterCategory" class="input-mobile"></select></div>
+            <div class="flex items-end"><button id="applyReportBtn" class="btn-primary py-2">Apply</button></div>
         </div>
         <div class="grid grid-cols-2 gap-3">
-            <div class="glass-card p-3 text-center"><span class="text-xs font-bold text-cyan-300/70">Income</span><br><span id="reportIncome" class="text-xl font-black text-emerald-400">₹0</span></div>
-            <div class="glass-card p-3 text-center"><span class="text-xs font-bold text-cyan-300/70">Expense</span><br><span id="reportExpense" class="text-xl font-black text-rose-400">₹0</span></div>
+            <div class="card p-3 text-center"><span class="text-xs text-slate-500">Income</span><br><span id="reportIncome" class="text-xl font-bold text-emerald-600">₹0</span></div>
+            <div class="card p-3 text-center"><span class="text-xs text-slate-500">Expense</span><br><span id="reportExpense" class="text-xl font-bold text-rose-600">₹0</span></div>
         </div>
-        <div class="max-h-80 overflow-y-auto rounded-2xl">
+        <div class="overflow-x-auto max-h-80 overflow-y-auto">
             <table class="w-full text-sm">
-                <thead class="text-cyan-300/70 border-b border-cyan-800/50"><tr><th class="py-2 text-left">Date</th><th class="text-left">Account</th><th class="text-left">Category</th><th class="text-right">Amount</th></tr></thead>
+                <thead class="text-slate-500 border-b border-slate-200"><tr><th class="py-2 text-left">Date</th><th class="text-left">Account</th><th class="text-left">Category</th><th class="text-right">Amount</th><th class="text-center">📍</th></tr></thead>
                 <tbody id="reportTableBody"></tbody>
             </table>
         </div>
     </div>
 </div>
 
-<div id="toastMsg" class="toast">✓ Transaction added</div>
+<div id="toastMsg" class="toast">✓ Done</div>
 
 <script>
     // ==================== CONFIGURATION ====================
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxzuIdvHuU1Y7SeXxRzzHSMIuw3ArUw9jtIzheyy9URTOumRdRSDcJSwLZXECe2CVO7/exec"; // Replace with your own
-    const UPI_ID = "ajith@upi";
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyKaGhWnNqF22Wgn6ILokGj5sROF-Pqk4h-grULLvop6rhWEe4cZ_WxrfNY4qy_yhCq/exec"; // Replace with your web app URL
     let masterConfig = {};
-    let allEntries = [];
-    let html5QrCode = null;
-    let isScanning = false;
+    let allEntries = []; // each entry includes lat, lng
 
-    // Helper: format INR
+    // Format INR
     const formatINR = (val) => new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(val || 0);
-    // Display date as DD-MM-YYYY
-    function formatDateDMY(dateStr) {
+    function formatDateDisplay(dateStr) {
         if (!dateStr) return '—';
         let d = new Date(dateStr);
-        if (isNaN(d)) return dateStr;
-        return `${d.getDate().toString().padStart(2,'0')}-${(d.getMonth()+1).toString().padStart(2,'0')}-${d.getFullYear()}`;
+        return d.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
     }
-
     function showToast(msg) {
         const toast = document.getElementById('toastMsg');
         toast.innerHTML = `✓ ${msg}`;
@@ -273,7 +284,7 @@
         setTimeout(() => toast.classList.remove('show'), 2500);
     }
 
-    // ========== CACHE & BACKGROUND SYNC ==========
+    // Cache & sync (extended to store lat/lng)
     function saveCache() {
         localStorage.setItem('udees_entries', JSON.stringify(allEntries));
         localStorage.setItem('udees_config', JSON.stringify(masterConfig));
@@ -295,31 +306,30 @@
             const remoteConfig = settingsRes.config || {};
             const map = new Map();
             allEntries.forEach(e => { if (e.id) map.set(e.id, e); });
-            remoteEntries.forEach(r => { if (r.id) map.set(r.id, r); });
+            remoteEntries.forEach(r => { if (r.id) map.set(r.id, { ...r, lat: r.lat, lng: r.lng }); });
             allEntries = Array.from(map.values()).sort((a,b) => new Date(b.date) - new Date(a.date));
             masterConfig = remoteConfig;
             saveCache();
             renderAllUI();
-        } catch (err) { console.warn("Sync error", err); }
+        } catch (err) { console.warn(err); }
     }
-
     async function addEntryLocal(entry) {
         const tempId = 'local_' + Date.now() + '_' + Math.random();
         allEntries.unshift({ ...entry, id: tempId });
         saveCache();
         renderAllUI();
-        // Send to server
+        // Send to server (including lat/lng if present)
         fetch(SCRIPT_URL, {
             method: "POST",
             mode: "no-cors",
             headers: { "Content-Type": "text/plain" },
-            body: JSON.stringify({ date: entry.date, mode: entry.mode, account: entry.account, particulars: entry.particulars, credit: entry.credit, debit: entry.debit, note: entry.note })
+            body: JSON.stringify({ date: entry.date, mode: entry.mode, account: entry.account, particulars: entry.particulars, credit: entry.credit, debit: entry.debit, note: entry.note, lat: entry.lat, lng: entry.lng })
         }).catch(() => {});
         setTimeout(() => backgroundSync(), 1500);
         showToast("Transaction saved & synced");
     }
 
-    // ========== UI RENDERING ==========
+    // UI rendering
     function computeTotals() {
         let inc = 0, exp = 0;
         allEntries.forEach(e => { inc += e.credit || 0; exp += e.debit || 0; });
@@ -347,15 +357,15 @@
         for (let [acc, val] of map.entries()) {
             const percent = totalExpAll > 0 ? (val.exp / totalExpAll) * 100 : 0;
             html += `
-                <div class="account-card flex-1 min-w-[140px]">
+                <div class="account-card">
                     <div class="flex justify-between items-center">
-                        <span class="font-bold text-cyan-200">${acc}</span>
-                        <div class="text-right">
-                            <div class="text-xs text-emerald-400">+${formatINR(val.inc)}</div>
-                            <div class="text-xs text-rose-400">-${formatINR(val.exp)}</div>
+                        <span class="font-bold text-sm">${acc}</span>
+                        <div class="text-right text-xs">
+                            <div class="text-emerald-600">+${formatINR(val.inc)}</div>
+                            <div class="text-rose-600">-${formatINR(val.exp)}</div>
                         </div>
                     </div>
-                    <div class="progress-bar-custom mt-2"><div class="progress-fill" style="width: ${percent}%"></div></div>
+                    <div class="progress-bar"><div class="progress-fill" style="width: ${percent}%"></div></div>
                 </div>
             `;
         }
@@ -394,7 +404,7 @@
         if (!document.getElementById('reportPanel').classList.contains('hidden')) applyReportFilters();
     }
 
-    // ========== REPORT FILTERS ==========
+    // Report filters with location column
     function updateFilterCategories() {
         const fAcc = document.getElementById('filterAccount').value;
         const catSel = document.getElementById('filterCategory');
@@ -427,17 +437,54 @@
         document.getElementById('reportExpense').innerHTML = formatINR(expSum);
         const tbody = document.getElementById('reportTableBody');
         if (!filtered.length) {
-            tbody.innerHTML = '<tr><td colspan="4" class="text-center py-5 text-slate-400">No entries</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="5" class="text-center py-5 text-slate-400">No entries</td></tr>';
             return;
         }
         tbody.innerHTML = filtered.map(e => {
             const amount = (e.credit || 0) > 0 ? e.credit : e.debit;
-            const cls = (e.credit || 0) > 0 ? 'text-emerald-400' : 'text-rose-400';
-            return `<tr class="border-b border-cyan-800/30"><td class="py-2 text-xs">${formatDateDMY(e.date)}</td><td class="py-2">${e.account}</td><td class="py-2">${e.particulars}</td><td class="py-2 text-right font-bold ${cls}">${formatINR(amount)}</td></tr>`;
+            const cls = (e.credit || 0) > 0 ? 'text-emerald-600' : 'text-rose-600';
+            let locationHtml = '';
+            if (e.lat && e.lng) {
+                locationHtml = `<a href="https://maps.google.com/?q=${e.lat},${e.lng}" target="_blank" class="location-link" title="View on map">📍</a>`;
+            } else {
+                locationHtml = '<span class="text-slate-300">—</span>';
+            }
+            return `<tr class="border-b border-slate-100"><td class="py-2 text-xs">${formatDateDisplay(e.date)}</td><td class="py-2">${e.account}</td><td class="py-2">${e.particulars}</td><td class="py-2 text-right font-semibold ${cls}">${formatINR(amount)}</td><td class="py-2 text-center">${locationHtml}</td></tr>`;
         }).join('');
     }
 
-    // ========== FORM SUBMIT ==========
+    // Location capture
+    let currentLat = null, currentLng = null;
+    document.getElementById('locateBtn').onclick = () => {
+        if (!navigator.geolocation) {
+            alert("Geolocation not supported");
+            return;
+        }
+        document.getElementById('locateBtn').disabled = true;
+        document.getElementById('locationStatus').classList.remove('hidden');
+        document.getElementById('locationStatus').innerHTML = "📍 Getting location...";
+        navigator.geolocation.getCurrentPosition(
+            (pos) => {
+                currentLat = pos.coords.latitude;
+                currentLng = pos.coords.longitude;
+                document.getElementById('latitude').value = currentLat;
+                document.getElementById('longitude').value = currentLng;
+                document.getElementById('locationStatus').innerHTML = `✅ Location captured: ${currentLat.toFixed(4)}, ${currentLng.toFixed(4)}`;
+                setTimeout(() => {
+                    document.getElementById('locationStatus').classList.add('hidden');
+                }, 3000);
+                showToast("Location saved");
+                document.getElementById('locateBtn').disabled = false;
+            },
+            (err) => {
+                document.getElementById('locationStatus').innerHTML = `❌ Error: ${err.message}`;
+                document.getElementById('locateBtn').disabled = false;
+                setTimeout(() => document.getElementById('locationStatus').classList.add('hidden'), 3000);
+            }
+        );
+    };
+
+    // Form submit (includes lat/lng)
     document.getElementById('entryForm').addEventListener('submit', async (e) => {
         e.preventDefault();
         const date = document.getElementById('date').value;
@@ -447,74 +494,24 @@
         let credit = parseFloat(document.getElementById('creditAmount').value) || 0;
         let debit = parseFloat(document.getElementById('debitAmount').value) || 0;
         const note = document.getElementById('note').value;
+        const lat = document.getElementById('latitude').value || null;
+        const lng = document.getElementById('longitude').value || null;
         if (!date || !account || !particulars) { alert("Fill date, account & category"); return; }
         if (credit > 0 && debit > 0) { alert("Can't have both income & expense"); return; }
         if (credit === 0 && debit === 0) { alert("Enter either income or expense"); return; }
-        await addEntryLocal({ date, mode, account, particulars, credit, debit, note });
+        await addEntryLocal({ date, mode, account, particulars, credit, debit, note, lat, lng });
         document.getElementById('creditAmount').value = '';
         document.getElementById('debitAmount').value = '';
         document.getElementById('note').value = '';
+        document.getElementById('latitude').value = '';
+        document.getElementById('longitude').value = '';
+        document.getElementById('locationStatus').classList.add('hidden');
         document.getElementById('date').valueAsDate = new Date();
+        currentLat = null;
+        currentLng = null;
     });
 
-    // ========== UPI DEEP LINKS ==========
-    window.openUpiApp = function(app) {
-        let amount = parseFloat(document.getElementById('debitAmount').value) || parseFloat(document.getElementById('creditAmount').value);
-        if (!amount || amount <= 0) { alert("Enter amount in Income/Expense field first"); return; }
-        let note = document.getElementById('note').value || "Udees Pro";
-        let upiUrl = `upi://pay?pa=${UPI_ID}&pn=Udees%20Pro&am=${amount}&tn=${encodeURIComponent(note)}&cu=INR`;
-        if (app === 'gpay') upiUrl += '&pkg=com.google.android.apps.nbu.pay';
-        if (app === 'phonepe') upiUrl += '&pkg=com.phonepe.app';
-        if (app === 'paytm') upiUrl += '&pkg=net.one97.paytm';
-        window.location.href = upiUrl;
-    };
-
-    // ========== QR SCANNER ==========
-    const qrReaderDiv = document.getElementById('qr-reader');
-    document.getElementById('scanQrBtn').onclick = async () => {
-        if (isScanning) {
-            if (html5QrCode) await html5QrCode.stop();
-            qrReaderDiv.classList.add('hidden');
-            isScanning = false;
-            return;
-        }
-        qrReaderDiv.classList.remove('hidden');
-        html5QrCode = new Html5Qrcode("qr-reader");
-        try {
-            await html5QrCode.start(
-                { facingMode: "environment" },
-                { fps: 10, qrbox: 250 },
-                (decodedText) => {
-                    html5QrCode.stop();
-                    qrReaderDiv.classList.add('hidden');
-                    isScanning = false;
-                    parseUpiQr(decodedText);
-                },
-                () => {}
-            );
-            isScanning = true;
-        } catch (err) {
-            alert("Camera error. Please ensure HTTPS and grant permission.");
-            qrReaderDiv.classList.add('hidden');
-        }
-    };
-    function parseUpiQr(qrString) {
-        try {
-            let url = new URL(qrString);
-            if (url.protocol === 'upi:') {
-                let params = new URLSearchParams(url.search);
-                let amount = params.get('am');
-                let payee = params.get('pa');
-                if (amount) document.getElementById('debitAmount').value = parseFloat(amount);
-                if (payee) document.getElementById('note').value = `Pay to: ${payee}`;
-                showToast("QR scanned: amount filled");
-            } else {
-                alert("Not a valid UPI QR code");
-            }
-        } catch(e) { alert("Invalid QR data"); }
-    }
-
-    // ========== TAB SWITCHING ==========
+    // Tab switching
     const addPanel = document.getElementById('addPanel');
     const reportPanel = document.getElementById('reportPanel');
     const tabAdd = document.getElementById('tabAddBtn');
@@ -523,14 +520,17 @@
         addPanel.classList.remove('hidden');
         reportPanel.classList.add('hidden');
         tabAdd.classList.add('tab-active');
+        tabAdd.classList.remove('tab-inactive');
         tabReport.classList.remove('tab-active');
-        if (isScanning && html5QrCode) { html5QrCode.stop(); qrReaderDiv.classList.add('hidden'); isScanning = false; }
+        tabReport.classList.add('tab-inactive');
     };
     tabReport.onclick = () => {
         addPanel.classList.add('hidden');
         reportPanel.classList.remove('hidden');
         tabReport.classList.add('tab-active');
+        tabReport.classList.remove('tab-inactive');
         tabAdd.classList.remove('tab-active');
+        tabAdd.classList.add('tab-inactive');
         if (!document.getElementById('reportMonth').value) {
             const now = new Date();
             document.getElementById('reportMonth').value = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
@@ -543,7 +543,7 @@
     document.getElementById('applyReportBtn').addEventListener('click', applyReportFilters);
     document.getElementById('account').addEventListener('change', updateParticulars);
 
-    // ========== INIT ==========
+    // Init
     (async () => {
         if (loadCache()) renderAllUI();
         await backgroundSync();
