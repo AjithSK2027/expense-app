@@ -3,265 +3,242 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <title>Udees Pro — Smart Finance with QR & UPI</title>
+    <title>Udees Pro — Premium Money Manager</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
     <style>
-        * { font-family: 'Manrope', system-ui, -apple-system, sans-serif; -webkit-tap-highlight-color: transparent; }
-        :root {
-            --color-primary-dark: #1A2A80;
-            --color-primary: #3B38A0;
-            --color-secondary: #7A85C1;
-            --color-accent: #B2B0E8;
-            --color-bg-light: #FBFBFB;
-            --color-text-light: #0f172a;
-            --color-bg-dark: #050811;
-            --color-text-dark: #f1f5f9;
-            --gradient-vibrant: linear-gradient(135deg, #1A2A80 0%, #3B38A0 50%, #7A85C1 100%);
-            --shadow-deep: 0 25px 40px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(255,255,255,0.1);
-            --shadow-card: 0 10px 25px -8px rgba(0, 0, 0, 0.12);
-            --transition-smooth: all 0.25s cubic-bezier(0.2, 0.95, 0.4, 1.05);
-        }
+        * { font-family: 'Inter', system-ui, -apple-system, sans-serif; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            background: var(--color-bg-light);
-            color: var(--color-text-light);
-            transition: background 0.3s, color 0.2s;
+            background: radial-gradient(ellipse at 30% 10%, #0B1120 0%, #030614 100%);
+            color: #EFF3F6;
+            min-height: 100vh;
+            padding: 1rem;
         }
-        @media (prefers-color-scheme: dark) {
-            body { background: var(--color-bg-dark); color: var(--color-text-dark); }
-            .glass-premium, .glass-card, .input-mobile, .account-card, .upi-icon-btn {
-                background: rgba(10, 20, 40, 0.65);
-                backdrop-filter: blur(18px);
-                border-color: rgba(255,255,255,0.08);
-            }
-            .btn-primary { background: linear-gradient(105deg, #2a3aa0, #6d66d0); }
-            .toast { background: #1e293b; color: #e2e8f0; border-color: #475569; }
-            .tab-active { background: rgba(100, 100, 200, 0.25); color: #c7d2fe; }
-        }
+        /* Glassmorphism Core */
         .glass-premium {
-            background: rgba(251, 251, 251, 0.85);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(122, 133, 193, 0.35);
+            background: rgba(15, 25, 45, 0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(72, 187, 255, 0.15);
             border-radius: 2rem;
-            box-shadow: var(--shadow-deep);
+            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255,255,255,0.05);
         }
         .glass-card {
-            background: rgba(251, 251, 251, 0.7);
-            backdrop-filter: blur(14px);
-            border: 1px solid rgba(59, 56, 160, 0.2);
+            background: rgba(12, 20, 30, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 255, 255, 0.08);
             border-radius: 1.5rem;
-            box-shadow: var(--shadow-card);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
+        .glass-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px -12px rgba(0, 200, 255, 0.2);
+        }
+        /* Inputs */
         .input-mobile {
-            background: rgba(255, 255, 255, 0.96);
-            border: 1px solid #cbd5e1;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid #2D3A5E;
             border-radius: 1.5rem;
             padding: 1rem 1.2rem;
-            transition: var(--transition-smooth);
+            color: white;
             font-weight: 500;
-            color: #0f172a;
+            transition: all 0.2s;
         }
         .input-mobile:focus {
-            border-color: var(--color-primary);
-            box-shadow: 0 0 0 4px rgba(59, 56, 160, 0.3);
-            transform: scale(0.98);
+            border-color: #00E5FF;
+            box-shadow: 0 0 0 3px rgba(0, 229, 255, 0.2);
             outline: none;
+            transform: scale(0.98);
         }
+        /* Buttons */
         .btn-primary {
-            background: var(--gradient-vibrant);
-            border-radius: 2rem;
+            background: linear-gradient(95deg, #00C9FF 0%, #92FE9D 100%);
+            border-radius: 1.8rem;
             padding: 1rem;
             font-weight: 800;
-            letter-spacing: -0.01em;
-            transition: var(--transition-smooth);
-            box-shadow: 0 12px 22px -10px rgba(26, 42, 128, 0.4);
-            color: white;
+            color: #0A0F1C;
+            transition: all 0.2s;
+            box-shadow: 0 8px 18px rgba(0, 201, 255, 0.3);
         }
-        .btn-primary:active { transform: scale(0.96); box-shadow: 0 6px 12px -6px rgba(0,0,0,0.3); }
-        .upi-icon-btn {
-            background: rgba(255,255,255,0.9);
-            border-radius: 1.5rem;
-            padding: 0.8rem 0.5rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 6px;
-            border: 1px solid rgba(59,56,160,0.25);
-            transition: var(--transition-smooth);
-            flex: 1;
-            font-weight: 700;
-            font-size: 0.7rem;
-        }
-        .upi-icon-btn:active { transform: scale(0.94); background: rgba(59,56,160,0.2); }
+        .btn-primary:active { transform: scale(0.97); }
         .btn-secondary {
-            background: rgba(122,133,193,0.2);
-            border-radius: 2rem;
+            background: rgba(0, 201, 255, 0.15);
+            border: 1px solid rgba(0, 201, 255, 0.4);
+            border-radius: 1.8rem;
             padding: 0.8rem;
             font-weight: 700;
-            transition: var(--transition-smooth);
+            transition: all 0.2s;
+        }
+        .btn-secondary:active { transform: scale(0.96); background: rgba(0, 201, 255, 0.3); }
+        /* UPI Icon Boxes */
+        .upi-icon-box {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 1.2rem;
+            padding: 0.7rem 0;
             text-align: center;
+            transition: all 0.2s;
+            border: 1px solid #2D3A5E;
+            flex: 1;
         }
-        .btn-secondary:active { transform: scale(0.97); }
+        .upi-icon-box:active {
+            transform: scale(0.94);
+            background: rgba(0, 201, 255, 0.2);
+            border-color: #00E5FF;
+        }
+        /* Tabs */
         .tab-active {
-            background: linear-gradient(120deg, rgba(59,56,160,0.25), rgba(122,133,193,0.15));
-            color: var(--color-primary-dark);
-            border-bottom: 3px solid var(--color-primary);
+            background: linear-gradient(120deg, rgba(0, 201, 255, 0.25), rgba(146, 254, 157, 0.1));
+            border-bottom: 2px solid #00E5FF;
+            color: white;
             font-weight: 800;
-            transform: translateY(-1px);
         }
+        /* Stat numbers */
+        .stat-number {
+            font-feature-settings: "tnum";
+            font-variant-numeric: tabular-nums;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+        /* Progress bar */
+        .progress-bar-custom {
+            height: 4px;
+            background: #1E2A3A;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00C9FF, #92FE9D);
+            width: 0%;
+            border-radius: 4px;
+        }
+        /* Account card */
         .account-card {
-            background: rgba(255,255,255,0.9);
-            border-radius: 1.25rem;
-            padding: 0.9rem 1rem;
-            box-shadow: 0 6px 14px rgba(0,0,0,0.05);
-            border: 1px solid rgba(59,56,160,0.2);
-            transition: var(--transition-smooth);
-            flex: 1 1 160px;
-            backdrop-filter: blur(4px);
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(8px);
+            border-radius: 1.2rem;
+            padding: 0.8rem 1rem;
+            border: 1px solid rgba(0, 201, 255, 0.2);
+            transition: all 0.2s;
         }
-        .account-card:hover { transform: translateY(-3px) scale(1.01); box-shadow: 0 20px 30px -12px rgba(0,0,0,0.2); }
-        .progress-bar { height: 5px; background: #e2e8f0; border-radius: 5px; overflow: hidden; margin-top: 10px; }
-        .progress-fill { height: 100%; background: linear-gradient(90deg, var(--color-primary), var(--color-secondary)); width: 0%; border-radius: 5px; }
-        @media (prefers-color-scheme: dark) { .account-card { background: rgba(15,25,45,0.8); border-color: #334155; } .progress-bar { background: #334155; } }
+        .account-card:hover { border-color: rgba(0, 201, 255, 0.6); transform: translateY(-2px); }
+        /* Toast */
         .toast {
             position: fixed;
-            bottom: 30px;
+            bottom: 2rem;
             left: 50%;
             transform: translateX(-50%) scale(0.9);
-            background: rgba(255,255,255,0.98);
-            backdrop-filter: blur(24px);
-            padding: 14px 28px;
-            border-radius: 100px;
-            font-weight: 700;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(20px);
+            padding: 0.8rem 1.8rem;
+            border-radius: 3rem;
+            font-weight: 600;
             z-index: 1000;
-            transition: all 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.2);
+            transition: all 0.2s;
             opacity: 0;
             pointer-events: none;
-            border: 1px solid rgba(59,56,160,0.4);
+            border: 1px solid #00E5FF;
+            color: white;
             display: flex;
             align-items: center;
-            gap: 10px;
-            font-size: 0.9rem;
-            box-shadow: 0 20px 30px -12px rgba(0,0,0,0.2);
+            gap: 8px;
         }
         .toast.show { opacity: 1; transform: translateX(-50%) scale(1); }
-        .qr-reader-container { transition: all 0.2s ease; }
-        .stat-number { font-weight: 800; letter-spacing: -0.02em; }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #0F172A; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: #00C9FF; border-radius: 10px; }
     </style>
 </head>
-<body class="p-4 md:p-6">
+<body>
 
-<div class="max-w-3xl mx-auto space-y-6">
-    <!-- Header with Udees Pro logo -->
+<div class="max-w-3xl mx-auto space-y-5">
+    <!-- Header -->
     <div class="flex justify-between items-center">
         <div class="flex items-center gap-3">
-            <div class="w-12 h-12 rounded-2xl flex items-center justify-center shadow-xl" style="background: var(--gradient-vibrant);">
-                <svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M16 4L20 10H12L16 4Z" fill="white" />
-                    <path d="M10 14L16 8L22 14H10Z" fill="white" fill-opacity="0.9" />
-                    <circle cx="16" cy="20" r="6" fill="white" fill-opacity="0.8" />
-                    <path d="M16 17L19 21H13L16 17Z" fill="#1A2A80" />
-                </svg>
+            <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-cyan-400 to-emerald-400 flex items-center justify-center shadow-2xl">
+                <span class="text-2xl font-black">💎</span>
             </div>
             <div>
-                <h1 class="text-2xl font-extrabold tracking-tight" style="background: var(--gradient-vibrant); -webkit-background-clip: text; background-clip: text; color: transparent;">Udees Pro</h1>
-                <p class="text-[10px] font-bold text-slate-400 -mt-1">spend wisely · scan & pay</p>
+                <h1 class="text-2xl font-black tracking-tight bg-gradient-to-r from-cyan-300 to-emerald-300 bg-clip-text text-transparent">Udees Pro</h1>
+                <p class="text-[10px] font-bold text-cyan-300/70 -mt-1">spend · save · scan</p>
             </div>
         </div>
-        <div class="text-[11px] font-mono bg-white/70 dark:bg-slate-800/70 px-3 py-1.5 rounded-full shadow-sm border border-slate-200">
-            <span class="text-emerald-600 dark:text-emerald-400">●</span> live
+        <div class="text-[11px] font-mono bg-black/40 px-3 py-1.5 rounded-full border border-cyan-500/30">
+            <span class="text-emerald-400">●</span> live
         </div>
     </div>
 
-    <!-- Stats row -->
+    <!-- Stats Grid -->
     <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-        <div class="glass-premium p-3 text-center"><div class="text-[11px] font-extrabold text-slate-500 uppercase tracking-wider">Income</div><div id="totalIncome" class="text-2xl font-black text-emerald-700 stat-number">₹0</div></div>
-        <div class="glass-premium p-3 text-center"><div class="text-[11px] font-extrabold text-slate-500 uppercase tracking-wider">Expense</div><div id="totalExpense" class="text-2xl font-black text-rose-700 stat-number">₹0</div></div>
-        <div class="glass-premium p-3 text-center"><div class="text-[11px] font-extrabold text-slate-500 uppercase tracking-wider">Net</div><div id="netBalance" class="text-2xl font-black text-slate-800 dark:text-white stat-number">₹0</div></div>
-        <div class="glass-premium p-3 text-center bg-indigo-50 dark:bg-indigo-950/30"><div class="text-[11px] font-extrabold text-slate-500 uppercase">Avg Daily Spend</div><div id="avgDailySpend" class="text-xl font-black text-indigo-800 stat-number">₹0</div></div>
+        <div class="glass-premium p-3 text-center"><div class="text-[11px] font-bold text-cyan-300/70 uppercase">Income</div><div id="totalIncome" class="text-2xl font-black text-emerald-400 stat-number">₹0</div></div>
+        <div class="glass-premium p-3 text-center"><div class="text-[11px] font-bold text-cyan-300/70 uppercase">Expense</div><div id="totalExpense" class="text-2xl font-black text-rose-400 stat-number">₹0</div></div>
+        <div class="glass-premium p-3 text-center"><div class="text-[11px] font-bold text-cyan-300/70 uppercase">Net</div><div id="netBalance" class="text-2xl font-black text-white stat-number">₹0</div></div>
+        <div class="glass-premium p-3 text-center bg-cyan-900/20"><div class="text-[11px] font-bold text-cyan-300/70 uppercase">Avg Daily</div><div id="avgDailySpend" class="text-xl font-black text-cyan-300 stat-number">₹0</div></div>
     </div>
 
-    <!-- Account breakdown -->
+    <!-- Accounts Summary (Premium Cards) -->
     <div class="glass-card p-4">
-        <h3 class="text-xs font-extrabold uppercase tracking-wider text-slate-500 flex items-center gap-2">📁 Balances by Account</h3>
+        <h3 class="text-xs font-black uppercase tracking-wider text-cyan-300/80 flex items-center gap-2">📁 Balances by Account</h3>
         <div id="accountsGrid" class="flex flex-wrap gap-3 mt-3"></div>
     </div>
 
-    <!-- Tab bar -->
-    <div class="flex gap-2 bg-white/70 dark:bg-slate-800/50 backdrop-blur-xl rounded-2xl p-1 shadow-lg border border-slate-200 dark:border-slate-700">
-        <button id="tabAddBtn" class="tab-active flex-1 py-3 rounded-xl text-sm font-extrabold transition-all duration-200">➕ Add</button>
-        <button id="tabReportBtn" class="flex-1 py-3 rounded-xl text-sm font-bold text-slate-600 dark:text-slate-300 transition-all duration-200">📊 Reports</button>
+    <!-- Tab Bar -->
+    <div class="flex gap-2 bg-slate-900/50 backdrop-blur-xl rounded-2xl p-1 border border-slate-700">
+        <button id="tabAddBtn" class="tab-active flex-1 py-3 rounded-xl text-sm font-bold transition-all">➕ Add</button>
+        <button id="tabReportBtn" class="flex-1 py-3 rounded-xl text-sm font-bold text-slate-300 transition-all">📊 Reports</button>
     </div>
 
     <!-- ADD ENTRY PANEL -->
     <div id="addPanel" class="glass-premium p-5 space-y-5">
         <form id="entryForm" class="space-y-4">
             <div class="grid grid-cols-2 gap-3">
-                <div><label class="text-[10px] font-extrabold text-slate-500 uppercase">Date</label><input type="date" id="date" class="input-mobile w-full text-sm"></div>
-                <div><label class="text-[10px] font-extrabold text-slate-500 uppercase">Mode</label><select id="mode" class="input-mobile w-full text-sm"><option value="UPI">UPI</option><option value="CASH">CASH</option><option value="BANK">BANK</option></select></div>
+                <div><label class="text-[10px] font-bold text-cyan-300/80 uppercase">Date</label><input type="date" id="date" class="input-mobile w-full text-sm"></div>
+                <div><label class="text-[10px] font-bold text-cyan-300/80 uppercase">Mode</label><select id="mode" class="input-mobile w-full text-sm"><option value="UPI">UPI</option><option value="CASH">CASH</option><option value="BANK">BANK</option></select></div>
             </div>
             <div class="grid grid-cols-2 gap-3">
-                <div><label class="text-[10px] font-extrabold text-slate-500 uppercase">Account</label><select id="account" required class="input-mobile w-full"><option value="">Select</option></select></div>
-                <div><label class="text-[10px] font-extrabold text-slate-500 uppercase">Category</label><select id="particulars" required class="input-mobile w-full"><option value="">Choose account</option></select></div>
+                <div><label class="text-[10px] font-bold text-cyan-300/80 uppercase">Account</label><select id="account" required class="input-mobile w-full"><option value="">Select</option></select></div>
+                <div><label class="text-[10px] font-bold text-cyan-300/80 uppercase">Category</label><select id="particulars" required class="input-mobile w-full"><option value="">Choose account</option></select></div>
             </div>
             <div class="grid grid-cols-2 gap-3">
-                <div><label class="text-[10px] font-extrabold text-emerald-700 uppercase">Income (₹)</label><input type="number" id="creditAmount" placeholder="0" step="any" class="input-mobile w-full"></div>
-                <div><label class="text-[10px] font-extrabold text-rose-700 uppercase">Expense (₹)</label><input type="number" id="debitAmount" placeholder="0" step="any" class="input-mobile w-full"></div>
+                <div><label class="text-[10px] font-bold text-emerald-400 uppercase">Income (₹)</label><input type="number" id="creditAmount" placeholder="0" step="any" class="input-mobile w-full"></div>
+                <div><label class="text-[10px] font-bold text-rose-400 uppercase">Expense (₹)</label><input type="number" id="debitAmount" placeholder="0" step="any" class="input-mobile w-full"></div>
             </div>
-            <div><label class="text-[10px] font-extrabold text-slate-500 uppercase">Note / Payee</label><textarea id="note" rows="2" placeholder="Optional" class="input-mobile w-full resize-none"></textarea></div>
+            <div><label class="text-[10px] font-bold text-cyan-300/80 uppercase">Note / Payee</label><textarea id="note" rows="2" placeholder="Optional" class="input-mobile w-full resize-none"></textarea></div>
 
-            <!-- UPI App Icons (horizontal tappable boxes) -->
+            <!-- UPI App Icons as tappable boxes -->
             <div>
-                <label class="text-[10px] font-extrabold text-slate-500 uppercase mb-2 block">Pay with UPI</label>
+                <label class="text-[10px] font-bold text-cyan-300/80 uppercase mb-2 block">Instant UPI Pay</label>
                 <div class="flex gap-3">
-                    <button type="button" onclick="openUpiApp('gpay')" class="upi-icon-btn">
-                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M4 4H20V20H4V4Z" fill="#4285F4"/>
-                            <path d="M12 8L16 12L12 16L8 12L12 8Z" fill="white"/>
-                        </svg>
-                        <span>GPay</span>
-                    </button>
-                    <button type="button" onclick="openUpiApp('phonepe')" class="upi-icon-btn">
-                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="12" cy="12" r="10" fill="#5F259F"/>
-                            <path d="M12 6L14 10H10L12 6Z" fill="white"/>
-                        </svg>
-                        <span>PhonePe</span>
-                    </button>
-                    <button type="button" onclick="openUpiApp('paytm')" class="upi-icon-btn">
-                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <rect x="4" y="6" width="16" height="12" rx="2" fill="#00BAF2"/>
-                            <path d="M12 10H16V14H12V10Z" fill="white"/>
-                        </svg>
-                        <span>Paytm</span>
-                    </button>
+                    <button type="button" onclick="openUpiApp('gpay')" class="upi-icon-box flex flex-col items-center gap-1"><span class="text-xl">💚</span><span class="text-[10px] font-bold">GPay</span></button>
+                    <button type="button" onclick="openUpiApp('phonepe')" class="upi-icon-box flex flex-col items-center gap-1"><span class="text-xl">🟠</span><span class="text-[10px] font-bold">PhonePe</span></button>
+                    <button type="button" onclick="openUpiApp('paytm')" class="upi-icon-box flex flex-col items-center gap-1"><span class="text-xl">🔵</span><span class="text-[10px] font-bold">Paytm</span></button>
                 </div>
             </div>
 
             <!-- QR Scan Button -->
-            <button type="button" id="scanQrBtn" class="btn-secondary w-full flex items-center justify-center gap-2">📷 Scan QR Code (UPI)</button>
-            <div id="qr-reader" class="qr-reader-container hidden mt-2 rounded-xl overflow-hidden border border-slate-300"></div>
+            <button type="button" id="scanQrBtn" class="btn-secondary w-full flex items-center justify-center gap-2">📷 Scan UPI QR Code</button>
+            <div id="qr-reader" class="hidden mt-2 rounded-xl overflow-hidden border border-cyan-500/40"></div>
 
-            <button type="submit" class="btn-primary w-full text-base">➕ Add Transaction</button>
+            <button type="submit" class="btn-primary w-full text-base font-black">➕ Add Transaction</button>
         </form>
     </div>
 
     <!-- MONTHLY REPORT PANEL -->
     <div id="reportPanel" class="glass-premium p-5 hidden space-y-4">
         <div class="grid grid-cols-2 gap-3">
-            <div><label class="text-[10px] font-extrabold uppercase">📅 Month</label><input type="month" id="reportMonth" class="input-mobile w-full"></div>
-            <div><label class="text-[10px] font-extrabold uppercase">🏦 Account</label><select id="filterAccount" class="input-mobile w-full"><option value="all">All</option></select></div>
-            <div><label class="text-[10px] font-extrabold uppercase">📂 Category</label><select id="filterCategory" class="input-mobile w-full"><option value="all">All</option></select></div>
-            <div class="flex items-end"><button id="applyReportBtn" class="bg-indigo-700/90 w-full py-3 rounded-2xl font-bold text-sm shadow-md transition hover:scale-[0.98]">Apply</button></div>
+            <div><label class="text-[10px] font-bold text-cyan-300/80 uppercase">📅 Month</label><input type="month" id="reportMonth" class="input-mobile w-full"></div>
+            <div><label class="text-[10px] font-bold text-cyan-300/80 uppercase">🏦 Account</label><select id="filterAccount" class="input-mobile w-full"><option value="all">All</option></select></div>
+            <div><label class="text-[10px] font-bold text-cyan-300/80 uppercase">📂 Category</label><select id="filterCategory" class="input-mobile w-full"><option value="all">All</option></select></div>
+            <div class="flex items-end"><button id="applyReportBtn" class="btn-secondary w-full py-3 font-bold">Apply</button></div>
         </div>
         <div class="grid grid-cols-2 gap-3">
-            <div class="glass-card p-3 text-center"><span class="text-xs font-bold text-slate-500">Income</span><br><span id="reportIncome" class="text-xl font-black text-emerald-700">₹0</span></div>
-            <div class="glass-card p-3 text-center"><span class="text-xs font-bold text-slate-500">Expense</span><br><span id="reportExpense" class="text-xl font-black text-rose-700">₹0</span></div>
+            <div class="glass-card p-3 text-center"><span class="text-xs font-bold text-cyan-300/70">Income</span><br><span id="reportIncome" class="text-xl font-black text-emerald-400">₹0</span></div>
+            <div class="glass-card p-3 text-center"><span class="text-xs font-bold text-cyan-300/70">Expense</span><br><span id="reportExpense" class="text-xl font-black text-rose-400">₹0</span></div>
         </div>
         <div class="max-h-80 overflow-y-auto rounded-2xl">
             <table class="w-full text-sm">
-                <thead class="text-slate-500 border-b border-slate-200 dark:border-slate-700"><tr><th class="py-2 text-left">Date</th><th class="text-left">Account</th><th class="text-left">Category</th><th class="text-right">Amount</th></tr></thead>
+                <thead class="text-cyan-300/70 border-b border-cyan-800/50"><tr><th class="py-2 text-left">Date</th><th class="text-left">Account</th><th class="text-left">Category</th><th class="text-right">Amount</th></tr></thead>
                 <tbody id="reportTableBody"></tbody>
             </table>
         </div>
@@ -271,148 +248,229 @@
 <div id="toastMsg" class="toast">✓ Transaction added</div>
 
 <script>
-    // ---------- CONFIG ----------
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxzuIdvHuU1Y7SeXxRzzHSMIuw3ArUw9jtIzheyy9URTOumRdRSDcJSwLZXECe2CVO7/exec";
+    // ==================== CONFIGURATION ====================
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxzuIdvHuU1Y7SeXxRzzHSMIuw3ArUw9jtIzheyy9URTOumRdRSDcJSwLZXECe2CVO7/exec"; // Replace with your own
     const UPI_ID = "ajith@upi";
     let masterConfig = {};
     let allEntries = [];
     let html5QrCode = null;
+    let isScanning = false;
 
+    // Helper: format INR
     const formatINR = (val) => new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(val || 0);
-    const formatDateDMY = (d) => { if(!d) return '—'; let x=new Date(d); return `${x.getDate()}-${x.getMonth()+1}-${x.getFullYear()}`; };
-    function showToast(msg) { let t=document.getElementById('toastMsg'); t.innerHTML=`✓ ${msg}`; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2500); }
+    // Display date as DD-MM-YYYY
+    function formatDateDMY(dateStr) {
+        if (!dateStr) return '—';
+        let d = new Date(dateStr);
+        if (isNaN(d)) return dateStr;
+        return `${d.getDate().toString().padStart(2,'0')}-${(d.getMonth()+1).toString().padStart(2,'0')}-${d.getFullYear()}`;
+    }
 
-    // Cache & background sync (unchanged)
-    function saveCache() { localStorage.setItem('udees_entries',JSON.stringify(allEntries)); localStorage.setItem('udees_config',JSON.stringify(masterConfig)); }
-    function loadCache() { let e=localStorage.getItem('udees_entries'), c=localStorage.getItem('udees_config'); if(e) allEntries=JSON.parse(e); if(c) masterConfig=JSON.parse(c); return !!e; }
+    function showToast(msg) {
+        const toast = document.getElementById('toastMsg');
+        toast.innerHTML = `✓ ${msg}`;
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2500);
+    }
+
+    // ========== CACHE & BACKGROUND SYNC ==========
+    function saveCache() {
+        localStorage.setItem('udees_entries', JSON.stringify(allEntries));
+        localStorage.setItem('udees_config', JSON.stringify(masterConfig));
+    }
+    function loadCache() {
+        const e = localStorage.getItem('udees_entries');
+        const c = localStorage.getItem('udees_config');
+        if (e) allEntries = JSON.parse(e);
+        if (c) masterConfig = JSON.parse(c);
+        return !!e;
+    }
     async function backgroundSync() {
         try {
-            let [entriesRes, settingsRes] = await Promise.all([fetch(`${SCRIPT_URL}?action=getEntries`).then(r=>r.json()).catch(()=>[]), fetch(`${SCRIPT_URL}?action=getSettings`).then(r=>r.json()).catch(()=>({}))]);
-            let remoteEntries = Array.isArray(entriesRes)?entriesRes:[];
-            let remoteConfig = settingsRes.config||{};
-            let map = new Map(); allEntries.forEach(e=>{if(e.id) map.set(e.id,e);});
-            remoteEntries.forEach(r=>{if(r.id) map.set(r.id,r);});
-            allEntries = Array.from(map.values()).sort((a,b)=>new Date(b.date)-new Date(a.date));
+            const [entriesRes, settingsRes] = await Promise.all([
+                fetch(`${SCRIPT_URL}?action=getEntries`).then(r => r.json()).catch(() => []),
+                fetch(`${SCRIPT_URL}?action=getSettings`).then(r => r.json()).catch(() => ({}))
+            ]);
+            let remoteEntries = Array.isArray(entriesRes) ? entriesRes : [];
+            const remoteConfig = settingsRes.config || {};
+            const map = new Map();
+            allEntries.forEach(e => { if (e.id) map.set(e.id, e); });
+            remoteEntries.forEach(r => { if (r.id) map.set(r.id, r); });
+            allEntries = Array.from(map.values()).sort((a,b) => new Date(b.date) - new Date(a.date));
             masterConfig = remoteConfig;
-            saveCache(); renderAllUI();
-        } catch(e) { console.warn(e); }
+            saveCache();
+            renderAllUI();
+        } catch (err) { console.warn("Sync error", err); }
     }
+
     async function addEntryLocal(entry) {
-        let tempId = 'local_'+Date.now()+'_'+Math.random();
-        allEntries.unshift({...entry, id:tempId});
-        saveCache(); renderAllUI();
-        fetch(SCRIPT_URL, {method:"POST", mode:"no-cors", headers:{"Content-Type":"text/plain"}, body:JSON.stringify({date:entry.date, mode:entry.mode, account:entry.account, particulars:entry.particulars, credit:entry.credit, debit:entry.debit, note:entry.note})}).catch(()=>{});
-        setTimeout(()=>backgroundSync(),1500);
+        const tempId = 'local_' + Date.now() + '_' + Math.random();
+        allEntries.unshift({ ...entry, id: tempId });
+        saveCache();
+        renderAllUI();
+        // Send to server
+        fetch(SCRIPT_URL, {
+            method: "POST",
+            mode: "no-cors",
+            headers: { "Content-Type": "text/plain" },
+            body: JSON.stringify({ date: entry.date, mode: entry.mode, account: entry.account, particulars: entry.particulars, credit: entry.credit, debit: entry.debit, note: entry.note })
+        }).catch(() => {});
+        setTimeout(() => backgroundSync(), 1500);
         showToast("Transaction saved & synced");
     }
 
-    // UI rendering functions
-    function computeTotals() { let inc=0,exp=0; allEntries.forEach(e=>{inc+=e.credit||0; exp+=e.debit||0;}); return {inc,exp,balance:inc-exp}; }
-    function avgDailySpend() { if(!allEntries.length) return 0; let totalExp=0, days=new Set(); allEntries.forEach(e=>{totalExp+=e.debit||0; if(e.date) days.add(e.date);}); return totalExp/(days.size||1); }
+    // ========== UI RENDERING ==========
+    function computeTotals() {
+        let inc = 0, exp = 0;
+        allEntries.forEach(e => { inc += e.credit || 0; exp += e.debit || 0; });
+        return { inc, exp, balance: inc - exp };
+    }
+    function avgDailySpend() {
+        if (!allEntries.length) return 0;
+        let totalExp = 0, days = new Set();
+        allEntries.forEach(e => { totalExp += e.debit || 0; if (e.date) days.add(e.date); });
+        return totalExp / (days.size || 1);
+    }
     function renderAccountBreaks() {
-        let map = new Map();
-        allEntries.forEach(e=>{ if(!e.account) return; if(!map.has(e.account)) map.set(e.account,{inc:0,exp:0}); let d=map.get(e.account); d.inc+=e.credit||0; d.exp+=e.debit||0; });
-        let container = document.getElementById('accountsGrid');
-        if(!map.size) { container.innerHTML='<div class="text-xs text-slate-400">No accounts</div>'; return; }
-        let totalExpAll = 0; for(let v of map.values()) totalExpAll += v.exp;
+        const map = new Map();
+        allEntries.forEach(e => {
+            if (!e.account) return;
+            if (!map.has(e.account)) map.set(e.account, { inc: 0, exp: 0 });
+            const d = map.get(e.account);
+            d.inc += e.credit || 0;
+            d.exp += e.debit || 0;
+        });
+        const container = document.getElementById('accountsGrid');
+        if (!map.size) { container.innerHTML = '<div class="text-xs text-slate-400">No accounts yet</div>'; return; }
+        const totalExpAll = Array.from(map.values()).reduce((sum, v) => sum + v.exp, 0);
         let html = '';
-        for(let [acc,val] of map.entries()) {
-            let percent = totalExpAll>0 ? (val.exp/totalExpAll)*100 : 0;
-            html += `<div class="account-card"><div class="flex justify-between items-start"><div class="font-extrabold text-indigo-800 dark:text-indigo-300">${acc}</div><div class="text-right"><div class="text-xs font-bold text-emerald-700">+${formatINR(val.inc)}</div><div class="text-xs font-bold text-rose-700">-${formatINR(val.exp)}</div></div></div><div class="progress-bar mt-2"><div class="progress-fill" style="width:${Math.min(percent,100)}%"></div></div></div>`;
+        for (let [acc, val] of map.entries()) {
+            const percent = totalExpAll > 0 ? (val.exp / totalExpAll) * 100 : 0;
+            html += `
+                <div class="account-card flex-1 min-w-[140px]">
+                    <div class="flex justify-between items-center">
+                        <span class="font-bold text-cyan-200">${acc}</span>
+                        <div class="text-right">
+                            <div class="text-xs text-emerald-400">+${formatINR(val.inc)}</div>
+                            <div class="text-xs text-rose-400">-${formatINR(val.exp)}</div>
+                        </div>
+                    </div>
+                    <div class="progress-bar-custom mt-2"><div class="progress-fill" style="width: ${percent}%"></div></div>
+                </div>
+            `;
         }
         container.innerHTML = html;
     }
     function populateDropdowns() {
-        let accounts = Object.keys(masterConfig);
-        let accSel=document.getElementById('account'), fAcc=document.getElementById('filterAccount');
-        if(accounts.length){
-            accSel.innerHTML='<option value="" disabled selected>Select account</option>'+accounts.map(a=>`<option value="${a}">${a}</option>`).join('');
-            fAcc.innerHTML='<option value="all">All Accounts</option>'+accounts.map(a=>`<option value="${a}">${a}</option>`).join('');
-        } else { accSel.innerHTML='<option>No accounts</option>'; fAcc.innerHTML='<option value="all">All</option>'; }
+        const accounts = Object.keys(masterConfig);
+        const accSel = document.getElementById('account');
+        const filterAcc = document.getElementById('filterAccount');
+        if (accounts.length) {
+            accSel.innerHTML = '<option value="" disabled selected>Select account</option>' + accounts.map(a => `<option value="${a}">${a}</option>`).join('');
+            filterAcc.innerHTML = '<option value="all">All Accounts</option>' + accounts.map(a => `<option value="${a}">${a}</option>`).join('');
+        } else {
+            accSel.innerHTML = '<option>No accounts</option>';
+            filterAcc.innerHTML = '<option value="all">All</option>';
+        }
         updateParticulars();
     }
-    function updateParticulars() { let acc=document.getElementById('account').value, partSel=document.getElementById('particulars'); if(acc && masterConfig[acc]) partSel.innerHTML='<option value="" disabled selected>Select category</option>'+masterConfig[acc].map(p=>`<option value="${p}">${p}</option>`).join(''); else partSel.innerHTML='<option value="">Choose account first</option>'; }
+    function updateParticulars() {
+        const acc = document.getElementById('account').value;
+        const partSel = document.getElementById('particulars');
+        if (acc && masterConfig[acc]) {
+            partSel.innerHTML = '<option value="" disabled selected>Select category</option>' + masterConfig[acc].map(p => `<option value="${p}">${p}</option>`).join('');
+        } else {
+            partSel.innerHTML = '<option value="">Choose account first</option>';
+        }
+    }
     function renderAllUI() {
-        let {inc,exp,balance}=computeTotals();
-        document.getElementById('totalIncome').innerHTML=formatINR(inc);
-        document.getElementById('totalExpense').innerHTML=formatINR(exp);
-        document.getElementById('netBalance').innerHTML=formatINR(balance);
-        document.getElementById('avgDailySpend').innerHTML=formatINR(avgDailySpend());
-        renderAccountBreaks(); populateDropdowns();
-        if(!document.getElementById('reportPanel').classList.contains('hidden')) applyReportFilters();
+        const { inc, exp, balance } = computeTotals();
+        document.getElementById('totalIncome').innerHTML = formatINR(inc);
+        document.getElementById('totalExpense').innerHTML = formatINR(exp);
+        document.getElementById('netBalance').innerHTML = formatINR(balance);
+        document.getElementById('avgDailySpend').innerHTML = formatINR(avgDailySpend());
+        renderAccountBreaks();
+        populateDropdowns();
+        if (!document.getElementById('reportPanel').classList.contains('hidden')) applyReportFilters();
     }
 
-    // Report filters
+    // ========== REPORT FILTERS ==========
     function updateFilterCategories() {
-        let fAcc = document.getElementById('filterAccount').value, catSel = document.getElementById('filterCategory');
-        if(fAcc==='all') {
-            let allCats = new Set(); allEntries.forEach(e=>{if(e.particulars) allCats.add(e.particulars);});
-            catSel.innerHTML = '<option value="all">All Categories</option>'+Array.from(allCats).map(c=>`<option value="${c}">${c}</option>`).join('');
+        const fAcc = document.getElementById('filterAccount').value;
+        const catSel = document.getElementById('filterCategory');
+        if (fAcc === 'all') {
+            const allCats = new Set();
+            allEntries.forEach(e => { if (e.particulars) allCats.add(e.particulars); });
+            catSel.innerHTML = '<option value="all">All Categories</option>' + Array.from(allCats).map(c => `<option value="${c}">${c}</option>`).join('');
         } else {
-            let cats = masterConfig[fAcc]||[];
-            catSel.innerHTML = '<option value="all">All Categories</option>'+cats.map(c=>`<option value="${c}">${c}</option>`).join('');
+            const cats = masterConfig[fAcc] || [];
+            catSel.innerHTML = '<option value="all">All Categories</option>' + cats.map(c => `<option value="${c}">${c}</option>`).join('');
         }
     }
     function applyReportFilters() {
-        let monthVal = document.getElementById('reportMonth').value;
-        if(!monthVal) return;
-        let [year,month] = monthVal.split('-');
-        let accFilter = document.getElementById('filterAccount').value, catFilter = document.getElementById('filterCategory').value;
-        let filtered = allEntries.filter(e=>{
-            if(!e.date) return false;
-            let d=new Date(e.date);
-            if(d.getFullYear()!=year || (d.getMonth()+1)!=parseInt(month)) return false;
-            if(accFilter!=='all' && e.account!==accFilter) return false;
-            if(catFilter!=='all' && e.particulars!==catFilter) return false;
+        const monthVal = document.getElementById('reportMonth').value;
+        if (!monthVal) return;
+        const [year, month] = monthVal.split('-');
+        const accFilter = document.getElementById('filterAccount').value;
+        const catFilter = document.getElementById('filterCategory').value;
+        const filtered = allEntries.filter(e => {
+            if (!e.date) return false;
+            const d = new Date(e.date);
+            if (d.getFullYear() != year || (d.getMonth()+1) != parseInt(month)) return false;
+            if (accFilter !== 'all' && e.account !== accFilter) return false;
+            if (catFilter !== 'all' && e.particulars !== catFilter) return false;
             return true;
         });
-        let incSum=0, expSum=0;
-        filtered.forEach(e=>{incSum+=e.credit||0; expSum+=e.debit||0;});
-        document.getElementById('reportIncome').innerHTML=formatINR(incSum);
-        document.getElementById('reportExpense').innerHTML=formatINR(expSum);
-        let tbody=document.getElementById('reportTableBody');
-        if(!filtered.length) { tbody.innerHTML='<tr><td colspan="4" class="text-center py-5 text-slate-400">No entries</td></tr>'; return; }
-        tbody.innerHTML = filtered.map(e=>{
-            let amt = (e.credit||0)>0 ? e.credit : e.debit;
-            let cls = (e.credit||0)>0 ? 'text-emerald-700' : 'text-rose-700';
-            return `<tr class="border-b border-slate-100 dark:border-slate-700/50"><td class="py-2 text-xs font-semibold">${formatDateDMY(e.date)}</td><td class="py-2 font-medium">${e.account}</td><td class="py-2">${e.particulars}</td><td class="py-2 text-right font-extrabold ${cls}">${formatINR(amt)}</td></tr>`;
+        let incSum = 0, expSum = 0;
+        filtered.forEach(e => { incSum += e.credit || 0; expSum += e.debit || 0; });
+        document.getElementById('reportIncome').innerHTML = formatINR(incSum);
+        document.getElementById('reportExpense').innerHTML = formatINR(expSum);
+        const tbody = document.getElementById('reportTableBody');
+        if (!filtered.length) {
+            tbody.innerHTML = '<tr><td colspan="4" class="text-center py-5 text-slate-400">No entries</td></tr>';
+            return;
+        }
+        tbody.innerHTML = filtered.map(e => {
+            const amount = (e.credit || 0) > 0 ? e.credit : e.debit;
+            const cls = (e.credit || 0) > 0 ? 'text-emerald-400' : 'text-rose-400';
+            return `<tr class="border-b border-cyan-800/30"><td class="py-2 text-xs">${formatDateDMY(e.date)}</td><td class="py-2">${e.account}</td><td class="py-2">${e.particulars}</td><td class="py-2 text-right font-bold ${cls}">${formatINR(amount)}</td></tr>`;
         }).join('');
     }
 
-    // Form submit
-    document.getElementById('entryForm').addEventListener('submit', async(e)=>{
+    // ========== FORM SUBMIT ==========
+    document.getElementById('entryForm').addEventListener('submit', async (e) => {
         e.preventDefault();
-        let date = document.getElementById('date').value;
-        let mode = document.getElementById('mode').value;
-        let account = document.getElementById('account').value;
-        let particulars = document.getElementById('particulars').value;
-        let credit = parseFloat(document.getElementById('creditAmount').value)||0;
-        let debit = parseFloat(document.getElementById('debitAmount').value)||0;
-        let note = document.getElementById('note').value;
-        if(!date||!account||!particulars) { alert("Fill date, account & category"); return; }
-        if(credit>0 && debit>0) { alert("Can't have both income & expense"); return; }
-        if(credit===0 && debit===0) { alert("Enter either income or expense"); return; }
-        await addEntryLocal({date,mode,account,particulars,credit,debit,note});
-        document.getElementById('creditAmount').value=''; document.getElementById('debitAmount').value=''; document.getElementById('note').value='';
-        document.getElementById('date').valueAsDate=new Date();
+        const date = document.getElementById('date').value;
+        const mode = document.getElementById('mode').value;
+        const account = document.getElementById('account').value;
+        const particulars = document.getElementById('particulars').value;
+        let credit = parseFloat(document.getElementById('creditAmount').value) || 0;
+        let debit = parseFloat(document.getElementById('debitAmount').value) || 0;
+        const note = document.getElementById('note').value;
+        if (!date || !account || !particulars) { alert("Fill date, account & category"); return; }
+        if (credit > 0 && debit > 0) { alert("Can't have both income & expense"); return; }
+        if (credit === 0 && debit === 0) { alert("Enter either income or expense"); return; }
+        await addEntryLocal({ date, mode, account, particulars, credit, debit, note });
+        document.getElementById('creditAmount').value = '';
+        document.getElementById('debitAmount').value = '';
+        document.getElementById('note').value = '';
+        document.getElementById('date').valueAsDate = new Date();
     });
 
-    // UPI App Icons: open respective app
+    // ========== UPI DEEP LINKS ==========
     window.openUpiApp = function(app) {
         let amount = parseFloat(document.getElementById('debitAmount').value) || parseFloat(document.getElementById('creditAmount').value);
-        if(!amount || amount<=0) { alert("Enter amount in Income or Expense field first"); return; }
+        if (!amount || amount <= 0) { alert("Enter amount in Income/Expense field first"); return; }
         let note = document.getElementById('note').value || "Udees Pro";
         let upiUrl = `upi://pay?pa=${UPI_ID}&pn=Udees%20Pro&am=${amount}&tn=${encodeURIComponent(note)}&cu=INR`;
-        if(app === 'gpay') upiUrl += '&pkg=com.google.android.apps.nbu.pay';
-        if(app === 'phonepe') upiUrl += '&pkg=com.phonepe.app';
-        if(app === 'paytm') upiUrl += '&pkg=net.one97.paytm';
+        if (app === 'gpay') upiUrl += '&pkg=com.google.android.apps.nbu.pay';
+        if (app === 'phonepe') upiUrl += '&pkg=com.phonepe.app';
+        if (app === 'paytm') upiUrl += '&pkg=net.one97.paytm';
         window.location.href = upiUrl;
     };
 
-    // QR Code Scanning
+    // ========== QR SCANNER ==========
     const qrReaderDiv = document.getElementById('qr-reader');
-    let isScanning = false;
-
     document.getElementById('scanQrBtn').onclick = async () => {
         if (isScanning) {
             if (html5QrCode) await html5QrCode.stop();
@@ -427,43 +485,36 @@
                 { facingMode: "environment" },
                 { fps: 10, qrbox: 250 },
                 (decodedText) => {
-                    // Stop scanner after successful read
                     html5QrCode.stop();
                     qrReaderDiv.classList.add('hidden');
                     isScanning = false;
                     parseUpiQr(decodedText);
                 },
-                (error) => { /* ignore errors, just keep scanning */ }
+                () => {}
             );
             isScanning = true;
         } catch (err) {
-            console.error("Camera error", err);
-            alert("Could not start camera. Please ensure HTTPS and grant permission.");
+            alert("Camera error. Please ensure HTTPS and grant permission.");
             qrReaderDiv.classList.add('hidden');
         }
     };
-
     function parseUpiQr(qrString) {
-        // Example: upi://pay?pa=merchant@okhdfcbank&pn=Bookstore&am=299.00&cu=INR
         try {
             let url = new URL(qrString);
             if (url.protocol === 'upi:') {
                 let params = new URLSearchParams(url.search);
-                let payee = params.get('pa');
                 let amount = params.get('am');
-                let name = params.get('pn');
+                let payee = params.get('pa');
                 if (amount) document.getElementById('debitAmount').value = parseFloat(amount);
-                if (payee) document.getElementById('note').value = `Pay to: ${payee} ${name ? '('+name+')' : ''}`;
-                showToast("QR scanned: amount & payee filled");
+                if (payee) document.getElementById('note').value = `Pay to: ${payee}`;
+                showToast("QR scanned: amount filled");
             } else {
                 alert("Not a valid UPI QR code");
             }
-        } catch(e) {
-            alert("Invalid QR data");
-        }
+        } catch(e) { alert("Invalid QR data"); }
     }
 
-    // Tab switching
+    // ========== TAB SWITCHING ==========
     const addPanel = document.getElementById('addPanel');
     const reportPanel = document.getElementById('reportPanel');
     const tabAdd = document.getElementById('tabAddBtn');
@@ -473,25 +524,32 @@
         reportPanel.classList.add('hidden');
         tabAdd.classList.add('tab-active');
         tabReport.classList.remove('tab-active');
-        if (isScanning && html5QrCode) { html5QrCode.stop(); qrReaderDiv.classList.add('hidden'); isScanning=false; }
+        if (isScanning && html5QrCode) { html5QrCode.stop(); qrReaderDiv.classList.add('hidden'); isScanning = false; }
     };
     tabReport.onclick = () => {
         addPanel.classList.add('hidden');
         reportPanel.classList.remove('hidden');
         tabReport.classList.add('tab-active');
         tabAdd.classList.remove('tab-active');
-        if(!document.getElementById('reportMonth').value){
-            let now=new Date(); document.getElementById('reportMonth').value=`${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+        if (!document.getElementById('reportMonth').value) {
+            const now = new Date();
+            document.getElementById('reportMonth').value = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
         }
-        updateFilterCategories(); applyReportFilters();
+        updateFilterCategories();
+        applyReportFilters();
     };
-    document.getElementById('filterAccount').addEventListener('change', ()=>{ updateFilterCategories(); applyReportFilters(); });
+    document.getElementById('filterAccount').addEventListener('change', () => { updateFilterCategories(); applyReportFilters(); });
     document.getElementById('filterCategory').addEventListener('change', applyReportFilters);
     document.getElementById('applyReportBtn').addEventListener('click', applyReportFilters);
     document.getElementById('account').addEventListener('change', updateParticulars);
 
-    // Initialization
-    (async()=>{ if(loadCache()) renderAllUI(); await backgroundSync(); document.getElementById('date').valueAsDate=new Date(); renderAllUI(); })();
+    // ========== INIT ==========
+    (async () => {
+        if (loadCache()) renderAllUI();
+        await backgroundSync();
+        document.getElementById('date').valueAsDate = new Date();
+        renderAllUI();
+    })();
 </script>
 </body>
 </html>
