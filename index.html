@@ -5,33 +5,75 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
   <title>Udees Pro — Money Manager</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #f3f7fb;
-      --bg-accent: rgba(15, 140, 131, 0.1);
+      color-scheme: light;
+      --bg: #f5f7fb;
+      --bg-secondary: #edf2f8;
       --surface: rgba(255, 255, 255, 0.88);
       --surface-strong: #ffffff;
-      --surface-soft: #f7fafc;
-      --text-main: #0f172a;
-      --text-muted: #64748b;
-      --text-soft: #94a3b8;
-      --border: rgba(148, 163, 184, 0.2);
-      --border-strong: rgba(148, 163, 184, 0.34);
-      --shadow-card: 0 24px 60px -32px rgba(15, 23, 42, 0.35);
-      --shadow-soft: 0 14px 30px -20px rgba(15, 23, 42, 0.24);
-      --accent: #0f8c83;
-      --accent-strong: #0a6f68;
-      --income: #059669;
-      --expense: #e11d48;
-      --teal: #0f766e;
+      --surface-muted: #f6f8fc;
+      --text-primary: #0f172a;
+      --text-secondary: #5f6f86;
+      --text-tertiary: #8c9aae;
+      --border: rgba(123, 140, 168, 0.18);
+      --border-strong: rgba(123, 140, 168, 0.28);
+      --accent: #0f766e;
+      --accent-2: #0ea5a4;
+      --accent-soft: rgba(14, 165, 164, 0.12);
+      --income: #0f9f6e;
+      --expense: #ef476f;
+      --warning: #ffb020;
+      --shadow-lg: 0 32px 60px -36px rgba(17, 24, 39, 0.28);
+      --shadow-md: 0 18px 40px -28px rgba(17, 24, 39, 0.24);
+      --shadow-sm: 0 12px 28px -24px rgba(17, 24, 39, 0.18);
+      --hero-grad: linear-gradient(135deg, #07203f 0%, #0f766e 52%, #1fb6aa 100%);
+      --hero-ring: rgba(255, 255, 255, 0.16);
+      --stat-grad: linear-gradient(180deg, rgba(255,255,255,0.7), rgba(255,255,255,0.28));
+      --card-grad: linear-gradient(180deg, rgba(255,255,255,0.78), rgba(255,255,255,0.52));
+      --table-head: rgba(241, 245, 249, 0.82);
+      --toast-bg: rgba(255,255,255,0.82);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        color-scheme: dark;
+        --bg: #07111d;
+        --bg-secondary: #0b1727;
+        --surface: rgba(12, 22, 38, 0.82);
+        --surface-strong: #0f1b2d;
+        --surface-muted: #0b1525;
+        --text-primary: #edf4ff;
+        --text-secondary: #9eb0c9;
+        --text-tertiary: #6f83a0;
+        --border: rgba(124, 146, 180, 0.18);
+        --border-strong: rgba(124, 146, 180, 0.28);
+        --accent: #2dd4bf;
+        --accent-2: #38bdf8;
+        --accent-soft: rgba(45, 212, 191, 0.14);
+        --income: #34d399;
+        --expense: #fb7185;
+        --warning: #ffd166;
+        --shadow-lg: 0 32px 70px -38px rgba(0, 0, 0, 0.72);
+        --shadow-md: 0 18px 44px -30px rgba(0, 0, 0, 0.62);
+        --shadow-sm: 0 12px 28px -22px rgba(0, 0, 0, 0.5);
+        --hero-grad: linear-gradient(135deg, #081829 0%, #0d4e66 45%, #128774 100%);
+        --hero-ring: rgba(255, 255, 255, 0.12);
+        --stat-grad: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+        --card-grad: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.015));
+        --table-head: rgba(19, 31, 50, 0.88);
+        --toast-bg: rgba(14, 24, 40, 0.86);
+      }
     }
 
     * {
-      font-family: 'Inter', system-ui, sans-serif;
       box-sizing: border-box;
       min-width: 0;
       -webkit-tap-highlight-color: transparent;
+      font-family: 'Manrope', system-ui, sans-serif;
     }
 
     html, body {
@@ -42,13 +84,13 @@
     body {
       margin: 0;
       min-height: 100vh;
-      padding: clamp(0.8rem, 2.4vw, 1.25rem);
-      padding-bottom: calc(1.2rem + env(safe-area-inset-bottom));
-      color: var(--text-main);
+      color: var(--text-primary);
       background:
-        radial-gradient(circle at top left, rgba(20, 184, 166, 0.2), transparent 28%),
-        radial-gradient(circle at top right, rgba(14, 165, 233, 0.12), transparent 24%),
-        linear-gradient(180deg, #f8fbff 0%, var(--bg) 100%);
+        radial-gradient(circle at top left, rgba(56, 189, 248, 0.1), transparent 24%),
+        radial-gradient(circle at top right, rgba(45, 212, 191, 0.14), transparent 28%),
+        linear-gradient(180deg, var(--bg) 0%, var(--bg-secondary) 100%);
+      padding: 1rem;
+      padding-bottom: calc(1rem + env(safe-area-inset-bottom));
       position: relative;
     }
 
@@ -58,44 +100,8 @@
       inset: 0;
       pointer-events: none;
       background:
-        linear-gradient(rgba(255,255,255,0.28), rgba(255,255,255,0)),
-        radial-gradient(circle at 50% 0%, rgba(255,255,255,0.4), transparent 42%);
-    }
-
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --bg: #07111f;
-        --bg-accent: rgba(45, 212, 191, 0.14);
-        --surface: rgba(15, 23, 42, 0.84);
-        --surface-strong: #111c31;
-        --surface-soft: #0c1729;
-        --text-main: #e5eefb;
-        --text-muted: #93a4bd;
-        --text-soft: #6f829b;
-        --border: rgba(96, 120, 151, 0.26);
-        --border-strong: rgba(125, 151, 186, 0.34);
-        --shadow-card: 0 24px 60px -34px rgba(0, 0, 0, 0.75);
-        --shadow-soft: 0 18px 36px -24px rgba(0, 0, 0, 0.7);
-        --accent: #25b5aa;
-        --accent-strong: #1b958c;
-        --income: #34d399;
-        --expense: #fb7185;
-        --teal: #2dd4bf;
-      }
-
-      body {
-        background:
-          radial-gradient(circle at top left, rgba(45, 212, 191, 0.12), transparent 26%),
-          radial-gradient(circle at top right, rgba(56, 189, 248, 0.08), transparent 22%),
-          linear-gradient(180deg, #07111f 0%, #081423 100%);
-        color: var(--text-main);
-      }
-
-      body::before {
-        background:
-          linear-gradient(rgba(255,255,255,0.03), rgba(255,255,255,0)),
-          radial-gradient(circle at 50% 0%, rgba(45,212,191,0.06), transparent 40%);
-      }
+        radial-gradient(circle at 50% -10%, rgba(255,255,255,0.18), transparent 34%),
+        linear-gradient(rgba(255,255,255,0.06), rgba(255,255,255,0));
     }
 
     .app-shell {
@@ -106,133 +112,144 @@
       display: flex;
       flex-direction: column;
       gap: 1rem;
+      animation: fadeUp 0.55s ease both;
     }
 
-    .hero-card,
+    .hero,
     .card,
     .stat-card,
     .account-chip,
+    .sub-card,
     .table-shell,
-    .summary-card {
+    .toast,
+    .tab-shell {
       backdrop-filter: blur(18px);
       -webkit-backdrop-filter: blur(18px);
     }
 
-    .hero-card {
-      background:
-        linear-gradient(135deg, rgba(15, 140, 131, 0.96), rgba(12, 102, 140, 0.96)),
-        linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0));
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 2rem;
-      box-shadow: 0 26px 70px -34px rgba(11, 65, 81, 0.72);
-      color: #effcfb;
-      padding: 1.2rem;
-      overflow: hidden;
+    .hero {
       position: relative;
+      overflow: hidden;
+      padding: 1.2rem;
+      border-radius: 2rem;
+      color: #f8fffe;
+      background: var(--hero-grad);
+      border: 1px solid var(--hero-ring);
+      box-shadow: var(--shadow-lg);
+      isolation: isolate;
     }
 
-    .hero-card::after {
+    .hero::before,
+    .hero::after {
       content: "";
       position: absolute;
-      width: 220px;
-      height: 220px;
-      right: -70px;
-      top: -110px;
       border-radius: 999px;
-      background: radial-gradient(circle, rgba(255,255,255,0.22), transparent 66%);
       pointer-events: none;
+      z-index: -1;
+    }
+
+    .hero::before {
+      width: 240px;
+      height: 240px;
+      top: -110px;
+      right: -90px;
+      background: radial-gradient(circle, rgba(255,255,255,0.2), transparent 62%);
+    }
+
+    .hero::after {
+      width: 190px;
+      height: 190px;
+      bottom: -95px;
+      left: -70px;
+      background: radial-gradient(circle, rgba(255,255,255,0.12), transparent 62%);
     }
 
     .hero-top {
       display: flex;
-      align-items: flex-start;
       justify-content: space-between;
+      align-items: flex-start;
       gap: 1rem;
-      position: relative;
-      z-index: 1;
     }
 
     .eyebrow {
+      margin: 0 0 0.45rem;
       font-size: 0.68rem;
+      font-weight: 800;
       letter-spacing: 0.18em;
       text-transform: uppercase;
-      font-weight: 800;
-      opacity: 0.8;
-      margin: 0 0 0.45rem;
+      opacity: 0.78;
     }
 
-    .hero-title {
+    .hero h1 {
       margin: 0;
-      font-size: clamp(1.85rem, 5vw, 2.4rem);
-      line-height: 0.98;
+      font-size: clamp(2rem, 6vw, 2.75rem);
+      line-height: 0.95;
+      letter-spacing: -0.05em;
       font-weight: 800;
-      letter-spacing: -0.04em;
     }
 
-    .hero-subtitle {
-      margin: 0.65rem 0 0;
-      max-width: 28rem;
-      font-size: 0.92rem;
+    .hero p {
+      margin: 0.7rem 0 0;
+      max-width: 30rem;
+      font-size: 0.93rem;
       line-height: 1.55;
-      color: rgba(239, 252, 251, 0.82);
+      color: rgba(248,255,254,0.84);
     }
 
-    .live-pill {
+    .live-badge {
       flex-shrink: 0;
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
-      padding: 0.58rem 0.9rem;
+      padding: 0.62rem 0.9rem;
       border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.22);
-      background: rgba(255,255,255,0.14);
-      color: #ffffff;
-      font-size: 0.72rem;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(255,255,255,0.12);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.12);
+      font-size: 0.75rem;
       font-weight: 700;
       white-space: nowrap;
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.12);
     }
 
     .live-dot {
-      width: 0.45rem;
-      height: 0.45rem;
+      width: 0.48rem;
+      height: 0.48rem;
       border-radius: 999px;
-      background: #bef264;
-      box-shadow: 0 0 0 0.24rem rgba(190, 242, 100, 0.14);
+      background: #b9ff66;
+      box-shadow: 0 0 0 0.22rem rgba(185,255,102,0.16);
+      animation: pulse 1.8s infinite;
     }
 
-    .card {
-      background: var(--surface);
-      border-radius: 1.7rem;
-      border: 1px solid var(--border);
-      padding: 1.1rem;
-      box-shadow: var(--shadow-card);
+    .hero-strip {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.7rem;
+      margin-top: 1rem;
     }
 
-    .section-card,
-    .panel-card {
-      overflow: hidden;
+    .hero-metric {
+      padding: 0.85rem 0.9rem;
+      border-radius: 1.2rem;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.12);
     }
 
-    .section-head {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 1rem;
-    }
-
-    .section-title {
-      margin: 0;
-      font-size: 1rem;
+    .hero-metric-label {
+      display: block;
+      font-size: 0.63rem;
       font-weight: 800;
-      letter-spacing: -0.02em;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      opacity: 0.76;
+      margin-bottom: 0.35rem;
     }
 
-    .section-caption {
-      margin: 0.2rem 0 0;
-      color: var(--text-muted);
-      font-size: 0.78rem;
-      line-height: 1.45;
+    .hero-metric-value {
+      display: block;
+      font-size: 0.96rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      overflow-wrap: anywhere;
     }
 
     .stats-grid {
@@ -241,80 +258,213 @@
       gap: 0.85rem;
     }
 
-    .stat-card {
-      background:
-        linear-gradient(180deg, rgba(255,255,255,0.42), rgba(255,255,255,0.08)),
-        var(--surface);
-      border-radius: 1.45rem;
-      padding: 0.95rem;
+    .stat-card,
+    .card,
+    .sub-card {
+      background: var(--card-grad), var(--surface);
       border: 1px solid var(--border);
-      min-height: 108px;
+      box-shadow: var(--shadow-md);
+    }
+
+    .stat-card {
+      position: relative;
+      overflow: hidden;
+      border-radius: 1.5rem;
+      padding: 1rem;
+      min-height: 118px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      box-shadow: var(--shadow-soft);
+      animation: floatIn 0.45s ease both;
+    }
+
+    .stat-card::after {
+      content: "";
+      position: absolute;
+      width: 84px;
+      height: 84px;
+      right: -22px;
+      bottom: -32px;
+      border-radius: 999px;
+      background: radial-gradient(circle, var(--accent-soft), transparent 66%);
+      pointer-events: none;
     }
 
     .stat-label {
-      font-size: 0.7rem;
+      font-size: 0.68rem;
       font-weight: 800;
-      letter-spacing: 0.13em;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
-      color: var(--text-muted);
+      color: var(--text-secondary);
     }
 
     .stat-value {
-      font-size: clamp(1.15rem, 4vw, 1.55rem);
-      line-height: 1.05;
+      font-size: clamp(1.18rem, 4.3vw, 1.6rem);
+      line-height: 1.04;
       font-weight: 800;
-      letter-spacing: -0.04em;
+      letter-spacing: -0.05em;
       overflow-wrap: anywhere;
     }
 
-    .tab-shell {
-      background: rgba(255, 255, 255, 0.52);
-      border: 1px solid var(--border);
-      border-radius: 1.35rem;
-      padding: 0.35rem;
+    .stat-hint {
+      font-size: 0.77rem;
+      color: var(--text-tertiary);
+    }
+
+    .text-emerald-600 { color: var(--income) !important; }
+    .text-rose-600 { color: var(--expense) !important; }
+    .text-teal-600 { color: var(--accent-2) !important; }
+    .text-slate-500 { color: var(--text-secondary) !important; }
+    .text-slate-400 { color: var(--text-tertiary) !important; }
+
+    .card {
+      border-radius: 1.7rem;
+      padding: 1.1rem;
+      overflow: hidden;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 0.9rem;
+    }
+
+    .section-title {
+      margin: 0;
+      font-size: 1.04rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: var(--text-primary);
+    }
+
+    .section-note {
+      margin: 0.25rem 0 0;
+      font-size: 0.78rem;
+      line-height: 1.45;
+      color: var(--text-secondary);
+      max-width: 18rem;
+      text-align: right;
+    }
+
+    .accounts-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 0.4rem;
-      box-shadow: var(--shadow-soft);
-      backdrop-filter: blur(16px);
+      gap: 0.8rem;
+    }
+
+    .account-chip {
+      position: relative;
+      overflow: hidden;
+      padding: 1rem;
+      border-radius: 1.35rem;
+      background: var(--stat-grad), var(--surface-muted);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
+      transform: translateY(0);
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .account-chip:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .account-chip-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 0.7rem;
+    }
+
+    .chip-name {
+      font-size: 0.95rem;
+      font-weight: 700;
+      line-height: 1.3;
+      color: var(--text-primary);
+      overflow-wrap: anywhere;
+    }
+
+    .chip-values {
+      flex-shrink: 0;
+      text-align: right;
+      font-size: 0.76rem;
+      line-height: 1.45;
+    }
+
+    .progress-bar {
+      position: relative;
+      overflow: hidden;
+      height: 0.4rem;
+      margin-top: 0.9rem;
+      border-radius: 999px;
+      background: rgba(148, 163, 184, 0.16);
+    }
+
+    .progress-fill {
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      width: 0%;
+      transition: width 0.35s ease;
+    }
+
+    .empty-state {
+      padding: 1rem;
+      border-radius: 1.2rem;
+      border: 1px dashed var(--border-strong);
+      background: rgba(255,255,255,0.12);
+      color: var(--text-secondary);
+      font-size: 0.82rem;
+      text-align: center;
+    }
+
+    .tab-shell {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.38rem;
+      padding: 0.35rem;
+      border-radius: 1.35rem;
+      background: rgba(255,255,255,0.42);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
     }
 
     .tab-btn {
-      border-radius: 1rem;
       border: 0;
-      padding: 0.9rem 1rem;
+      border-radius: 1rem;
+      padding: 0.95rem 1rem;
       font-size: 0.92rem;
-      font-weight: 700;
-      transition: transform 0.12s ease, background 0.18s ease, color 0.18s ease;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      transition: transform 0.14s ease, background 0.18s ease, color 0.18s ease, box-shadow 0.18s ease;
     }
 
     .tab-btn:active,
     .btn-primary:active,
-    .btn-outline:active {
+    .btn-secondary:active,
+    .action-pill:active {
       transform: scale(0.98);
     }
 
     .tab-active {
-      background: linear-gradient(135deg, var(--accent), #117b99);
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
       color: #ffffff;
-      box-shadow: 0 14px 24px -18px rgba(15, 140, 131, 0.7);
+      box-shadow: 0 16px 26px -20px rgba(15, 118, 110, 0.9);
     }
 
     .tab-inactive {
       background: transparent;
-      color: var(--text-muted);
+      color: var(--text-secondary);
     }
 
-    .field-grid {
+    .form-grid {
       display: grid;
       gap: 0.85rem;
     }
 
-    .field-grid.two-col {
+    .two-col {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
@@ -324,219 +474,152 @@
       gap: 0.45rem;
     }
 
-    .label-text {
-      font-size: 0.68rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
+    .field-label {
+      font-size: 0.66rem;
       font-weight: 800;
-      color: var(--text-muted);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
     }
 
-    .label-income {
+    .field-label.income {
       color: var(--income);
     }
 
-    .label-expense {
+    .field-label.expense {
       color: var(--expense);
     }
 
     .input-field {
       width: 100%;
+      border-radius: 1.15rem;
       border: 1px solid var(--border-strong);
-      border-radius: 1.1rem;
-      padding: 0.9rem 1rem;
-      background: var(--surface-strong);
-      color: var(--text-main);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.5);
-      transition: border-color 0.16s ease, box-shadow 0.16s ease, transform 0.16s ease;
+      padding: 0.95rem 1rem;
+      background: linear-gradient(180deg, rgba(255,255,255,0.22), rgba(255,255,255,0.04)), var(--surface-strong);
+      color: var(--text-primary);
+      font-size: 0.95rem;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
+      transition: border-color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease, background 0.18s ease;
     }
 
     .input-field::placeholder {
-      color: var(--text-soft);
+      color: var(--text-tertiary);
     }
 
     .input-field:focus {
       outline: none;
-      border-color: rgba(15, 140, 131, 0.55);
+      border-color: rgba(34, 211, 204, 0.42);
       box-shadow:
-        0 0 0 4px rgba(15, 140, 131, 0.14),
-        0 10px 22px -18px rgba(15, 140, 131, 0.5);
+        0 0 0 4px rgba(34, 211, 204, 0.12),
+        0 18px 34px -28px rgba(34, 211, 204, 0.4);
+      background: linear-gradient(180deg, rgba(255,255,255,0.28), rgba(255,255,255,0.06)), var(--surface-strong);
     }
 
     textarea.input-field {
-      min-height: 88px;
+      min-height: 94px;
       resize: vertical;
     }
 
     .note-row {
       display: flex;
-      align-items: stretch;
       gap: 0.75rem;
+      align-items: stretch;
     }
 
     .btn-primary,
-    .btn-outline {
-      width: 100%;
+    .btn-secondary,
+    .action-pill {
+      border: 0;
       border-radius: 1rem;
-      padding: 0.92rem 1rem;
-      font-weight: 700;
-      transition: transform 0.12s ease, box-shadow 0.16s ease, background 0.16s ease;
+      font-weight: 800;
+      transition: transform 0.14s ease, box-shadow 0.18s ease, filter 0.18s ease, background 0.18s ease;
     }
 
     .btn-primary {
-      border: none;
+      width: 100%;
+      padding: 1rem 1.1rem;
       color: #ffffff;
-      background: linear-gradient(135deg, var(--accent), #117b99);
-      box-shadow: 0 18px 28px -18px rgba(15, 140, 131, 0.72);
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      box-shadow: 0 18px 30px -20px rgba(15, 118, 110, 0.78);
     }
 
-    .btn-outline {
-      background: rgba(255,255,255,0.5);
-      color: var(--text-main);
+    .btn-primary:hover,
+    .btn-secondary:hover,
+    .action-pill:hover {
+      filter: brightness(1.04);
+    }
+
+    .btn-secondary {
+      width: 100%;
+      padding: 0.95rem 1rem;
+      color: var(--text-primary);
+      background: linear-gradient(180deg, rgba(255,255,255,0.24), rgba(255,255,255,0.05)), var(--surface);
       border: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 0.5rem;
-      box-shadow: var(--shadow-soft);
+      gap: 0.55rem;
     }
 
-    .btn-outline:hover {
-      background: var(--surface-strong);
-    }
-
-    .btn-compact {
+    .btn-mini {
       width: auto;
-      flex: 0 0 auto;
-      min-width: 78px;
+      min-width: 84px;
       padding-inline: 1rem;
+      flex-shrink: 0;
     }
 
     .status-pill {
-      border-radius: 999px;
-      padding: 0.72rem 0.95rem;
-      background: var(--surface-soft);
-      border: 1px solid var(--border);
-      font-size: 0.78rem;
-      color: var(--text-muted);
-      text-align: center;
-      overflow-wrap: anywhere;
-    }
-
-    .accounts-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 0.75rem;
-      margin-top: 0.95rem;
-    }
-
-    .account-chip {
-      background:
-        linear-gradient(180deg, rgba(255,255,255,0.4), rgba(255,255,255,0.06)),
-        var(--surface-soft);
-      border-radius: 1.2rem;
-      padding: 0.95rem;
-      border: 1px solid var(--border);
-      overflow: hidden;
-      box-shadow: var(--shadow-soft);
-    }
-
-    .account-chip-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 0.7rem;
-    }
-
-    .chip-name {
-      font-size: 0.94rem;
-      line-height: 1.28;
-      font-weight: 700;
-      overflow-wrap: anywhere;
-    }
-
-    .chip-values {
-      flex: 0 0 auto;
-      text-align: right;
-      font-size: 0.76rem;
-      line-height: 1.4;
-    }
-
-    .progress-bar {
-      height: 0.38rem;
-      background: rgba(148, 163, 184, 0.18);
-      border-radius: 999px;
-      margin-top: 0.9rem;
-      overflow: hidden;
-    }
-
-    .progress-fill {
-      height: 100%;
-      background: linear-gradient(90deg, var(--accent), #38bdf8);
-      width: 0%;
-      border-radius: inherit;
-    }
-
-    .empty-inline {
-      padding: 1rem;
-      border-radius: 1rem;
-      border: 1px dashed var(--border-strong);
-      color: var(--text-muted);
-      font-size: 0.82rem;
-      background: rgba(255,255,255,0.3);
-      text-align: center;
-    }
-
-    .report-toolbar {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 0.85rem;
-    }
-
-    .summary-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 0.85rem;
-    }
-
-    .summary-card {
-      background:
-        linear-gradient(180deg, rgba(255,255,255,0.4), rgba(255,255,255,0.06)),
-        var(--surface-soft);
-      border: 1px solid var(--border);
-      border-radius: 1.25rem;
-      padding: 1rem;
-      text-align: left;
-      box-shadow: var(--shadow-soft);
-    }
-
-    .summary-label {
-      font-size: 0.78rem;
-      color: var(--text-muted);
-    }
-
-    .summary-value {
-      margin-top: 0.3rem;
       display: block;
-      font-size: 1.35rem;
-      line-height: 1.1;
+      width: 100%;
+      padding: 0.82rem 0.95rem;
+      border-radius: 1rem;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.08);
+      color: var(--text-secondary);
+      text-align: center;
+      font-size: 0.78rem;
+      overflow-wrap: anywhere;
+    }
+
+    .report-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.85rem;
+    }
+
+    .sub-card {
+      border-radius: 1.35rem;
+      padding: 1rem;
+    }
+
+    .sub-label {
+      display: block;
+      font-size: 0.76rem;
+      color: var(--text-secondary);
+      margin-bottom: 0.28rem;
+    }
+
+    .sub-value {
+      display: block;
+      font-size: 1.38rem;
       font-weight: 800;
-      letter-spacing: -0.03em;
+      letter-spacing: -0.04em;
       overflow-wrap: anywhere;
     }
 
     .table-shell {
-      background: rgba(255,255,255,0.46);
-      border: 1px solid var(--border);
-      border-radius: 1.45rem;
       overflow: hidden;
-      box-shadow: var(--shadow-soft);
+      border-radius: 1.45rem;
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(255,255,255,0.16), rgba(255,255,255,0.02)), var(--surface);
+      box-shadow: var(--shadow-sm);
     }
 
     .table-wrapper {
+      max-width: 100%;
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
-      max-width: 100%;
     }
 
     table {
@@ -549,143 +632,137 @@
     th, td {
       padding: 0.95rem;
       text-align: left;
-      border-bottom: 1px solid var(--border);
       vertical-align: top;
+      border-bottom: 1px solid var(--border);
       overflow-wrap: anywhere;
     }
 
     thead th {
-      background: rgba(255,255,255,0.62);
-      color: var(--text-muted);
-      font-size: 0.72rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
+      background: var(--table-head);
+      color: var(--text-secondary);
+      font-size: 0.68rem;
       font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+
+    tbody tr {
+      transition: background 0.18s ease;
+    }
+
+    tbody tr:hover {
+      background: rgba(255,255,255,0.05);
     }
 
     tbody tr:last-child td {
-      border-bottom: none;
-    }
-
-    th:first-child, td:first-child {
-      padding-left: 0;
-    }
-
-    th:last-child, td:last-child {
-      padding-right: 0;
-    }
-
-    .cell-text {
-      font-weight: 600;
-      color: var(--text-main);
+      border-bottom: 0;
     }
 
     .cell-amount {
       white-space: nowrap;
     }
 
-    .action-link {
+    .action-pill {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      min-width: 2.65rem;
-      padding: 0.36rem 0.72rem;
-      border-radius: 999px;
-      border: 1px solid rgba(15, 140, 131, 0.18);
-      background: rgba(15, 140, 131, 0.1);
+      min-width: 68px;
+      padding: 0.42rem 0.75rem;
+      font-size: 0.72rem;
       color: var(--accent);
       text-decoration: none;
-      font-size: 0.74rem;
-      font-weight: 800;
-    }
-
-    .action-link:hover {
-      background: rgba(15, 140, 131, 0.16);
+      background: var(--accent-soft);
+      border: 1px solid rgba(45, 212, 191, 0.14);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
     }
 
     .empty-row td {
       padding: 2rem 1rem;
       text-align: center;
-      color: var(--text-muted);
+      color: var(--text-secondary);
     }
 
-    .modal-backdrop {
+    .receipt-modal {
       padding: 1rem;
     }
 
-    .modal-panel {
+    .receipt-panel {
       max-width: min(92vw, 560px);
       max-height: min(84vh, 760px);
-      background: var(--surface-strong);
-      border: 1px solid var(--border);
-      border-radius: 1.5rem;
+      border-radius: 1.6rem;
       overflow: hidden;
-      box-shadow: 0 30px 70px -36px rgba(0,0,0,0.68);
+      border: 1px solid var(--border);
+      background: var(--surface-strong);
+      box-shadow: var(--shadow-lg);
     }
 
     .toast {
       max-width: min(calc(100vw - 2rem), 420px);
+      padding: 0.9rem 1.1rem;
+      border-radius: 999px;
       text-align: center;
-      background: rgba(255,255,255,0.86);
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      background: var(--toast-bg);
       border: 1px solid var(--border);
-      color: var(--text-main);
-      box-shadow: 0 20px 46px -30px rgba(15, 23, 42, 0.56);
-      backdrop-filter: blur(14px);
+      box-shadow: var(--shadow-md);
     }
 
-    .text-slate-500, .label-text {
-      color: var(--text-muted) !important;
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.08); opacity: 0.88; }
     }
 
-    .text-slate-400 {
-      color: var(--text-soft) !important;
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
-    .text-emerald-600 {
-      color: var(--income) !important;
-    }
-
-    .text-rose-600 {
-      color: var(--expense) !important;
-    }
-
-    .text-teal-600 {
-      color: var(--teal) !important;
-    }
-
-    @media (min-width: 680px) {
-      .report-toolbar {
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-      }
+    @keyframes floatIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     @media (min-width: 760px) {
       .stats-grid {
         grid-template-columns: repeat(4, minmax(0, 1fr));
       }
+
+      .report-toolbar {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
     }
 
-    @media (max-width: 640px) {
+    @media (max-width: 680px) {
       .hero-top,
-      .section-head {
-        flex-direction: column;
-      }
-
-      .live-pill {
-        align-self: flex-start;
-      }
-
-      .field-grid.two-col,
-      .accounts-grid {
-        grid-template-columns: 1fr;
-      }
-
+      .section-head,
       .note-row {
         flex-direction: column;
       }
 
-      .btn-compact {
+      .live-badge {
+        align-self: flex-start;
+      }
+
+      .hero-strip,
+      .two-col,
+      .accounts-grid,
+      .report-grid,
+      .report-toolbar {
+        grid-template-columns: 1fr;
+      }
+
+      .btn-mini {
         width: 100%;
+      }
+
+      .section-note {
+        max-width: none;
+        text-align: left;
       }
 
       .table-shell {
@@ -709,40 +786,35 @@
 
       tbody tr {
         display: block;
-        background:
-          linear-gradient(180deg, rgba(255,255,255,0.36), rgba(255,255,255,0.06)),
-          var(--surface);
+        border-radius: 1.35rem;
         border: 1px solid var(--border);
-        border-radius: 1.25rem;
-        padding: 0.2rem 0;
-        box-shadow: var(--shadow-soft);
+        background: var(--card-grad), var(--surface);
+        box-shadow: var(--shadow-sm);
+        overflow: hidden;
       }
 
       td {
         display: flex;
-        align-items: flex-start;
         justify-content: space-between;
         gap: 0.8rem;
-        border-bottom: 0;
-        padding: 0.78rem 0.95rem;
+        padding: 0.85rem 0.95rem;
+        border-bottom: 1px solid var(--border);
         text-align: right !important;
+      }
+
+      td:last-child {
+        border-bottom: 0;
       }
 
       td::before {
         content: attr(data-label);
         flex: 0 0 42%;
         text-align: left;
-        font-size: 0.68rem;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
+        font-size: 0.66rem;
         font-weight: 800;
-        color: var(--text-muted);
-      }
-
-      td:first-child,
-      td:last-child {
-        padding-left: 0.95rem;
-        padding-right: 0.95rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--text-secondary);
       }
 
       .empty-row td {
@@ -756,125 +828,205 @@
     }
 
     @media (max-width: 560px) {
-      .card,
-      .hero-card {
-        padding: 1rem;
+      body {
+        padding: 0.8rem;
       }
 
-      .stats-grid,
-      .summary-grid,
-      .report-toolbar {
-        gap: 0.75rem;
+      .hero,
+      .card {
+        padding: 1rem;
+        border-radius: 1.6rem;
+      }
+
+      .stat-card,
+      .account-chip,
+      .sub-card {
+        border-radius: 1.25rem;
       }
     }
   </style>
 </head>
 <body>
   <div class="app-shell">
-    <section class="hero-card">
+    <section class="hero">
       <div class="hero-top">
         <div>
-          <p class="eyebrow">Personal Finance</p>
-          <h1 class="hero-title">Udees Pro</h1>
-          <p class="hero-subtitle">A premium mobile-first cashflow surface for capturing spending, receipts, locations, and monthly reports without visual clutter.</p>
+          <p class="eyebrow">Private Finance Suite</p>
+          <h1>Udees Pro</h1>
+          <p>Track every rupee with a premium mobile cashflow dashboard designed for fast entries, clean reporting, receipt capture, and everyday confidence.</p>
         </div>
-        <div class="live-pill"><span class="live-dot"></span>Live Sync</div>
+        <div class="live-badge"><span class="live-dot"></span>Live Sync</div>
+      </div>
+      <div class="hero-strip">
+        <div class="hero-metric">
+          <span class="hero-metric-label">Capture</span>
+          <span class="hero-metric-value">Voice, receipt, location</span>
+        </div>
+        <div class="hero-metric">
+          <span class="hero-metric-label">Flow</span>
+          <span class="hero-metric-value">Income, expense, account split</span>
+        </div>
+        <div class="hero-metric">
+          <span class="hero-metric-label">Insight</span>
+          <span class="hero-metric-value">Monthly reports and daily average</span>
+        </div>
       </div>
     </section>
 
-    <div class="stats-grid">
-      <div class="stat-card"><div class="stat-label">Income</div><div id="totalIncome" class="stat-value text-emerald-600">₹0</div></div>
-      <div class="stat-card"><div class="stat-label">Expense</div><div id="totalExpense" class="stat-value text-rose-600">₹0</div></div>
-      <div class="stat-card"><div class="stat-label">Net</div><div id="netBalance" class="stat-value">₹0</div></div>
-      <div class="stat-card"><div class="stat-label">Avg Daily</div><div id="avgDailySpend" class="stat-value text-teal-600">₹0</div></div>
-    </div>
+    <section class="stats-grid">
+      <div class="stat-card">
+        <span class="stat-label">Income</span>
+        <div id="totalIncome" class="stat-value text-emerald-600">₹0</div>
+        <span class="stat-hint">All credits recorded</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Expense</span>
+        <div id="totalExpense" class="stat-value text-rose-600">₹0</div>
+        <span class="stat-hint">All debits recorded</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Net Balance</span>
+        <div id="netBalance" class="stat-value">₹0</div>
+        <span class="stat-hint">Income minus expense</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Avg Daily</span>
+        <div id="avgDailySpend" class="stat-value text-teal-600">₹0</div>
+        <span class="stat-hint">Average expense per active day</span>
+      </div>
+    </section>
 
-    <section class="card section-card">
+    <section class="card">
       <div class="section-head">
         <div>
-          <p class="eyebrow text-slate-500">Portfolio</p>
-          <h3 class="section-title">Balances by account</h3>
+          <p class="eyebrow text-slate-500">Account Split</p>
+          <h2 class="section-title">Balances by account</h2>
         </div>
-        <p class="section-caption">Each tile scales safely for long account names and keeps spend contribution visible.</p>
+        <p class="section-note">Every tile keeps long names, figures, and progress bars neatly inside frame on mobile and desktop.</p>
       </div>
       <div id="accountsGrid" class="accounts-grid"></div>
     </section>
 
     <div class="tab-shell">
-      <button id="tabAddBtn" class="tab-btn tab-active">Add Entry</button>
-      <button id="tabReportBtn" class="tab-btn tab-inactive">Reports</button>
+      <button id="tabAddBtn" class="tab-btn tab-active">Add Transaction</button>
+      <button id="tabReportBtn" class="tab-btn tab-inactive">View Reports</button>
     </div>
 
-    <section id="addPanel" class="card panel-card space-y-5">
+    <section id="addPanel" class="card space-y-5">
       <div class="section-head">
         <div>
-          <p class="eyebrow text-slate-500">Capture</p>
-          <h3 class="section-title">New transaction</h3>
+          <p class="eyebrow text-slate-500">Entry Studio</p>
+          <h2 class="section-title">Create a new transaction</h2>
         </div>
-        <p class="section-caption">Clean inputs, safer spacing, and better touch targets for fast mobile use.</p>
+        <p class="section-note">Premium form spacing, stronger touch areas, and stable grids without touching your logic.</p>
       </div>
 
       <form id="entryForm" class="space-y-4">
-        <div class="field-grid two-col">
-          <div class="field"><label class="label-text">Date</label><input type="date" id="date" class="input-field"></div>
-          <div class="field"><label class="label-text">Mode</label><select id="mode" class="input-field"><option value="UPI">UPI</option><option value="CASH">CASH</option><option value="BANK">BANK</option></select></div>
-        </div>
-
-        <div class="field-grid two-col">
-          <div class="field"><label class="label-text">Account</label><select id="account" required class="input-field"></select></div>
-          <div class="field"><label class="label-text">Category</label><select id="particulars" required class="input-field"></select></div>
-        </div>
-
-        <div class="field-grid two-col">
-          <div class="field"><label class="label-text label-income">Income (₹)</label><input type="number" id="creditAmount" placeholder="0" class="input-field"></div>
-          <div class="field"><label class="label-text label-expense">Expense (₹)</label><input type="number" id="debitAmount" placeholder="0" class="input-field"></div>
-        </div>
-
-        <div class="field">
-          <label class="label-text">Note</label>
-          <div class="note-row">
-            <textarea id="note" rows="2" class="input-field flex-1"></textarea>
-            <button type="button" id="voiceBtn" class="btn-outline btn-compact">Mic</button>
+        <div class="form-grid two-col">
+          <div class="field">
+            <label class="field-label">Date</label>
+            <input type="date" id="date" class="input-field">
+          </div>
+          <div class="field">
+            <label class="field-label">Mode</label>
+            <select id="mode" class="input-field">
+              <option value="UPI">UPI</option>
+              <option value="CASH">CASH</option>
+              <option value="BANK">BANK</option>
+            </select>
           </div>
         </div>
 
-        <button type="button" id="attachReceiptBtn" class="btn-outline">Attach Receipt</button>
+        <div class="form-grid two-col">
+          <div class="field">
+            <label class="field-label">Account</label>
+            <select id="account" required class="input-field"></select>
+          </div>
+          <div class="field">
+            <label class="field-label">Category</label>
+            <select id="particulars" required class="input-field"></select>
+          </div>
+        </div>
+
+        <div class="form-grid two-col">
+          <div class="field">
+            <label class="field-label income">Income (₹)</label>
+            <input type="number" id="creditAmount" placeholder="0" class="input-field">
+          </div>
+          <div class="field">
+            <label class="field-label expense">Expense (₹)</label>
+            <input type="number" id="debitAmount" placeholder="0" class="input-field">
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="field-label">Note</label>
+          <div class="note-row">
+            <textarea id="note" rows="2" class="input-field flex-1"></textarea>
+            <button type="button" id="voiceBtn" class="btn-secondary btn-mini">🎙 Voice</button>
+          </div>
+        </div>
+
+        <button type="button" id="attachReceiptBtn" class="btn-secondary">📎 Attach Receipt</button>
         <input type="file" id="receiptInput" accept="image/*" capture="environment" class="hidden">
         <div id="receiptPreview" class="status-pill hidden"></div>
 
-        <button type="button" id="locateBtn" class="btn-outline">Use Current Location</button>
-        <input type="hidden" id="latitude" value=""><input type="hidden" id="longitude" value="">
+        <button type="button" id="locateBtn" class="btn-secondary">📍 Add Current Location</button>
+        <input type="hidden" id="latitude" value="">
+        <input type="hidden" id="longitude" value="">
         <div id="locationStatus" class="status-pill hidden"></div>
 
         <button type="submit" class="btn-primary">Save Transaction</button>
       </form>
     </section>
 
-    <section id="reportPanel" class="card panel-card hidden space-y-5">
+    <section id="reportPanel" class="card hidden space-y-5">
       <div class="section-head">
         <div>
-          <p class="eyebrow text-slate-500">Insights</p>
-          <h3 class="section-title">Monthly reports</h3>
+          <p class="eyebrow text-slate-500">Analytics</p>
+          <h2 class="section-title">Monthly report center</h2>
         </div>
-        <p class="section-caption">Filters and results adapt down to stacked mobile cards without table bleed.</p>
+        <p class="section-note">Filters stay clean, results stay framed, and the table collapses into premium mobile cards when space gets tight.</p>
       </div>
 
-      <div class="report-toolbar">
-        <div class="field"><label class="label-text">Month</label><input type="month" id="reportMonth" class="input-field"></div>
-        <div class="field"><label class="label-text">Account</label><select id="filterAccount" class="input-field"><option value="all">All Accounts</option></select></div>
-        <div class="field"><label class="label-text">Category</label><select id="filterCategory" class="input-field"><option value="all">All Categories</option></select></div>
-        <div class="field"><label class="label-text">Refresh</label><button id="applyReportBtn" class="btn-primary">Apply Filters</button></div>
+      <div class="form-grid report-toolbar">
+        <div class="field">
+          <label class="field-label">Month</label>
+          <input type="month" id="reportMonth" class="input-field">
+        </div>
+        <div class="field">
+          <label class="field-label">Account</label>
+          <select id="filterAccount" class="input-field">
+            <option value="all">All Accounts</option>
+          </select>
+        </div>
+        <div class="field">
+          <label class="field-label">Category</label>
+          <select id="filterCategory" class="input-field">
+            <option value="all">All Categories</option>
+          </select>
+        </div>
+        <div class="field">
+          <label class="field-label">Apply</label>
+          <button id="applyReportBtn" class="btn-primary">Refresh Report</button>
+        </div>
       </div>
 
-      <div class="summary-grid">
-        <div class="summary-card"><span class="summary-label">Income</span><span id="reportIncome" class="summary-value text-emerald-600">₹0</span></div>
-        <div class="summary-card"><span class="summary-label">Expense</span><span id="reportExpense" class="summary-value text-rose-600">₹0</span></div>
+      <div class="report-grid">
+        <div class="sub-card">
+          <span class="sub-label">Income</span>
+          <span id="reportIncome" class="sub-value text-emerald-600">₹0</span>
+        </div>
+        <div class="sub-card">
+          <span class="sub-label">Expense</span>
+          <span id="reportExpense" class="sub-value text-rose-600">₹0</span>
+        </div>
       </div>
 
       <div class="table-shell">
         <div class="table-wrapper">
           <table>
-            <thead class="text-slate-500 text-xs border-b">
+            <thead>
               <tr>
                 <th>Date</th>
                 <th>Account</th>
@@ -891,38 +1043,24 @@
     </section>
   </div>
 
-  <div id="receiptModal" class="modal-backdrop fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 opacity-0 pointer-events-none transition-all">
-    <div class="modal-panel">
+  <div id="receiptModal" class="receipt-modal fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 opacity-0 pointer-events-none transition-all">
+    <div class="receipt-panel">
       <img id="modalImage" src="" alt="receipt" class="max-w-full max-h-full object-contain">
     </div>
   </div>
 
-  <div id="toastMsg" class="toast fixed bottom-6 left-1/2 -translate-x-1/2 px-5 py-3 rounded-full font-semibold text-sm z-50 transition-all duration-200 opacity-0 pointer-events-none">Done</div>
+  <div id="toastMsg" class="toast fixed bottom-6 left-1/2 -translate-x-1/2 z-50 transition-all duration-200 opacity-0 pointer-events-none">✓</div>
 
   <script>
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyKaGhWnNqF22Wgn6ILokGj5sROF-Pqk4h-grULLvop6rhWEe4cZ_WxrfNY4qy_yhCq/exec";
     let masterConfig = {}, allEntries = [], currentReceiptBase64 = "";
 
     const formatINR = (v) => new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(v || 0);
-    const formatDate = (iso) => { if (!iso) return '--'; let d = new Date(iso); return d.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }); };
-    const showToast = (msg) => {
-      let t = document.getElementById('toastMsg');
-      t.innerText = `Done: ${msg}`;
-      t.classList.add('opacity-100', 'pointer-events-auto');
-      setTimeout(() => t.classList.remove('opacity-100', 'pointer-events-auto'), 2500);
-    };
+    const formatDate = (iso) => { if (!iso) return '—'; let d = new Date(iso); return d.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }); };
+    const showToast = (msg) => { let t = document.getElementById('toastMsg'); t.innerText = `✓ ${msg}`; t.classList.add('opacity-100', 'pointer-events-auto'); setTimeout(() => t.classList.remove('opacity-100', 'pointer-events-auto'), 2500); };
 
-    const saveCache = () => {
-      localStorage.setItem('udees_entries', JSON.stringify(allEntries));
-      localStorage.setItem('udees_config', JSON.stringify(masterConfig));
-    };
-
-    const loadCache = () => {
-      let e = localStorage.getItem('udees_entries'), c = localStorage.getItem('udees_config');
-      if (e) allEntries = JSON.parse(e);
-      if (c) masterConfig = JSON.parse(c);
-      return !!e;
-    };
+    const saveCache = () => { localStorage.setItem('udees_entries', JSON.stringify(allEntries)); localStorage.setItem('udees_config', JSON.stringify(masterConfig)); };
+    const loadCache = () => { let e = localStorage.getItem('udees_entries'), c = localStorage.getItem('udees_config'); if (e) allEntries = JSON.parse(e); if (c) masterConfig = JSON.parse(c); return !!e; };
 
     const backgroundSync = async () => {
       try {
@@ -949,31 +1087,13 @@
       allEntries.unshift({ ...entry, id: tempId });
       saveCache();
       renderAllUI();
-      fetch(SCRIPT_URL, {
-        method: "POST",
-        mode: "no-cors",
-        headers: { "Content-Type": "text/plain" },
-        body: JSON.stringify(entry)
-      }).catch(() => {});
+      fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", headers: { "Content-Type": "text/plain" }, body: JSON.stringify(entry) }).catch(() => {});
       setTimeout(() => backgroundSync(), 1500);
       showToast("Transaction saved");
     };
 
-    const computeTotals = () => {
-      let inc = 0, exp = 0;
-      allEntries.forEach(e => { inc += e.credit || 0; exp += e.debit || 0; });
-      return { inc, exp, balance: inc - exp };
-    };
-
-    const avgDailySpend = () => {
-      if (!allEntries.length) return 0;
-      let totalExp = 0, days = new Set();
-      allEntries.forEach(e => {
-        totalExp += e.debit || 0;
-        if (e.date) days.add(e.date);
-      });
-      return totalExp / (days.size || 1);
-    };
+    const computeTotals = () => { let inc = 0, exp = 0; allEntries.forEach(e => { inc += e.credit || 0; exp += e.debit || 0; }); return { inc, exp, balance: inc - exp }; };
+    const avgDailySpend = () => { if (!allEntries.length) return 0; let totalExp = 0, days = new Set(); allEntries.forEach(e => { totalExp += e.debit || 0; if (e.date) days.add(e.date); }); return totalExp / (days.size || 1); };
 
     const renderAccountChips = () => {
       let map = new Map();
@@ -984,13 +1104,11 @@
         d.inc += e.credit || 0;
         d.exp += e.debit || 0;
       });
-
       let container = document.getElementById('accountsGrid');
       if (!map.size) {
-        container.innerHTML = '<div class="empty-inline">No accounts yet. Your balances will appear here as soon as transactions sync.</div>';
+        container.innerHTML = '<div class="empty-state">No accounts yet</div>';
         return;
       }
-
       let totalExpAll = Array.from(map.values()).reduce((s, v) => s + v.exp, 0);
       let html = '';
       for (let [acc, val] of map.entries()) {
@@ -1002,9 +1120,7 @@
 
     const populateDropdowns = () => {
       let accounts = Object.keys(masterConfig);
-      let accSel = document.getElementById('account');
-      let fAcc = document.getElementById('filterAccount');
-
+      let accSel = document.getElementById('account'), fAcc = document.getElementById('filterAccount');
       if (accounts.length) {
         accSel.innerHTML = '<option value="" disabled selected>Select account</option>' + accounts.map(a => `<option value="${a}">${a}</option>`).join('');
         fAcc.innerHTML = '<option value="all">All Accounts</option>' + accounts.map(a => `<option value="${a}">${a}</option>`).join('');
@@ -1016,8 +1132,7 @@
     };
 
     const updateParticulars = () => {
-      let acc = document.getElementById('account').value;
-      let partSel = document.getElementById('particulars');
+      let acc = document.getElementById('account').value, partSel = document.getElementById('particulars');
       if (acc && masterConfig[acc]) {
         partSel.innerHTML = '<option value="" disabled selected>Select category</option>' + masterConfig[acc].map(p => `<option value="${p}">${p}</option>`).join('');
       } else {
@@ -1037,8 +1152,7 @@
     };
 
     const updateFilterCategories = () => {
-      let fAcc = document.getElementById('filterAccount').value;
-      let catSel = document.getElementById('filterCategory');
+      let fAcc = document.getElementById('filterAccount').value, catSel = document.getElementById('filterCategory');
       if (fAcc === 'all') {
         let allCats = new Set();
         allEntries.forEach(e => { if (e.particulars) allCats.add(e.particulars); });
@@ -1052,11 +1166,8 @@
     const applyReportFilters = () => {
       let monthVal = document.getElementById('reportMonth').value;
       if (!monthVal) return;
-
       let [year, month] = monthVal.split('-');
-      let accFilter = document.getElementById('filterAccount').value;
-      let catFilter = document.getElementById('filterCategory').value;
-
+      let accFilter = document.getElementById('filterAccount').value, catFilter = document.getElementById('filterCategory').value;
       let filtered = allEntries.filter(e => {
         if (!e.date) return false;
         let d = new Date(e.date);
@@ -1065,35 +1176,23 @@
         if (catFilter !== 'all' && e.particulars !== catFilter) return false;
         return true;
       });
-
       let incSum = 0, expSum = 0;
       filtered.forEach(e => { incSum += e.credit || 0; expSum += e.debit || 0; });
-
       document.getElementById('reportIncome').innerHTML = formatINR(incSum);
       document.getElementById('reportExpense').innerHTML = formatINR(expSum);
-
       let tbody = document.getElementById('reportTableBody');
-      if (!filtered.length) {
-        tbody.innerHTML = '<tr class="empty-row"><td colspan="6" class="text-center py-5 text-slate-400">No entries for the selected filters</td></tr>';
-        return;
-      }
-
+      if (!filtered.length) { tbody.innerHTML = '<tr class="empty-row"><td colspan="6" class="text-center py-5 text-slate-400">No entries</td></tr>'; return; }
       tbody.innerHTML = filtered.map(e => {
         let amount = (e.credit || 0) > 0 ? e.credit : e.debit;
         let cls = (e.credit || 0) > 0 ? 'text-emerald-600' : 'text-rose-600';
-        let locHtml = (e.lat && e.lng)
-          ? `<a href="https://maps.google.com/?q=${e.lat},${e.lng}" target="_blank" rel="noopener noreferrer" class="action-link">Open</a>`
-          : '<span class="text-slate-400">--</span>';
-        let receiptHtml = (e.receipt && e.receipt.length > 50)
-          ? `<button type="button" onclick="showReceipt('${e.receipt}')" class="action-link">View</button>`
-          : '<span class="text-slate-400">--</span>';
-        return `<tr><td data-label="Date" class="cell-text text-xs">${formatDate(e.date)}</td><td data-label="Account" class="cell-text">${e.account}</td><td data-label="Category" class="cell-text">${e.particulars}</td><td data-label="Amount" class="cell-amount text-right font-bold ${cls}">${formatINR(amount)}</td><td data-label="Map" class="text-center">${locHtml}</td><td data-label="Receipt" class="text-center">${receiptHtml}</td></tr>`;
+        let locHtml = (e.lat && e.lng) ? `<a href="https://maps.google.com/?q=${e.lat},${e.lng}" target="_blank" class="action-pill text-teal-600">Map</a>` : '<span class="text-slate-400">—</span>';
+        let receiptHtml = (e.receipt && e.receipt.length > 50) ? `<button type="button" onclick="showReceipt('${e.receipt}')" class="action-pill text-teal-600">View</button>` : '<span class="text-slate-400">—</span>';
+        return `<tr><td data-label="Date" class="text-xs">${formatDate(e.date)}</td><td data-label="Account">${e.account}</td><td data-label="Category">${e.particulars}</td><td data-label="Amount" class="text-right font-bold ${cls} cell-amount">${formatINR(amount)}</td><td data-label="Map" class="text-center">${locHtml}</td><td data-label="Receipt" class="text-center">${receiptHtml}</td></tr>`;
       }).join('');
     };
 
     window.showReceipt = (base64) => {
-      let modal = document.getElementById('receiptModal');
-      let img = document.getElementById('modalImage');
+      let modal = document.getElementById('receiptModal'), img = document.getElementById('modalImage');
       img.src = base64;
       modal.classList.remove('opacity-0', 'pointer-events-none');
       modal.onclick = () => modal.classList.add('opacity-0', 'pointer-events-none');
@@ -1101,7 +1200,6 @@
 
     let recognition = null;
     const voiceBtn = document.getElementById('voiceBtn');
-
     if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
       const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
       recognition = new SpeechRecognition();
@@ -1128,7 +1226,6 @@
     }
 
     document.getElementById('attachReceiptBtn').onclick = () => document.getElementById('receiptInput').click();
-
     document.getElementById('receiptInput').onchange = (e) => {
       let file = e.target.files[0];
       if (!file) return;
@@ -1136,8 +1233,7 @@
       reader.onload = (ev) => {
         let img = new Image();
         img.onload = () => {
-          let canvas = document.createElement('canvas');
-          let ctx = canvas.getContext('2d');
+          let canvas = document.createElement('canvas'), ctx = canvas.getContext('2d');
           let width = img.width, height = img.height, maxSize = 800;
           if (width > maxSize) {
             height = (height * maxSize) / width;
@@ -1150,7 +1246,7 @@
           currentReceiptBase64 = compressed;
           let preview = document.getElementById('receiptPreview');
           preview.classList.remove('hidden');
-          preview.innerHTML = 'Receipt attached. Tap attach again to replace it.';
+          preview.innerHTML = '✓ Receipt attached';
           showToast("Receipt ready");
         };
         img.src = ev.target.result;
@@ -1159,23 +1255,20 @@
     };
 
     document.getElementById('locateBtn').onclick = () => {
-      if (!navigator.geolocation) {
-        alert("Location not supported");
-        return;
-      }
+      if (!navigator.geolocation) { alert("Location not supported"); return; }
       let status = document.getElementById('locationStatus');
       status.classList.remove('hidden');
-      status.innerText = "Getting location...";
+      status.innerText = "📍 Getting location...";
       navigator.geolocation.getCurrentPosition(
         (pos) => {
           document.getElementById('latitude').value = pos.coords.latitude;
           document.getElementById('longitude').value = pos.coords.longitude;
-          status.innerText = `Location saved: ${pos.coords.latitude.toFixed(4)}, ${pos.coords.longitude.toFixed(4)}`;
+          status.innerText = `✅ Location: ${pos.coords.latitude.toFixed(4)}, ${pos.coords.longitude.toFixed(4)}`;
           setTimeout(() => status.classList.add('hidden'), 3000);
           showToast("Location captured");
         },
         (err) => {
-          status.innerText = `Location unavailable: ${err.message}`;
+          status.innerText = `❌ ${err.message}`;
           setTimeout(() => status.classList.add('hidden'), 3000);
         }
       );
@@ -1183,30 +1276,12 @@
 
     document.getElementById('entryForm').addEventListener('submit', async (e) => {
       e.preventDefault();
-      let date = document.getElementById('date').value;
-      let mode = document.getElementById('mode').value;
-      let account = document.getElementById('account').value;
-      let particulars = document.getElementById('particulars').value;
-      let credit = parseFloat(document.getElementById('creditAmount').value) || 0;
-      let debit = parseFloat(document.getElementById('debitAmount').value) || 0;
-      let note = document.getElementById('note').value;
-      let lat = document.getElementById('latitude').value || null;
-      let lng = document.getElementById('longitude').value || null;
-      let receipt = currentReceiptBase64;
-
-      if (!date || !account || !particulars) {
-        alert("Fill date, account & category");
-        return;
-      }
-      if (credit > 0 && debit > 0) {
-        alert("Cannot have both income & expense");
-        return;
-      }
-      if (credit === 0 && debit === 0) {
-        alert("Enter either income or expense");
-        return;
-      }
-
+      let date = document.getElementById('date').value, mode = document.getElementById('mode').value, account = document.getElementById('account').value, particulars = document.getElementById('particulars').value;
+      let credit = parseFloat(document.getElementById('creditAmount').value) || 0, debit = parseFloat(document.getElementById('debitAmount').value) || 0;
+      let note = document.getElementById('note').value, lat = document.getElementById('latitude').value || null, lng = document.getElementById('longitude').value || null, receipt = currentReceiptBase64;
+      if (!date || !account || !particulars) { alert("Fill date, account & category"); return; }
+      if (credit > 0 && debit > 0) { alert("Cannot have both income & expense"); return; }
+      if (credit === 0 && debit === 0) { alert("Enter either income or expense"); return; }
       await addEntryLocal({ date, mode, account, particulars, credit, debit, note, lat, lng, receipt });
       document.getElementById('creditAmount').value = '';
       document.getElementById('debitAmount').value = '';
@@ -1220,11 +1295,7 @@
       document.getElementById('date').valueAsDate = new Date();
     });
 
-    const addPanel = document.getElementById('addPanel');
-    const reportPanel = document.getElementById('reportPanel');
-    const tabAdd = document.getElementById('tabAddBtn');
-    const tabReport = document.getElementById('tabReportBtn');
-
+    const addPanel = document.getElementById('addPanel'), reportPanel = document.getElementById('reportPanel'), tabAdd = document.getElementById('tabAddBtn'), tabReport = document.getElementById('tabReportBtn');
     tabAdd.onclick = () => {
       addPanel.classList.remove('hidden');
       reportPanel.classList.add('hidden');
@@ -1233,7 +1304,6 @@
       tabReport.classList.remove('tab-active');
       tabReport.classList.add('tab-inactive');
     };
-
     tabReport.onclick = () => {
       addPanel.classList.add('hidden');
       reportPanel.classList.remove('hidden');
@@ -1249,10 +1319,7 @@
       applyReportFilters();
     };
 
-    document.getElementById('filterAccount').addEventListener('change', () => {
-      updateFilterCategories();
-      applyReportFilters();
-    });
+    document.getElementById('filterAccount').addEventListener('change', () => { updateFilterCategories(); applyReportFilters(); });
     document.getElementById('filterCategory').addEventListener('change', applyReportFilters);
     document.getElementById('applyReportBtn').addEventListener('click', applyReportFilters);
     document.getElementById('account').addEventListener('change', updateParticulars);
